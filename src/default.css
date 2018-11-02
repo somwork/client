@@ -1,7 +1,13 @@
+/* Set global variables */
+:root {
+  --bg: orange;
+}
+
 body {
   margin: 0px;
   padding: 0px;
   font-family: sans-serif;
+  background: var(--bg);
 }
 
 *,*:before,*:after {
