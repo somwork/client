@@ -4,7 +4,9 @@ import Layout from '../components/Layout'
 
 export default () => (
   <Layout>
-    <h1>Main View</h1>
-    <Link to='/second'>Second view</Link>
+    <section>
+      <h1>Main View</h1>
+      <Link to='/second'>Second view</Link>
+    </section>
   </Layout>
 )
