@@ -1,9 +1,86 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
+:root {
+  --primary: #1C2531;
+  --secondary: rgba(0,0,0,0.6);
+  --light: white;
+
+  --font-family: 'Montserrat', sans-serif;
+  --font-regular: 400;
+  --font-bold: 700;
+  --font-size: 16px;
+
+  --spacing: 1.6em;
+  --spacing-top-bottom: var(--spacing) auto calc(var(--spacing) / 2);
+
+  --content-max-width: 800px;
+}
+
 body {
   margin: 0px;
   padding: 0px;
-  font-family: sans-serif;
+  line-height: var(--spacing);
+  font-family: var(--font-family);
+  font-weight: var(--font-regular);
+  font-size: var(--font-size);
+  color: var(--secondary);
+  background: var(--white);
 }
 
 *,*:before,*:after {
   box-sizing: border-box;
+}
+
+p {
+  margin: var(--spacing-top-bottom)
+}
+
+section {
+  padding: 0px var(--spacing);
+}
+
+section:last-of-type {
+  margin-bottom: var(--spacing);
+}
+
+a {
+  color: var(--primary);
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary);
+  margin: var(--spacing-top-bottom);
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.6em;
+}
+
+h2.subtitle {
+  font-weight: var(--font-regular);
+  color: var(--secondary);
+  margin-top: calc((var(--spacing) / 3) * -1);
+  font-size: 1.8em;
+  line-height: var(--spacing);
+}
+
+h3 {
+  font-size: 2.2em;
+}
+
+h4 {
+  font-size: 1.8em;
+}
+
+h5 {
+  font-size: 1.4em;
+}
+
+h6 {
+  font-size: 1em;
 }
