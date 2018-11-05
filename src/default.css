@@ -84,3 +84,34 @@ h5 {
 h6 {
   font-size: 1em;
 }
+
+input[type=submit],
+button {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--light);
+  font-size: 14px;
+  padding: calc(var(--spacing) / 2) var(--spacing);
+  border-radius: 4px;
+  cursor:pointer;
+  appearance: none;
+  width: auto;
+  }
+
+input[type=submit]:hover,
+button:hover {
+background: var(--light);
+color: var(--primary);
+border-color: var(--primary);
+}
+
+input {
+  background: var(--light);
+  border-color: var(--secondary);
+  border-radius: 8px;
+  padding: calc(var(--spacing) / 2);
+  width: 100%;
+}
+
+
+
