@@ -1,7 +1,7 @@
 button {
-    background: #1C2531;
-    border-color:#1C2531;
-    color: #F8F8F8;
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--light);
     font-size: 14px;
     padding: 8px 24px;
     border-radius: 4px;
@@ -9,7 +9,7 @@ button {
     }
 
 button:hover {
-  background:#F8F8F8;
-  color: #1C2531;
-  border-color: #1C2531;
+  background: var(--light);
+  color: var(--primary);
+  border-color: var(--primary);
 }
