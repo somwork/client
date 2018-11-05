@@ -98,13 +98,13 @@ button {
   cursor:pointer;
   appearance: none;
   width: auto;
-  }
+}
 
 input[type=submit]:hover,
 button:hover {
-background: var(--light);
-color: var(--primary);
-border-color: var(--primary);
+  background: var(--light);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 input {
