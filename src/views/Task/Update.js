@@ -6,35 +6,25 @@ export default ({ children }) => (
   <Layout>
       <h2>Edit Task</h2>
       <label>
-      Tittle    
+         Title    
          <input type="text"></input>
-         </label>
-
-        <label>
-            Task start date 
+      </label>
+      <label>
+         Start Date 
+         <input type="date"></input>
+      </label>
+      <label>
+         Deadline
         <input type="date"></input>
-        </label>
-
-        <label>
-            Task Deadline
-        <input type="date"></input>
-        </label>
-
-         <label>
+      </label>
+      <label>
          Description    
-         <input type="text"></input>
-         </label>
-
-         <label>
+         <textarea></textarea>
+     </label>
+     <label>
          Urgency    
          <input type="text"></input>
-         </label>
-
-         <input type="submit" value="Save Changes"/>
-
-         
-
-    
-        
+     </label>
+     <input type="submit" value="Save Changes"/>        
 </Layout>
 )
