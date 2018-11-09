@@ -70,7 +70,6 @@ export default class SignUp extends Component{
       this.setState({
         [name]: target.value
       });
-
   }
 
   verifyPassword({ target }) {
