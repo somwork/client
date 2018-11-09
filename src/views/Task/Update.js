@@ -18,7 +18,7 @@ export default () => (
       </label>
       <label>
          Description    
-         <textarea></textarea>
+         <textarea/>
      </label>
      <label>
          Urgency    
