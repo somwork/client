@@ -125,9 +125,9 @@ export default class SignUp extends Component{
               <input type="username" name="username" onChange={this.VerifyString} required/>
             </label>
 
-             <label>
-              Password
-              <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
+            <label>
+             Password
+             <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
             </label>
 
             <label>
