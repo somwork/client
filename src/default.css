@@ -109,11 +109,14 @@ button:hover {
   border-color: var(--primary);
 }
 
+textarea,
 input {
   background: var(--light);
   border-color: var(--secondary);
   border-radius: calc(var(--border-radius) * 2);
+  border-width: var(--border-with);
   padding: calc(var(--spacing) / 2);
   width: 100%;
   margin: var(--spacing-top-bottom);
+  resize: none;
 }

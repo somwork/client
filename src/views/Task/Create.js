@@ -18,13 +18,13 @@ export default ({ children }) => (
     </label>
     <label>
       Task Description
-      <input type="text" />
+      <textarea></textarea>
     </label>
     <label>
       Urgency
       <input type="text" />
     </label>
-    <input type="submit" />
+    <input type="submit" value="Create Task" />
 
 
   </Layout>
