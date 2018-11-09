@@ -73,17 +73,11 @@ export default class SignUp extends Component{
   }
 
   verifyPassword({ target }){
-    const {name} = target;
-
     if(target.value.length<8) {
       console.log('password to short')
       return;
     }
-    console.log('password length ok')
-
-    this.setState({
-      [name]: target.value
-    });
+    console.log('password length ok');
   }
 
   comparePassword({ target }) {
