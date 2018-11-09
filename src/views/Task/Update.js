@@ -22,7 +22,7 @@ export default () => (
      </label>
      <label>
          Urgency    
-         <input type="text"></input>
+         <input type="text"/>
      </label>
      <input type="submit" value="Save Changes"/>        
 </Layout>
