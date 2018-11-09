@@ -5,8 +5,9 @@
     "\\src",
     "\\src\\components",
     "\\src\\components\\Layout",
-    "\\src\\views"
+    "\\src\\views",
+    "\\src\\views\\Signup"
   ],
-  "SelectedNode": "\\src\\views\\SignUp.js",
+  "SelectedNode": "\\src\\views\\Signup",
   "PreviewInSolutionExplorer": false
 }

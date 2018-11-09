@@ -7,6 +7,8 @@ export default () => (
     <section>
       <h1>Main View</h1>
       <Link to='/second'>Second view</Link>
+
+      <Link to='/Signup/SignUp'>Sing up</Link>
     </section>
   </Layout>
 )
