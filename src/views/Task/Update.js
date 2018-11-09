@@ -6,23 +6,23 @@ export default () => (
     <h2>Edit Task</h2>
     <label>
       Title
-         <input type="text" />
+      <input type="text" />
     </label>
     <label>
       Start Date
-         <input type="date" />
+      <input type="date" />
     </label>
     <label>
       Deadline
-        <input type="date" />
+      <input type="date" />
     </label>
     <label>
       Description
-         <textarea />
+      <textarea />
     </label>
     <label>
       Urgency
-         <input type="text" />
+      <input type="text" />
     </label>
     <input type="submit" value="Save Changes" />
   </Layout>
