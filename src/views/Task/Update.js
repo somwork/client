@@ -14,7 +14,7 @@ export default () => (
       </label>
       <label>
          Deadline
-        <input type="date"></input>
+        <input type="date"/>
       </label>
       <label>
          Description    
