@@ -95,6 +95,7 @@ button {
   font-size: var(--font-size);
   padding: calc(var(--spacing) / 2) var(--spacing);
   border-radius: var(--border-radius);
+  margin: var(--spacing-top-bottom);
   cursor:pointer;
   appearance: none;
   width: auto;
@@ -113,4 +114,5 @@ input {
   border-radius: calc(var(--border-radius) * 2);
   padding: calc(var(--spacing) / 2);
   width: 100%;
+  margin: var(--spacing-top-bottom);
 }
