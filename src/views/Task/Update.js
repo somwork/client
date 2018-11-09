@@ -6,7 +6,7 @@ export default () => (
       <h2>Edit Task</h2>
       <label>
          Title    
-         <input type="text"></input>
+         <input type="text" />
       </label>
       <label>
          Start Date 
