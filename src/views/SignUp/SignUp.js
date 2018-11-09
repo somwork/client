@@ -6,25 +6,28 @@ export default class SignUp extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      firstName: '',
-      Lastname: '',
-      email: '',
-      username:'',
-      password:''
+      data: { firstName: '',Lastname: '', email: '', username:'',password:''},
+      validation: { validFirstName: false,validLastName: false, validEmail: false, validUsername: false, validPassword: false}
     };
 
     this.handleSubmitFields = this.handleSubmitFields.bind(this);
-    this.VerifyString = this.VerifyString.bind(this);
-    this.VerifyEmail = this.VerifyEmail.bind(this);
+    this.verifyString = this.verifyString.bind(this);
+    this.verifyEmail = this.verifyEmail.bind(this);
     this.verifyPassword = this.verifyPassword.bind(this);
     this.comparePassword = this.comparePassword.bind(this);
+  }
+
+  addToState(name,value){
+  const newState = { ...this.state }
+  newState.data[name] = value
+  this.setState(newState);
   }
 
   async handleSubmitFields(event) {
     event.preventDefault();
 
-    for(const x in this.state){
-      if(x===null) {
+    for(const isValid in this.state.validation){
+      if (!isValid) {
         return;
       }
     }
@@ -33,40 +36,30 @@ export default class SignUp extends Component{
 
     const result = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify(this.state),
+      body: JSON.stringify(this.state.data),
       headers:{
         'Content-Type': 'application/json'
       }
     })
-
-    const data = await result.json()
-
+    const serverResponds = await result.json()
   }
 
-  VerifyString({ target }) {
+  verifyString({ target }) {
     const {name} = target;
     if(name.length<=0){
       return;
     }
-
-    this.setState({
-      [name]: target.value
-    });
+    this.addToState(name,target.value);
   }
 
-  VerifyEmail({ target }) {
+  verifyEmail({ target }) {
     const {name} = target;
-    if(!target.value.includes('@')){
+    const test = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)\|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])\|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if(!test.test(target.value)){
       return;
     }
-
-    if(!target.value.includes('.')){
-      return;
-    }
-
-      this.setState({
-        [name]: target.value
-      });
+    this.addToState(name,target.value);
   }
 
   verifyPassword({ target }){
@@ -81,51 +74,48 @@ export default class SignUp extends Component{
     if(this.state.password!==target.value) {
       return;
     }
-
-    this.setState({
-      [name]: target.value
-    });
+    this.addToState(name,target.value);
   }
 
   render(){
     return (
       <Layout>
         <h1>Sign Up</h1>
-          <form onSubmit={this.handleSubmitFields}>
-            <label>
-              First Name
-              <input type="text" name="firstname" onChange={this.VerifyString} required/>
-            </label>
+        <form onSubmit={this.handleSubmitFields}>
+          <label>
+            First Name
+            <input type="text" name="firstname" onChange={this.verifyString} required/>
+          </label>
 
-            <label>
-              Last Name
-              <input type="text" name="lastname" onChange={this.VerifyString} required/>
-            </label>
+          <label>
+            Last Name
+            <input type="text" name="lastname" onChange={this.verifyString} required/>
+          </label>
 
-            <label>
-              Email
-              <input type="email" name="email" onChange={this.VerifyEmail} required/>
-            </label>
+          <label>
+            Email
+            <input type="email" name="email" onChange={this.verifyEmail} required/>
+          </label>
 
-            <label>
-              Username
-              <input type="username" name="username" onChange={this.VerifyString} required/>
-            </label>
+          <label>
+            Username
+            <input type="username" name="username" onChange={this.verifyString} required/>
+          </label>
 
-            <label>
-              Password
-              <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
-            </label>
+          <label>
+            Password
+            <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
+          </label>
 
-            <label>
-              Verify Password
-              <input type="password" name="verifyPassword"  min="8" onChange={this.comparePassword} required/>
-            </label>
+          <label>
+            Verify Password
+            <input type="password" name="verifyPassword"  min="8" onChange={this.comparePassword} required/>
+          </label>
 
-            <label>
-              <input type="submit" value="Submit" />
-            </label>
-          </form>
+          <label>
+            <input type="submit" value="Submit" />
+          </label>
+        </form>
       </Layout>
     )
   }
