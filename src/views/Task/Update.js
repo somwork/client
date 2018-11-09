@@ -25,5 +25,5 @@ export default () => (
          <input type="text"/>
      </label>
      <input type="submit" value="Save Changes"/>        
-</Layout>
+	</Layout>
 )
