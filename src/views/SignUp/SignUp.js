@@ -23,31 +23,31 @@ export default class SignUp extends Component{
   async handleSubmitFields(event) {
     event.preventDefault();
 
-    for(var x in this.state)
-    if(x===null) {
-      console.log('submit blocked, an attribute equals null')
-      return;
+    for(const x in this.state){
+      if(x===null) {
+        return;
+      }
     }
 
-    var url = 'https://localhost:5001/api/workers/';
+    const url = 'https://localhost:5001/api/workers/';
 
-    var result = await fetch(url, {
+    const result = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(this.state),
       headers:{
         'Content-Type': 'application/json'
       }
-    }).then(res => res.json())
-    console.log(result)
+    })
+
+    const data = await result.json()
+
   }
 
   VerifyString({ target }) {
     const {name} = target;
     if(name.length<=0){
-      console.log('is empty')
       return;
     }
-    console.log(name+' exsists')
 
     this.setState({
       [name]: target.value
@@ -57,16 +57,12 @@ export default class SignUp extends Component{
   VerifyEmail({ target }) {
     const {name} = target;
     if(!target.value.includes('@')){
-      console.log('email needs @')
       return;
     }
-    console.log('email contains @')
 
     if(!target.value.includes('.')){
-      console.log('email does not contain dot( . )')
       return;
     }
-    console.log('email contaions dot( . )')
 
       this.setState({
         [name]: target.value
@@ -75,20 +71,16 @@ export default class SignUp extends Component{
 
   verifyPassword({ target }){
     if(target.value.length<8) {
-      console.log('password to short')
       return;
     }
-    console.log('password length ok');
   }
 
   comparePassword({ target }) {
     const {name} = target;
 
     if(this.state.password!==target.value) {
-      console.log('password do not match')
       return;
     }
-    console.log('password match')
 
     this.setState({
       [name]: target.value
