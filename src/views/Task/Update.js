@@ -10,7 +10,7 @@ export default () => (
       </label>
       <label>
          Start Date 
-         <input type="date"></input>
+         <input type="date" />
       </label>
       <label>
          Deadline
