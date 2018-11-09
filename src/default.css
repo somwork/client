@@ -114,7 +114,7 @@ input {
   background: var(--light);
   border-color: var(--secondary);
   border-radius: calc(var(--border-radius) * 2);
-  border-width: var(--border-with);
+  border-width: var(--border-width);
   padding: calc(var(--spacing) / 2);
   width: 100%;
   margin: var(--spacing-top-bottom);

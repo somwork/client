@@ -2,22 +2,22 @@ import React from 'react'
 import Layout from '../../components/Layout'
 
 export default ({ children }) => (
-
   <Layout>
+    <h2>Create Task</h2>
     <label>
-      Task Title
+      Title
       <input type="text" />
     </label>
     <label>
-      Starting Date of Task
+      Starting Date
       <input type="date" />
     </label>
     <label>
-      Task Deadline
+      Deadline
       <input type="date" />
     </label>
     <label>
-      Task Description
+      Description
       <textarea></textarea>
     </label>
     <label>
@@ -25,7 +25,5 @@ export default ({ children }) => (
       <input type="text" />
     </label>
     <input type="submit" value="Create Task" />
-
-
   </Layout>
 )
