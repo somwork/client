@@ -72,7 +72,7 @@ export default class SignUp extends Component{
       });
   }
 
-  verifyPassword({ target }) {
+  verifyPassword({ target }){
     const {name} = target;
 
     if(target.value.length<8) {
@@ -126,12 +126,12 @@ export default class SignUp extends Component{
             </label>
 
             <label>
-             Password
-             <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
+              Password
+              <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
             </label>
 
             <label>
-             Verify Password
+              Verify Password
               <input type="password" name="verifyPassword"  min="8" onChange={this.comparePassword} required/>
             </label>
 
