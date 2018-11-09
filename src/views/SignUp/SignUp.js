@@ -20,24 +20,25 @@ export default class SignUp extends Component{
     this.comparePassword = this.comparePassword.bind(this);
   }
 
-  handleSubmitFields(event) {
+  async handleSubmitFields(event) {
+    event.preventDefault();
 
-    if(this.state.includes(null)){
+    for(var x in this.state)
+    if(x===null) {
+      console.log('submit blocked, an attribute equals null')
       return;
     }
 
     var url = 'https://localhost:5001/api/workers/';
 
-    fetch(url, {
+    var result = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(this.state),
       headers:{
         'Content-Type': 'application/json'
       }
     }).then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error));
-    event.preventDefault();
+    console.log(result)
   }
 
   VerifyString({ target }) {
