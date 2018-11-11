@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 import "./Login.css";
+import * as tokenService from "../../scripts/token.js";
 
 export default class Login extends Component {
   state = {
@@ -17,21 +18,27 @@ export default class Login extends Component {
 
   handleLogin = async event => {
     event.preventDefault();
-    await fetch("https://localhost:5001/api/token", {
+    // await fetch("https://localhost:5001/api/token", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(this.state)
+    // })
+    //   .then(function(response) {
+    //     return response.json();
+    //   })
+    //   .then(function(myJson) {
+    //     localStorage.setItem("Tokens", JSON.stringify(myJson));
+    //     console.log(JSON.stringify(myJson));
+    //   });
+    console.log("HEJ");
+    const result = await tokenService.LoginFetch({
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify(this.state)
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(myJson) {
-        localStorage.setItem("Tokens", JSON.stringify(myJson));
-        console.log(JSON.stringify(myJson));
-      });
+    });
+    console.log(result);
   };
 
   render() {
