@@ -1,122 +1,79 @@
 import React,{Component} from "react";
+import camelcase from 'camelcase'
 import Layout from '../../components/Layout';
 
 export default class SignUp extends Component{
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: { firstName: '',Lastname: '', email: '', username:'',password:''},
-      validation: { validFirstName: false,validLastName: false, validEmail: false, validUsername: false, validPassword: false}
-    };
-
-    this.handleSubmitFields = this.handleSubmitFields.bind(this);
-    this.verifyString = this.verifyString.bind(this);
-    this.verifyEmail = this.verifyEmail.bind(this);
-    this.verifyPassword = this.verifyPassword.bind(this);
-    this.comparePassword = this.comparePassword.bind(this);
+  state = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    username:'',
+    password:'',
+    verifyPassword: ''
   }
 
-  addToState(name,value){
-  const newState = { ...this.state }
-  newState.data[name] = value
-  this.setState(newState);
-  }
+  fields = [
+    ["First Name", "text", v => v.length > 0],
+    ["Last Name", "text", v => v.length > 0],
+    ["Email", "email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line
+    ["Username", "text", v => v.length > 0],
+    ["Password", "password", v => v.length > 0 && this.state.verifyPassword === v],
+    ["Verify Password", "password", v => v.length > 0 && this.state.password === v],
+  ]
 
-  async handleSubmitFields(event) {
-    event.preventDefault();
-
-    for(const isValid in this.state.validation){
-      if (!isValid) {
-        return;
-      }
-    }
-
-    const url = 'https://localhost:5001/api/workers/';
-
-    const result = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(this.state.data),
-      headers:{
-        'Content-Type': 'application/json'
-      }
+  changeHandler = event => {
+    this.setState({
+      [event.target.name]: event.target.value
     })
-    const serverResponds = await result.json()
   }
 
-  verifyString({ target }) {
-    const {name} = target;
-    if(name.length<=0){
-      return;
+  validate = () => {
+    for (const [label, _, validator] of this.fields) {
+      if (!validator(this.state[camelcase(label)])) {
+        return false
+      }
     }
-    this.addToState(name,target.value);
+
+    return true
   }
 
-  verifyEmail({ target }) {
-    const {name} = target;
-    const test = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)\|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])\|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  submitHandler = event => {
+    event.preventDefault()
 
-    if(!test.test(target.value)){
-      return;
+    if (!this.validate()) {
+      alert("Invalid input...")
+      return
     }
-    this.addToState(name,target.value);
+
+    // do fetch stuff
   }
 
-  verifyPassword({ target }){
-    if(target.value.length<8) {
-      return;
-    }
-  }
-
-  comparePassword({ target }) {
-    const {name} = target;
-
-    if(this.state.password!==target.value) {
-      return;
-    }
-    this.addToState(name,target.value);
-  }
-
-  render(){
+  render () {
     return (
       <Layout>
         <h1>Sign Up</h1>
-        <form onSubmit={this.handleSubmitFields}>
-          <label>
-            First Name
-            <input type="text" name="firstname" onChange={this.verifyString} required/>
-          </label>
-
-          <label>
-            Last Name
-            <input type="text" name="lastname" onChange={this.verifyString} required/>
-          </label>
-
-          <label>
-            Email
-            <input type="email" name="email" onChange={this.verifyEmail} required/>
-          </label>
-
-          <label>
-            Username
-            <input type="username" name="username" onChange={this.verifyString} required/>
-          </label>
-
-          <label>
-            Password
-            <input type="password" name="password" min="8" onChange={this.verifyPassword} required/>
-          </label>
-
-          <label>
-            Verify Password
-            <input type="password" name="verifyPassword"  min="8" onChange={this.comparePassword} required/>
-          </label>
-
-          <label>
-            <input type="submit" value="Submit" />
-          </label>
+        <form onSubmit={this.submitHandler}>
+          {this.fields.map(this.renderField.bind(this))}
+          <input type="submit" value="Submit" />
         </form>
       </Layout>
+    )
+  }
+
+  renderField ([label, type, validator]) {
+    const name = camelcase(label)
+    return (
+      <label key={name}>
+        {label}
+        <input
+          type={type}
+          name={name}
+          className={validator(this.state[name]) ? "valid" : ""}
+          onChange={this.changeHandler}
+          value={this.state[name]}
+          required
+        />
+      </label>
     )
   }
 }

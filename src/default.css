@@ -3,6 +3,7 @@
 :root {
   --primary: #1C2531;
   --secondary: rgba(0,0,0,0.6);
+  --success: green;
   --light: white;
 
   --font-family: 'Montserrat', sans-serif;
@@ -112,11 +113,21 @@ button:hover {
 textarea,
 input {
   background: var(--light);
-  border-color: var(--secondary);
+  border: solid var(--border-width) var(--secondary);
   border-radius: calc(var(--border-radius) * 2);
-  border-width: var(--border-width);
   padding: calc(var(--spacing) / 2);
   width: 100%;
   margin: var(--spacing-top-bottom);
   resize: none;
+}
+
+input.valid,
+textarea.valid {
+  border-color: var(--success);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: none;
 }
