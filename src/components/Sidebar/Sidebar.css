@@ -2,7 +2,7 @@
   position: absolute;
   top:0;
   left: 0;
-  background-color:var(--primary);
+  background-color:var(--primary-dark);
   min-width: 240px;
   height: 100vh;
   box-sizing: border-box;
@@ -68,9 +68,9 @@
 }
 
 .sidebar li:hover{
-  background: var(--hover);
+  background: var(--primary-light);
 }
 
 .sidebar .menuItem.active{
-  background-color:var(--hover);
+  background-color:var(--primary-light);
 }
