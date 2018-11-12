@@ -1,4 +1,4 @@
-.sidenav{
+.sidebar{
   position: absolute;
   top:0;
   left: 0;
@@ -9,11 +9,11 @@
   line-height: 20px;
 }
 
-.sidebarAvatar{
-    display: block;
+.sidebar .sidebarAvatar{
+  display: block;
 }
 
-.circle{
+.sidebar .circle{
   border-radius: 50%;
   margin: auto;
   width: 60px;
@@ -21,32 +21,32 @@
   background:var(--light);
 }
 
-.menuItem{
-position: relative;
-display: block;
-line-height: 50px;
-height: 50px;
-white-space: nowrap;
-text-decoration: none;
-font-size: 14px;
-cursor: pointer;
+.sidebar .menuItem{
+  position: relative;
+  display: block;
+  line-height: 50px;
+  height: 50px;
+  white-space: nowrap;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.sidenav .fas {
+.sidebar .fas {
   font-size: 22px;
   width: 54px;
   text-align: center;
   height: 24px;
   vertical-align: middle;
 }
-.menuItem a{
+.sidebar .menuItem a{
   color: var(--light);
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 600;
 }
 
-.sidenav h2{
+.sidebar h2{
   font-size: 18px;
   letter-spacing: 2px;
   color:white;
@@ -55,7 +55,7 @@ cursor: pointer;
   margin-bottom: 50px;
 }
 
-p{
+.sidebar p{
   color: white;
   font-family: var(--font-family);
   font-weight: 600;
@@ -63,14 +63,14 @@ p{
   font-size: 12px;
   letter-spacing: 1px;
 }
-.sidenav li{
+.sidebar li{
   list-style-type: none;
 }
 
-.sidenav li:hover{
+.sidebar li:hover{
   background: var(--hover);
 }
 
-.menuItem.active{
+.sidebar .menuItem.active{
   background-color:var(--hover);
 }

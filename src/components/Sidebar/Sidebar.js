@@ -12,9 +12,22 @@ class Sidebar extends Component {
     return 'active'
   }
 
+  items = [
+    ["My projects", "/", "fas fa-tasks"],
+    ["Create Project", "/second", "fas fa-plus-square"]
+  ]
+
+  renderItem = ([title, path, className]) => {
+      return (
+        <div key={title} className={["menuItem", this.isActive(path)].join(' ')}>
+          <Link to={path}><li><i className={className}></i>{title}</li></Link>
+        </div>
+      );
+  }
+
   render() {
     return (
-      <nav className="sidenav">
+      <nav className="sidebar">
         <div className="sidebarTitle">
           <h2>Taskhouse.io</h2>
         </div>
@@ -25,12 +38,7 @@ class Sidebar extends Component {
           <p>Frederik Kvartborg</p>
         </div>
         <div className="sidebarMenu">
-          <div className={["menuItem", this.isActive('/')].join(' ')}>
-            <Link to='/'><li><i className="fas fa-tasks"></i>My projects</li></Link>
-          </div>
-          <div className={["menuItem", this.isActive('/second')].join(' ')}>
-            <Link to='/second'><li><i className="fas fa-plus-square"></i>Create project</li></Link>
-          </div>
+          {this.items.map(this.renderItem)}
         </div>
       </nav>
     );
