@@ -1,5 +1,6 @@
 import React from 'react'
 import Layout from '../../components/Layout'
+import task from '../../api/task'
 
 export default ({ children }) => (
   <Layout>
