@@ -4,18 +4,22 @@ import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
 
-  isActive(path){
-    if (window.location.pathname !== path) {
-      return ''
-    }
-
-    return 'active'
-  }
-
+  /**
+  * Array for the menu items
+  * @param  {Array}
+  */
   items = [
     ["My projects", "/", "fas fa-tasks"],
     ["Create Project", "/second", "fas fa-plus-square"]
   ]
+
+  isActive(path){
+    if (window.location.pathname !== path) {
+      return '';
+    }
+
+    return 'active';
+  }
 
   renderItem = ([title, path, className]) => {
       return (
