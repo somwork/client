@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
 
 :root {
-  --primary: #1C2531;
+  --primary-dark: #1C2531;
+  --primary-light: #2e3a4a;
   --secondary: rgba(0,0,0,0.6);
   --light: white;
-
   --font-family: 'Montserrat', sans-serif;
   --font-regular: 400;
   --font-bold: 700;
@@ -47,12 +47,12 @@ section:last-of-type {
 }
 
 a {
-  color: var(--primary);
+  color: var(--primary-dark);
   cursor: pointer;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--primary);
+  color: var(--primary-dark);
   margin: var(--spacing-top-bottom);
 }
 
@@ -90,8 +90,8 @@ h6 {
 
 input[type=submit],
 button {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
   color: var(--light);
   font-size: var(--font-size);
   padding: calc(var(--spacing) / 2) var(--spacing);
@@ -105,8 +105,8 @@ button {
 input[type=submit]:hover,
 button:hover {
   background: var(--light);
-  color: var(--primary);
-  border-color: var(--primary);
+  color: var(--primary-dark);
+  border-color: var(--primary-dark);
 }
 
 textarea,
