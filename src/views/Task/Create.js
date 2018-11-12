@@ -1,5 +1,7 @@
 import React from 'react'
 import Layout from '../../components/Layout'
+import task from '../../api/task'
+import worker from '../../api/worker'
 
 export default ({ children }) => (
   <Layout>
@@ -24,6 +26,6 @@ export default ({ children }) => (
       Urgency
       <input type="text" />
     </label>
-    <input type="submit" value="Create Task" />
+    <input type="submit" value="Create Task" onClick={worker.create()} />
   </Layout>
 )
