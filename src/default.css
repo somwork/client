@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
 
 :root {
-  --primary: #1C2531;
+  --primary-dark: #1C2531;
+  --primary-light: #2e3a4a;
   --secondary: rgba(0,0,0,0.6);
   --light: white;
-
   --font-family: 'Montserrat', sans-serif;
   --font-regular: 400;
   --font-bold: 700;
@@ -47,12 +47,12 @@ section:last-of-type {
 }
 
 a {
-  color: var(--primary);
+  color: var(--primary-dark);
   cursor: pointer;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--primary);
+  color: var(--primary-dark);
   margin: var(--spacing-top-bottom);
 }
 
