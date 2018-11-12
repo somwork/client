@@ -4,6 +4,7 @@
   --primary: #1C2531;
   --secondary: rgba(0,0,0,0.6);
   --light: white;
+  --danger: #FF0000;
 
   --font-family: 'Montserrat', sans-serif;
   --font-regular: 400;
@@ -119,4 +120,8 @@ input {
   width: 100%;
   margin: var(--spacing-top-bottom);
   resize: none;
+}
+
+input.failed{
+  border-color : var(--danger);
 }
