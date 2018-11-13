@@ -1,6 +1,7 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import camelcase from 'camelcase';
+import serverApi from '../../api/worker';
 
 export default class SignUp extends Component{
 
@@ -26,13 +27,21 @@ export default class SignUp extends Component{
     ["Password","password", v => v.length >= 8],
     ["Verify password","password", v => v === this.state.password && v.length>=8]
   ]
-
+ /**
+   * event listener for <input/>'s
+   * adds changes to this.state
+   * @param  {event}
+   */
   changeHandler = event => {
     this.setState({
       [event.target.name] : event.target.value
     })
   }
-
+/**
+   * event listener for <Submit/>
+   * validates all inputfields before sending a post request to the server
+   * @param {event}
+   */
   submitHandler= event =>{
     event.preventDefault();
 
@@ -40,9 +49,13 @@ export default class SignUp extends Component{
       //invalid input
       return false;
     }
-    // TODO: POST to database
+    const response = serverApi.post(this.state);
   }
 
+  /**
+   * Checks if all input fields meets their specific requirements
+   * @return {boolean}
+   */
   validator = () =>{
     for(const [label,_,validator] of this.fields){
       if(!validator(this.state[camelcase(label)])){
@@ -52,6 +65,13 @@ export default class SignUp extends Component{
     return true;
   }
 
+  /**
+   * Constructor for an inputfield
+   * @param {String} label
+   * @param {Mixed} type
+   * @param {Method} validator
+   * @return {HTML} <label><input/><label/>
+   */
   fieldRender([label,type,validator]){
    const name = camelcase(label);
     return(
@@ -69,6 +89,10 @@ export default class SignUp extends Component{
     )
   }
 
+    /**
+   * Creates the signUp view
+   * @return {HTML} View
+   */
   render(){
     return (
       <Layout>
