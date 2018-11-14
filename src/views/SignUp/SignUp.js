@@ -24,7 +24,7 @@ export default class SignUp extends Component{
     ["Verify password","password", v => v === this.state.password && v.length>=8]
   ]
 
- /**
+  /**
    * event listener for input
    * adds changes to this.state
    * @param  {Object} event
@@ -35,7 +35,7 @@ export default class SignUp extends Component{
     })
   }
 
-/**
+  /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
