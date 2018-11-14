@@ -26,6 +26,7 @@ export default {
    * @return {Promise}
    */
   async create(worker) {
+    //TODO validate that everything is sent in the request
      const res = await request.post('workers', worker);
      return await res.json()
   },
@@ -36,6 +37,7 @@ export default {
    * @return {Promise}
    */
   async update(worker) {
+    //TODO validate that everything is sent in the request
      const res = await request.put(`workers/${worker.id}`, worker);
      return res.ok
   },
