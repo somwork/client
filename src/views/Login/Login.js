@@ -18,7 +18,7 @@ export default class Login extends Component {
 
   handleLogin = async event => {
     event.preventDefault();
-    auth.login(this.state.username, this.state.password);
+    await auth.login(this.state.username, this.state.password);
   };
 
   render() {
