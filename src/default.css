@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
 
 :root {
-  --primary-dark: #1C2531;
+  --primary-dark: #1c2531;
   --primary-light: #2e3a4a;
-  --secondary: rgba(0,0,0,0.6);
+  --secondary: rgba(0, 0, 0, 0.6);
   --light: white;
   --success: rgb(20, 226, 1);
 
@@ -32,12 +32,14 @@ body {
   background: var(--white);
 }
 
-*,*:before,*:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 
 p {
-  margin: var(--spacing-top-bottom)
+  margin: var(--spacing-top-bottom);
 }
 
 section {
@@ -53,7 +55,12 @@ a {
   cursor: pointer;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--primary-dark);
   margin: var(--spacing-top-bottom);
 }
@@ -90,7 +97,7 @@ h6 {
   font-size: 1em;
 }
 
-input[type=submit],
+input[type="submit"],
 button {
   background: var(--primary-dark);
   border-color: var(--primary-dark);
@@ -99,12 +106,12 @@ button {
   padding: calc(var(--spacing) / 2) var(--spacing);
   border-radius: var(--border-radius);
   margin: var(--spacing-top-bottom);
-  cursor:pointer;
+  cursor: pointer;
   appearance: none;
   width: auto;
 }
 
-input[type=submit]:hover,
+input[type="submit"]:hover,
 button:hover {
   background: var(--light);
   color: var(--primary-dark);
