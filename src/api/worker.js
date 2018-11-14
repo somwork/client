@@ -22,25 +22,22 @@ export default {
 
   /**
    * Create worker
-   * @param {Object} username and password
+   * @param {Object} worker
    * @return {Promise}
    */
-   async create(username,password) {
-    const res = await request.post('workers', {
-      Username:username,
-      Password:password,
-    });
+   async create(worker) {
+    const res = await request.post('workers', worker);
     return await res.json()
   },
 
   /**
    * Update worker
-   * @param {Object} body
+   * @param {Object} worker
    * @return {Promise}
    */
-   async update(body) {
-    const res = await request.put(`workers/${body.id}`, body);
-    return await res.ok
+   async update(worker) {
+    const res = await request.put(`workers/${worker.id}`, worker);
+    return res.ok
   },
 
   /**
@@ -50,6 +47,6 @@ export default {
    */
    async delete(id) {
     const res = await request.delete(`workers/${id}`);
-    return await res.ok
+    return res.ok
   },
 }
