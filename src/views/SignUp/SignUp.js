@@ -27,11 +27,7 @@ export default class SignUp extends Component{
  /**
    * event listener for input
    * adds changes to this.state
-<<<<<<< HEAD
-   * @param  {object} event
-=======
    * @param  {Object} event
->>>>>>> 7c90e501ae0a04d9e3f9b0a8ae07801a693803a6
    */
   changeHandler = event => {
     this.setState({
@@ -42,11 +38,7 @@ export default class SignUp extends Component{
 /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
-<<<<<<< HEAD
-   * @param {object} event
-=======
    * @param {Object} event
->>>>>>> 7c90e501ae0a04d9e3f9b0a8ae07801a693803a6
    */
   submitHandler= async event =>{
     event.preventDefault();
@@ -95,10 +87,10 @@ export default class SignUp extends Component{
     )
   }
 
-    /**
+  /**
    * Creates the signUp view
    * @return {JSX} View
-   */
+    */
   render(){
     return (
       <Layout>
