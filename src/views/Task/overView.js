@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
-import serverApi from '../../api/task';
+import Task from '../../api/task';
 
 export default class overView extends Component{
 
@@ -9,8 +9,8 @@ export default class overView extends Component{
 
     this.state = {}
 
-  //add tasks to Tasks list
-   this.tasks.push.apply(this.tasks,serverApi.get());
+    this.loadTasks();
+
   };
 
   tasks = [
@@ -22,10 +22,18 @@ export default class overView extends Component{
   ['element.Id','element.start','element.deadline','element.Description','element.Urgency']
   ]
 
+  loadTasks = async list=>{
+    //add tasks to Tasks list
+    const res =await Task.get();
+    if(res!==undefined){
+      this.tasks.push.apply(this.tasks,res);
+    }
+  }
   // Adds a specific tasks to state
   changeHandler = event => {
     const taskId = event.target.Id;
-    this.setState(serverApi.getSpecific(taskId));
+    const res =this.setState(Task.getSpecific(taskId));
+     console.log(res);
   }
 
   /**
@@ -60,7 +68,7 @@ export default class overView extends Component{
         <h1>Task overview</h1>
         <form onSubmit={this.submitHandler}>
         <ul>
-        {this.Tasks.map(this.fieldRender.bind(this))}
+        {this.tasks.map(this.fieldRender.bind(this))}
         </ul>
         </form>
       </Layout>
