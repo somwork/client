@@ -6,7 +6,7 @@
   --secondary: rgba(0,0,0,0.6);
   --light: white;
   --success: rgb(20, 226, 1);
-  
+
   --font-family: 'Montserrat', sans-serif;
   --font-regular: 400;
   --font-bold: 700;
@@ -124,5 +124,5 @@ input {
 }
 
 input.valid{
-  border-color : var(--succes);
+  border-color : var(--success);
 }

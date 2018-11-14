@@ -9,8 +9,8 @@ export default {
     const res = await request.get('workers');
     return await res.json();
   },
-  async post (body, options){
-    const res = await request.post('workers', body);
+  async create (body, options){
+   return await request.post('workers', body);
   }
 }
 

@@ -5,18 +5,14 @@ import serverApi from '../../api/worker';
 
 export default class SignUp extends Component{
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      username:'',
-      password:'',
-      verifyPassword:''
-    };
-  }
+  state = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    username:'',
+    password:'',
+    verifyPassword:''
+  };
 
   fields = [
     //["label", "Type", Validation method]
@@ -27,8 +23,9 @@ export default class SignUp extends Component{
     ["Password","password", v => v.length >= 8],
     ["Verify password","password", v => v === this.state.password && v.length>=8]
   ]
+
  /**
-   * event listener for <input/>'s
+   * event listener for input
    * adds changes to this.state
    * @param  {event}
    */
@@ -37,8 +34,9 @@ export default class SignUp extends Component{
       [event.target.name] : event.target.value
     })
   }
+
 /**
-   * event listener for <Submit/>
+   * event listener for Submit
    * validates all inputfields before sending a post request to the server
    * @param {event}
    */
@@ -49,7 +47,7 @@ export default class SignUp extends Component{
       //invalid input
       return false;
     }
-    const response = serverApi.post(this.state);
+    serverApi.create(this.state);
   }
 
   /**
@@ -70,7 +68,7 @@ export default class SignUp extends Component{
    * @param {String} label
    * @param {Mixed} type
    * @param {Method} validator
-   * @return {HTML} <label><input/><label/>
+   * @return {JSX} an input surrounded with a label
    */
   fieldRender([label,type,validator]){
    const name = camelcase(label);
@@ -91,7 +89,7 @@ export default class SignUp extends Component{
 
     /**
    * Creates the signUp view
-   * @return {HTML} View
+   * @return {JSX} View
    */
   render(){
     return (
