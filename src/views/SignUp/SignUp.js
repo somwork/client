@@ -38,7 +38,7 @@ export default class SignUp extends Component{
 /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
-   * @param {event}
+   * @param {Object} event
    */
   submitHandler= event =>{
     event.preventDefault();
