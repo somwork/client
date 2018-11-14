@@ -90,7 +90,7 @@ export default class SignUp extends Component{
   /**
    * Creates the signUp view
    * @return {JSX} View
-    */
+   */
   render(){
     return (
       <Layout>
