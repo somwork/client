@@ -24,7 +24,7 @@ export default class Login extends Component {
   render() {
     return (
       <Layout>
-        <div>
+        <section>
           <h1>Login</h1>
           <form onSubmit={this.handleLogin}>
             <input
@@ -43,7 +43,7 @@ export default class Login extends Component {
             />
             <input type="submit" value="Login" />
           </form>
-        </div>
+        </section>
       </Layout>
     );
   }
