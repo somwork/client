@@ -1,14 +1,13 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
 
 export default class Create extends Component {
 
   createTaskOnClick = () => {
-   // validateInput()
-   this.getCurrentDateString()
+    // validateInput()
+    this.getCurrentDateString()
   }
-
 
   validateInput() {
 
@@ -29,9 +28,6 @@ export default class Create extends Component {
     return dateString
   }
 
-
-
-
   render() {
     return (
       <Layout>
@@ -42,11 +38,11 @@ export default class Create extends Component {
         </label>
         <label>
           Starting Date
-      <input type="date" min={this.getCurrentDateString()}/>
+      <input type="date" min={this.getCurrentDateString()} />
         </label>
         <label>
           Deadline
-      <input type="date"  />
+      <input type="date" />
         </label>
         <label>
           Description
@@ -56,7 +52,7 @@ export default class Create extends Component {
           Urgency
       <input type="text" />
         </label>
-        <input type="submit" value="Create Task"  onClick={this.createTaskOnClick}/>
+        <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
       </Layout>
     )
   }
