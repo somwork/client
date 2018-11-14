@@ -9,7 +9,7 @@ export default class overView extends Component{
 
     this.state = {}
 
-    this.loadTasks();
+   // this.loadTasks();
 
   };
 
@@ -32,8 +32,8 @@ export default class overView extends Component{
   // Adds a specific tasks to state
   changeHandler = event => {
     const taskId = event.target.Id;
-    const res =this.setState(Task.getSpecific(taskId));
-     console.log(res);
+    const res =this.setState(tasks);
+    console.log(res);
   }
 
   /**
