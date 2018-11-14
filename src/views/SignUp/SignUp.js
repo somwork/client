@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import camelcase from 'camelcase';
-import serverApi from '../../api/worker';
+import worker from '../../api/worker';
 
 export default class SignUp extends Component{
 
@@ -27,7 +27,7 @@ export default class SignUp extends Component{
  /**
    * event listener for input
    * adds changes to this.state
-   * @param  {event}
+   * @param  {object} event
    */
   changeHandler = event => {
     this.setState({
@@ -38,21 +38,21 @@ export default class SignUp extends Component{
 /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
-   * @param {event}
+   * @param {object} event
    */
-  submitHandler= event =>{
+  submitHandler= async event =>{
     event.preventDefault();
 
     if(!this.validator()){
       //invalid input
       return false;
     }
-    serverApi.create(this.state);
+    await worker.create(this.state);
   }
 
   /**
    * Checks if all input fields meets their specific requirements
-   * @return {boolean}
+   * @return {Boolean}
    */
   validator = () =>{
     for(const [label,_,validator] of this.fields){
