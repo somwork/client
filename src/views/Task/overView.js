@@ -10,12 +10,10 @@ export default class overView extends Component{
     this.state = {}
 
   //add tasks to Tasks list
-  //  serverApi.get().forEach(element => {
-  //  this.Tasks.push([element.Id,element.start,element.deadline,element.Description,element.Urgency])
-  // });
+   this.tasks.push.apply(this.tasks,serverApi.get());
   };
 
-  Tasks = [
+  tasks = [
   // 'Id','Start', 'Deadline','Description','Urgency'
   ['element.Id','element.start','element.deadline','element.Description','element.Urgency'],
   ['element.Id','element.start','element.deadline','element.Description','element.Urgency'],
