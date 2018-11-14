@@ -12,6 +12,7 @@ export default {
 
   /**
    * Get worker
+   * @param {Number} id
    * @return {Promise}
    */
   async get(id) {
