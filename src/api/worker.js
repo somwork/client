@@ -25,9 +25,9 @@ export default {
    * @param {Object} worker
    * @return {Promise}
    */
-   async create(worker) {
-    const res = await request.post('workers', worker);
-    return await res.json()
+  async create(worker) {
+     const res = await request.post('workers', worker);
+     return await res.json()
   },
 
   /**
@@ -35,9 +35,9 @@ export default {
    * @param {Object} worker
    * @return {Promise}
    */
-   async update(worker) {
-    const res = await request.put(`workers/${worker.id}`, worker);
-    return res.ok
+  async update(worker) {
+     const res = await request.put(`workers/${worker.id}`, worker);
+     return res.ok
   },
 
   /**
@@ -45,8 +45,8 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-   async delete(id) {
-    const res = await request.delete(`workers/${id}`);
-    return res.ok
+  async delete(id) {
+     const res = await request.delete(`workers/${id}`);
+     return res.ok
   },
 }
