@@ -1,19 +1,20 @@
-import React from 'react';
+import React from "react";
 import { Route } from "react-router-dom";
-import Main from './views/Main';
-import Second from './views/Second';
-import SignUp from './views/SignUp'
-import Create from './views/Task/Create';
-import Update from './views/Task/Update';
-import overView from './views/Task/overView';
+
+import Main from "./views/Main";
+import Second from "./views/Second";
+import Login from "./views/Login";
+import SignUp from "./views/SignUp";
+import Create from "./views/Task/Create";
+import Update from "./views/Task/Update";
+import overView from "./views/Task/overView";
 
 export default () => [
-  <Route path='/' exact component={Main} />,
-  <Route path='/second' component={Second} />,
-  <Route path='/sign-up' component={SignUp}/>,
-  <Route path='/task/create' component={Create} />,
-  <Route path='/task/update' component={Update} />,
-  <Route path='/task/overView' component={overView} />,
-
-]
-
+  <Route path="/" exact component={Main} />,
+  <Route path="/second" component={Second} />,
+  <Route path="/login" component={Login} />,
+   <Route path='/sign-up' component={SignUp}/>,
+  <Route path="/task/create" component={Create} />,
+  <Route path="/task/update" component={Update} />,
+  <Route path='/task/overView' component={overView} />
+];
