@@ -27,7 +27,7 @@ export default class SignUp extends Component{
  /**
    * event listener for input
    * adds changes to this.state
-   * @param  {event}
+   * @param  {Object} event
    */
   changeHandler = event => {
     this.setState({
