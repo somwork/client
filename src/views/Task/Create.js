@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
+import DatePicker from '../../components/DatePicker'
 
 export default class Create extends Component {
 
@@ -38,11 +39,11 @@ export default class Create extends Component {
         </label>
         <label>
           Starting Date
-      <input type="date" min={this.getCurrentDateString()} />
+      <DatePicker />
         </label>
         <label>
           Deadline
-      <input type="date" />
+      <DatePicker />
         </label>
         <label>
           Description
