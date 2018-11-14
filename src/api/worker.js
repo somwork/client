@@ -10,7 +10,7 @@ export default {
     return await res.json();
   },
   async post (body, options){
-    const res = await request.post('https://localhost:5001/api/workers/',body);
+    const res = await request.post('workers', body);
   }
 }
 
