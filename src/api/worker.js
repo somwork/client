@@ -9,8 +9,19 @@ export default {
     const res = await request.get('workers')
     return await res.json()
   },
+
+  /**
+   * Get worker
+   * @return {Promise}
+   */
+  async get(id) {
+    const res = await request.get(`workers/${id}`)
+    return await res.json()
+  },
+
   /**
    * Create worker
+   * @param {Object} username and password
    * @return {Promise}
    */
    async create(username,password) {
@@ -20,14 +31,24 @@ export default {
     });
     return await res.json()
   },
+
   /**
-   * Delete worker OBS - DOESN'T WORK YET
+   * Update worker
+   * @param {Object} body
    * @return {Promise}
    */
-  //  async delete() {
-  //   const res = await request.delete('workers/2',{
-  //     "id": 2
-  //   });
-  //   return await res.json()
-  // },
+   async update(body) {
+    const res = await request.put(`workers/${body.id}`, body);
+    return await res.ok
+  },
+
+  /**
+   * Delete worker
+   * @param {Number} id
+   * @return {Promise}
+   */
+   async delete(id) {
+    const res = await request.delete(`workers/${id}`);
+    return await res.ok
+  },
 }
