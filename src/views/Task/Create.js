@@ -2,8 +2,15 @@ import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
 import DatePicker from '../../components/DatePicker'
+import moment from 'moment'
 
 export default class Create extends Component {
+
+  state = {
+    startDate : moment(),
+    endDate : null
+  }
+
 
   createTaskOnClick = () => {
     // validateInput()
@@ -14,19 +21,13 @@ export default class Create extends Component {
 
   }
 
-  getCurrentDateString = () => {
-    const date = new Date()
+  updateStartDate = (date) => {
+    this.setState({startDate : date})
+  }
 
-    const year = date.getFullYear().toString()
-    const dash = "-"
-    const month = (date.getMonth() + 1).toString()
-    const day = date.getDate().toString()
+  updateEndDate = (date) => {
+    this.setState({endDate : date})
 
-    let dateString = year.concat(dash, month, dash, day)
-
-    console.log(dateString)
-
-    return dateString
   }
 
   render() {
@@ -39,11 +40,11 @@ export default class Create extends Component {
         </label>
         <label>
           Starting Date
-      <DatePicker />
+      <DatePicker  onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
         </label>
         <label>
           Deadline
-      <DatePicker />
+      <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
         </label>
         <label>
           Description
