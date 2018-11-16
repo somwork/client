@@ -1,4 +1,13 @@
 import request from './request'
+import { struct } from 'superstruct'
+
+const Task = struct({
+  startDate: 'date',
+  endDate: 'date',
+  title: 'string',
+  description: 'string',
+  urgency: 'string',
+})
 
 export default {
   /**
@@ -12,19 +21,21 @@ export default {
 
   /**
    * Create new Task from Json body
-   * @param {Object} body
+   * @param {Object} task
    */
-  async create(body) {
-    const res = await request.post('tasks', body)
+  async create(task) {
+    Task(task);
+    const res = await request.post('tasks', task)
     return await res.json()
   },
 
   /**
    * Update existing Task, based on Json body
-   * @param {Object} body
+   * @param {Object} task
    */
-  async update(body) {
-    const res = await request.update('tasks', body)
+  async update(task) {
+    Task(task);
+    const res = await request.update('tasks', task)
     return await res.json()
   },
 
