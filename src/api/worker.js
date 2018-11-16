@@ -3,11 +3,11 @@ import { struct } from 'superstruct'
 
 const Worker = struct({
   id: 'number',
-  Username: 'string',
-  Password: 'string',
-  Email: 'string',
-  FirstName: 'string',
-  LastName: 'string',
+  username: 'string',
+  password: 'string',
+  email: 'string',
+  firstName: 'string',
+  lastName: 'string',
 })
 
 export default {
