@@ -9,9 +9,9 @@ export default class Create extends Component {
   state = {
     startDate: moment(),
     endDate: moment(),
-    title: null,
-    description: null,
-    urgency: null
+    title: "",
+    description: "",
+    urgency: ""
   }
 
 
@@ -19,16 +19,16 @@ export default class Create extends Component {
    * Creates task based on data in inputfields
    */
   createTaskOnClick = () => {
-      const taskData = {
-        title: this.state.title,
-        description: this.state.description,
-        urgency: this.state.urgency,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-      }
+    const taskData = {
+      title: this.state.title,
+      description: this.state.description,
+      urgency: this.state.urgency,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
+    }
 
-      task.create(taskData)
-      //Redirect to users task-overview
+    task.create(taskData)
+    //Redirect to users task-overview
   }
 
   /**
@@ -42,6 +42,7 @@ export default class Create extends Component {
 
   /**
    * Sets the selected  date
+   * @param {Date} date
    */
   updateStartDate = (date) => {
     this.setState({ startDate: date })
@@ -49,6 +50,7 @@ export default class Create extends Component {
 
   /**
    * Sets selected date of deadline
+   * @param {Date} date
    */
   updateEndDate = (date) => {
     this.setState({ endDate: date })
@@ -57,6 +59,7 @@ export default class Create extends Component {
 
   /**
    * Sets state data when changes are made in text-inputs
+   * @param {Event} event
    */
   handleChange = event => {
     this.setState({
@@ -71,25 +74,25 @@ export default class Create extends Component {
         <h2>Create Task</h2>
         <label>
           Title
-      <input type="text" onChange={this.handleChange} name="title" />
+          <input type="text" onChange={this.handleChange} name="title" />
         </label>
         <label>
           Starting Date
-      <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
+          <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
         </label>
         <label>
           Deadline
-      <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
+          <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
         </label>
         <label>
           Description
-      <textarea onChange={this.handleChange} name="description"></textarea>
+          <textarea onChange={this.handleChange} name="description"></textarea>
         </label>
         <label>
           Urgency
-      <input type="text" onChange={this.handleChange} name="urgency" />
+          <input type="text" onChange={this.handleChange} name="urgency" />
         </label>
-        <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
+          <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
       </Layout>
     )
   }

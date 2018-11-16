@@ -2,20 +2,11 @@ import request from './request'
 
 export default {
   /**
-   * Get list of all tasks
-   * @return {Promise}
-   */
-  async get() {
-    const res = await request.get('tasks')
-    return await res.json()
-  },
-
-  /**
-   * Gets specifik task based on task id
+   * Gets specifik task based on task id, or get full task list
    * @param {Number} id
    */
   async get(id) {
-    const res = await request.get(`tasks/${id}`)
+    const res = await request.get(id ? `tasks/${id}` : 'tasks')
     return await res.json()
   },
 
@@ -33,7 +24,7 @@ export default {
    * @param {Object} body
    */
   async update(body) {
-    const res = await request.update('tasks', body.json)
+    const res = await request.update('tasks', body)
     return await res.json()
   },
 
