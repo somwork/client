@@ -53,5 +53,6 @@ export default {
   async delete(id) {
      const res = await request.delete(`workers/${id}`);
      return res.ok
-  },
+  }
 }
+
