@@ -1,21 +1,28 @@
 import request from './request'
+import { struct } from 'superstruct'
+
+const Worker = struct({
+  id: 'number',
+  Username: 'string',
+  Password: 'string',
+  Email: 'string',
+  FirstName: 'string',
+  LastName: 'string',
+})
 
 export default {
   /**
-   * Get list of all workers
-   * @return {Promise}
-   */
-  async get() {
-    const res = await request.get('workers')
-    return await res.json()
-  },
-
-  /**
-   * Get worker
+   * Get worker and if id is undefined you get all workers
    * @param {Number} id
    * @return {Promise}
    */
   async get(id) {
+
+    if(id === undefined){
+      const res = await request.get('workers')
+      return await res.json()
+    }
+
     const res = await request.get(`workers/${id}`)
     return await res.json()
   },
@@ -26,9 +33,10 @@ export default {
    * @return {Promise}
    */
   async create(worker) {
-    //TODO validate that everything is sent in the request
-     const res = await request.post('workers', worker);
-     return await res.json()
+      //Validate data for the body
+      Worker(worker);
+      const res = await request.post('workers', worker);
+      return await res.json()
   },
 
   /**
@@ -37,9 +45,10 @@ export default {
    * @return {Promise}
    */
   async update(worker) {
-    //TODO validate that everything is sent in the request
-     const res = await request.put(`workers/${worker.id}`, worker);
-     return res.ok
+    //Validate data for the body
+    Worker(worker);
+    const res = await request.put(`workers/${worker.id}`, worker);
+    return res.ok
   },
 
   /**
