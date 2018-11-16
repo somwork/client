@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import { Link } from 'react-router-dom';
 
-export default class OverView extends Component{
+export default class View extends Component{
 
   constructor(props){
     super(props);
@@ -14,26 +14,26 @@ export default class OverView extends Component{
   };
 
   /**
-   * loads all tasks from the db into the state
-   */
+   *loads all tasks from the db into the state
+  */
   loadTasks = async list=>{
-    const res =await Task.get();
+    const res = await Task.getSpecific(this.props.match.params.id);
+    console.log(res);
+
     this.setState({tasks:res})
-  }
+    }
 
   /**
    * render a task
    * @param {int} id
    * @param {DateTime} start
    * @param {DateTime} deadline
-   * @param {String} Description
-   * @param {String} Urgency
-   * @return {JsX}  a task as a list item
+   * @param {String} description
+   * @param {String} urgency
+   * @return {JSX} a task as a list item
    */
-  fieldRender(task){
-
+ fieldRender(task){
     return(
-      <Link to={'detail/'+task.id}>
         <li key ={task.id}>
           <label>
             <p>Task Id: {task.id}</p>
@@ -42,7 +42,6 @@ export default class OverView extends Component{
             <p>{task.description}</p>
           </label>
         </li>
-      </Link>
     )
   }
 
@@ -51,13 +50,17 @@ export default class OverView extends Component{
    * @return {JSX} View
    */
   render(){
-   // console.log(this.state.tasks)
     return (
       <Layout>
         <h1>Task overview</h1>
         <ul>
-          {this.state.tasks.map(this.fieldRender.bind(this))}
+          {this.fieldRender(this.state.tasks)}
         </ul>
+        <input type="button" value="Make Offer"/>
+        <input type="button" value="Chat"/>
+        <Link to='../List'>
+          <input type="button" value="Back"/>
+        </Link>
       </Layout>
     )
   }

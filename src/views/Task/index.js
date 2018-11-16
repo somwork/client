@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import Create from './Create'
-import overView from './overView'
-export default Create
-=======
-import Create from "./Create";
+import Create  from './Create'
+import OverView from './OverView'
+import View from './View'
 export default Create;
->>>>>>> master

@@ -1,24 +1,6 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import camelcase from 'camelcase';
-<<<<<<< HEAD
-import serverApi from '../../api/worker';
-
-export default class SignUp extends Component{
-
-  constructor(props){
-    super(props);
-
-    this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      username:'',
-      password:'',
-      verifyPassword:''
-    };
-  }
-=======
 import worker from '../../api/worker';
 
 export default class SignUp extends Component{
@@ -31,7 +13,6 @@ export default class SignUp extends Component{
     password:'',
     verifyPassword:''
   };
->>>>>>> master
 
   fields = [
     //["label", "Type", Validation method]
@@ -42,32 +23,17 @@ export default class SignUp extends Component{
     ["Password","password", v => v.length >= 8],
     ["Verify password","password", v => v === this.state.password && v.length>=8]
   ]
-<<<<<<< HEAD
- /**
-   * event listener for <input/>'s
-   * adds changes to this.state
-   * @param  {event}
-=======
 
   /**
    * event listener for input
    * adds changes to this.state
    * @param  {Object} event
->>>>>>> master
    */
   changeHandler = event => {
     this.setState({
       [event.target.name] : event.target.value
     })
   }
-<<<<<<< HEAD
-/**
-   * event listener for <Submit/>
-   * validates all inputfields before sending a post request to the server
-   * @param {event}
-   */
-  submitHandler= event =>{
-=======
 
   /**
    * event listener for Submit
@@ -75,27 +41,18 @@ export default class SignUp extends Component{
    * @param {Object} event
    */
   submitHandler= async event =>{
->>>>>>> master
     event.preventDefault();
 
     if(!this.validator()){
       //invalid input
       return false;
     }
-<<<<<<< HEAD
-    const response = serverApi.post(this.state);
-=======
     await worker.create(this.state);
->>>>>>> master
   }
 
   /**
    * Checks if all input fields meets their specific requirements
-<<<<<<< HEAD
-   * @return {boolean}
-=======
    * @return {Boolean}
->>>>>>> master
    */
   validator = () =>{
     for(const [label,_,validator] of this.fields){
@@ -111,11 +68,7 @@ export default class SignUp extends Component{
    * @param {String} label
    * @param {Mixed} type
    * @param {Method} validator
-<<<<<<< HEAD
-   * @return {HTML} <label><input/><label/>
-=======
    * @return {JSX} an input surrounded with a label
->>>>>>> master
    */
   fieldRender([label,type,validator]){
    const name = camelcase(label);
@@ -134,15 +87,9 @@ export default class SignUp extends Component{
     )
   }
 
-<<<<<<< HEAD
-    /**
-   * Creates the signUp view
-   * @return {HTML} View
-=======
   /**
    * Creates the signUp view
    * @return {JSX} View
->>>>>>> master
    */
   render(){
     return (
