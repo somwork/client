@@ -17,13 +17,7 @@ export default {
    * @return {Promise}
    */
   async get(id) {
-
-    if(id === undefined){
-      const res = await request.get('workers')
-      return await res.json()
-    }
-
-    const res = await request.get(`workers/${id}`)
+    const res = await request.get(id ? `workers/${id}` : 'workers')
     return await res.json()
   },
 
