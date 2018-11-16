@@ -1,30 +1,38 @@
 import React from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
+import DatePicker from '../../components/DatePicker'
+import moment from 'moment'
 
-export default () => (
-  <Layout>
-    <h2>Edit Task</h2>
-    <label>
-      Title
+export default class Update extends Comment {
+
+
+  render() {
+    return (
+      <Layout>
+        <h2>Edit Task</h2>
+        <label>
+          Title
       <input type="text" />
-    </label>
-    <label>
-      Start Date
+        </label>
+        <label>
+          Start Date
       <input type="date" />
-    </label>
-    <label>
-      Deadline
+        </label>
+        <label>
+          Deadline
       <input type="date" />
-    </label>
-    <label>
-      Description
+        </label>
+        <label>
+          Description
       <textarea />
-    </label>
-    <label>
-      Urgency
+        </label>
+        <label>
+          Urgency
       <input type="text" />
-    </label>
-    <input type="submit" value="Save Changes" />
-  </Layout>
-)
+        </label>
+        <input type="submit" value="Save Changes" />
+      </Layout>
+    )
+  }
+}
