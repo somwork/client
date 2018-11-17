@@ -87,6 +87,7 @@ const auth = {
     })
 
     if (!res.ok) {
+      this.logout()
       throw new Error('token could not be refreshed')
     }
 
@@ -102,6 +103,15 @@ const auth = {
     clearTokens()
     // TODO make a call to the server, this should invalidate the current active
     // accessToken and refreshToken
+  },
+
+  /**
+   * Check wether a user is authenticated
+   * @return {Boolean}
+   */
+  ok () {
+    const { accessToken, refreshToken } = getTokens()
+    return accessToken && refreshToken
   }
 }
 

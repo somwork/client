@@ -93,12 +93,14 @@ export default class SignUp extends Component{
    */
   render(){
     return (
-      <Layout>
-        <h1>Sign Up</h1>
-        <form onSubmit={this.submitHandler}>
-          {this.fields.map(this.fieldRender.bind(this))}
-          <input type="submit" value="Submit"/>
-        </form>
+      <Layout hideSideBar>
+        <section>
+          <h1>Sign Up</h1>
+          <form onSubmit={this.submitHandler}>
+            {this.fields.map(this.fieldRender.bind(this))}
+            <input type="submit" value="Submit"/>
+          </form>
+        </section>
       </Layout>
     )
   }

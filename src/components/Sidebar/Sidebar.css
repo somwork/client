@@ -1,9 +1,9 @@
 .sidebar{
-  position: absolute;
+  position: fixed;
   top:0;
   left: 0;
   background-color:var(--primary-dark);
-  min-width: 240px;
+  min-width: var(--sidebar-width);
   height: 100vh;
   box-sizing: border-box;
   line-height: 20px;

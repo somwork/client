@@ -10,7 +10,8 @@ class Sidebar extends Component {
   */
   items = [
     ["My projects", "/", "fas fa-tasks"],
-    ["Create Project", "/task/create", "fas fa-plus-square"]
+    ["Create Project", "/task/create", "fas fa-plus-square"],
+    ["Logout", "/logout", "fas fa-lock"]
   ]
 
   isActive(path){
