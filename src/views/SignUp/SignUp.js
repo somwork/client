@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React,{ Component } from "react";
 import Layout from '../../components/Layout';
 import camelcase from 'camelcase';
 import worker from '../../api/worker';
@@ -18,7 +18,7 @@ export default class SignUp extends Component{
     //["label", "Type", Validation method]
     ["First name","text", v => v.length > 0],
     ["Last name","text", v => v.length > 0],
-    ["Email","email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line],
+    ["Email","email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line
     ["Username","text", v => v.length > 0],
     ["Password","password", v => v.length >= 8],
     ["Verify password","password", v => v === this.state.password && v.length>=8]
@@ -55,7 +55,7 @@ export default class SignUp extends Component{
    * @return {Boolean}
    */
   validator = () =>{
-    for(const [label,_,validator] of this.fields){
+    for (const [label, _, validator] of this.fields) { // eslint-disable-line
       if(!validator(this.state[camelcase(label)])){
         return false;
       }

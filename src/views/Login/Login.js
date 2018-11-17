@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Link, Redirect, withRouter } from "react-router-dom"
+import { Redirect, withRouter } from "react-router-dom"
 import Layout from "../../components/Layout"
 import Alert from "../../components/Alert"
 import auth from "../../api/auth"
