@@ -1,5 +1,9 @@
 import request from './request'
 import config from '../config'
+import worker from './worker'
+import employer from './employer'
+
+const api = { worker, employer }
 
 /**
  * Save tokens
@@ -24,9 +28,38 @@ function getTokens () {
 /**
  * Clear all saved tokens
  */
-function clearTokens () {
+function cleanup () {
   localStorage.removeItem('accessToken')
   localStorage.removeItem('refreshToken')
+  localStorage.removeItem('user')
+}
+
+/**
+ * Decode base64
+ * @param  {String} str
+ * @return {String}
+ */
+function b64DecodeUnicode(str) {
+  return decodeURIComponent(
+    window.atob(str).split('').map(
+      c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join('')
+  );
+}
+
+/**
+ * function cache authenticated user
+ */
+async function cacheUser() {
+  const id = auth.id()
+  const type = auth.type()
+
+  try {
+    const user = await api[type].get(id)
+    localStorage.setItem('user', JSON.stringify(user))
+  } catch(err) {
+    console.log(err)
+  }
 }
 
 /**
@@ -40,7 +73,7 @@ let accessTokenUpdate = setAccessTokenUpdateInterval()
  */
 function setAccessTokenUpdateInterval () {
   if (accessTokenUpdate) {
-    clearInterval(accessTokenUpdate)
+    accessTokenUpdate = clearInterval(accessTokenUpdate)
   }
 
   const { accessToken, refreshToken } = getTokens()
@@ -72,6 +105,7 @@ const auth = {
 
     save(await res.json())
     setAccessTokenUpdateInterval()
+    requestIdleCallback(cacheUser)
   },
 
   /**
@@ -86,12 +120,14 @@ const auth = {
       }
     })
 
-    if (!res.ok) {
+    if (res.status > 300) {
       this.logout()
-      throw new Error('token could not be refreshed')
+      window.location.href = '/login'
+      return
     }
 
     save(await res.json())
+    requestIdleCallback(cacheUser)
   },
 
   /**
@@ -100,7 +136,7 @@ const auth = {
    */
   async logout () {
     clearInterval(accessTokenUpdate)
-    clearTokens()
+    cleanup()
     // TODO make a call to the server, this should invalidate the current active
     // accessToken and refreshToken
   },
@@ -112,7 +148,43 @@ const auth = {
   ok () {
     const { accessToken, refreshToken } = getTokens()
     return accessToken && refreshToken
-  }
+  },
+
+  /**
+   * Get id of authenticated user
+   * @return {Number}
+   */
+  id () {
+    const { accessToken } = getTokens()
+    const id = JSON.parse(b64DecodeUnicode(accessToken.split('.')[1]))["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+    return Number(id)
+  },
+
+  /**
+   * Get type of the authenticated user
+   * @return {String}
+   */
+  type () {
+    const { accessToken } = getTokens()
+    const type = JSON.parse(b64DecodeUnicode(accessToken.split('.')[1]))["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+      .replace("TaskHouseApi.Model.", "")
+      .toLowerCase()
+
+    return type
+  },
+
+  /**
+   * Get authenticated user
+   * @return {Object}
+   */
+  async user () {
+    if (localStorage.getItem('user')) {
+      return JSON.parse(localStorage.getItem('user'))
+    }
+
+    await cacheUser()
+    return this.user()
+  },
 }
 
 export default auth
