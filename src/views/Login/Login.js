@@ -12,12 +12,20 @@ export default withRouter(class Login extends Component {
     error: null,
   }
 
+  /**
+   * Handle input changes
+   * @param  {Event} event
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
+  /**
+   * Handle authentication
+   * @param  {Event}  event
+   */
   handleLogin = async event => {
     event.preventDefault()
 
@@ -29,10 +37,17 @@ export default withRouter(class Login extends Component {
     }
   }
 
+  /**
+   * Handle sign up link
+   */
   handleSignUp = () => {
     this.props.history.push('/sign-up')
   }
 
+  /**
+   * Render login view
+   * @return {JSX}
+   */
   render() {
     if (auth.ok()) {
       return <Redirect to='/' />
