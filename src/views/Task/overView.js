@@ -36,8 +36,8 @@ export default class OverView extends Component{
       <Link to={'detail/'+task.id}>
         <li key ={task.id}>
           <label>
-            <p>Task Id: {task.id}</p>
-            <p>{task.start} -> {task.deadline}</p>
+            <p><b>Task Id:</b> {task.id}</p>
+            <p>{task.start} → {task.deadline}</p>
             <p>{task.urgency}</p>
             <p>{task.description}</p>
           </label>

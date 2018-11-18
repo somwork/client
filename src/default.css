@@ -124,6 +124,7 @@ button {
   cursor: pointer;
   appearance: none;
   width: auto;
+  margin: 0.5%;
 }
 
 input[type="submit"]:hover,
@@ -133,9 +134,9 @@ button:hover {
   border-color: var(--primary-dark);
 }
 
-
 input[type="button"]:hover,
-button:hover {
+button:hover
+{
   background: var(--light);
   color: var(--primary-dark);
   border-color: var(--primary-dark);
