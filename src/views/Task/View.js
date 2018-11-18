@@ -18,8 +18,6 @@ export default class View extends Component{
   */
   loadTasks = async list=>{
     const res = await Task.getSpecific(this.props.match.params.id);
-    console.log(res);
-
     this.setState({tasks:res})
     }
 
