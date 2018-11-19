@@ -17,7 +17,7 @@ export default class Layout extends Component {
 
     return (
       <div className='layout'>
-        <div className={!this.props.hideSideBar && 'view'}>
+        <div className={!this.props.hideSideBar ? 'view' : ''}>
           {this.props.children}
         </div>
         {!this.props.hideSideBar && (

@@ -47,7 +47,14 @@ export default class SignUp extends Component{
       //invalid input
       return false;
     }
-    await worker.create(this.state);
+
+    await worker.create({
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      username: this.state.username,
+      password: this.state.password,
+    });
   }
 
   /**
