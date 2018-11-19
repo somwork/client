@@ -5,7 +5,10 @@
   --primary-light: #2e3a4a;
   --secondary: rgba(0, 0, 0, 0.6);
   --light: white;
-  --success: rgb(20, 226, 1);
+  --success: #73AB84;
+  --danger: #EF4E45;
+  --info: #30C5FF;
+  --danger-dark: #AA1729;
 
   --font-family: 'Montserrat', sans-serif;
   --font-regular: 400;
@@ -13,12 +16,14 @@
   --font-size: 16px;
 
   --spacing: 1.6em;
-  --spacing-top-bottom: var(--spacing) auto calc(var(--spacing) / 2);
+  --spacing-top-bottom: var(--spacing) 0px calc(var(--spacing) / 2) 0px;
 
   --content-max-width: 800px;
 
-  --border-radius: 4px;
+  --border-radius: 6px;
   --border-width: 2px;
+
+  --sidebar-width: 240px;
 }
 
 body {
@@ -29,7 +34,7 @@ body {
   font-weight: var(--font-regular);
   font-size: var(--font-size);
   color: var(--secondary);
-  background: var(--white);
+  background: var(--light);
 }
 
 *,
@@ -44,6 +49,8 @@ p {
 
 section {
   padding: 0px var(--spacing);
+  max-width: var(--content-max-width);
+  margin: 0px auto;
 }
 
 section:last-of-type {
@@ -97,18 +104,33 @@ h6 {
   font-size: 1em;
 }
 
+input,
+textarea,
+button {
+  background: var(--light);
+  border-color: var(--secondary);
+  border-radius: var(--border-radius);
+  border-width: var(--border-width);
+  padding: calc(var(--spacing) / 2);
+  font-size: var(--font-size);
+  font-family: var(--font-family);
+  width: 100%;
+  margin: calc(var(--spacing) / 2) 0px;
+  resize: none;
+}
+
 input[type="submit"],
 button {
   background: var(--primary-dark);
-  border-color: var(--primary-dark);
   color: var(--light);
-  font-size: var(--font-size);
-  padding: calc(var(--spacing) / 2) var(--spacing);
-  border-radius: var(--border-radius);
-  margin: var(--spacing-top-bottom);
   cursor: pointer;
   appearance: none;
-  width: auto;
+}
+
+input[type="submit"].secondary,
+button.secondary {
+  background: var(--light);
+  color: var(--dark);
 }
 
 input[type="submit"]:hover,
@@ -131,7 +153,23 @@ input {
   font-family: var(--font-family);
 }
 
+input[type="submit"].secondary:hover,
+button.secondary:hover {
+  background: var(--primary-dark);
+  color: var(--light);
+}
+
+
 input.valid{
   border-color : var(--success);
+}
+
+
+input:focus,
+textarea:focus,
+button:focus,
+a:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 2px var(--info);
 }
 

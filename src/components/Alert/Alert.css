@@ -1,0 +1,10 @@
+.alert {
+  background: var(--danger);
+  color: var(--danger-dark);
+  border: solid 2px var(--danger-dark);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing) / 2);
+  margin: var(--spacing-top-bottom);
+  font-weight: bold;
+  text-transform: capitalize;
+}

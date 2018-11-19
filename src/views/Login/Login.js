@@ -1,49 +1,89 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Layout from "../../components/Layout";
-import auth from "../../api/auth";
+import React, { Component } from "react"
+import { Redirect, withRouter } from "react-router-dom"
+import Layout from "../../components/Layout"
+import Alert from "../../components/Alert"
+import auth from "../../api/auth"
+import './Login.css'
 
-export default class Login extends Component {
+export default withRouter(class Login extends Component {
   state = {
     username: "",
-    password: ""
-  };
+    password: "",
+    error: null,
+  }
 
+  /**
+   * Handle input changes
+   * @param  {Event} event
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
-    });
-  };
+    })
+  }
 
+  /**
+   * Handle authentication
+   * @param  {Event}  event
+   */
   handleLogin = async event => {
-    event.preventDefault();
-    await auth.login(this.state.username, this.state.password);
-  };
+    event.preventDefault()
 
+    try {
+      await auth.login(this.state.username, this.state.password)
+      this.props.history.push('/')
+    } catch({ message }) {
+      this.setState({ error: message })
+    }
+  }
+
+  /**
+   * Handle sign up link
+   */
+  handleSignUp = () => {
+    this.props.history.push('/sign-up')
+  }
+
+  /**
+   * Render login view
+   * @return {JSX}
+   */
   render() {
+    if (auth.ok()) {
+      return <Redirect to='/' />
+    }
+
     return (
-      <Layout>
-        <section>
-          <h1>Login</h1>
-          <form onSubmit={this.handleLogin}>
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={this.state.username}
-              onChange={this.handleChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-            <input type="submit" value="Login" />
-          </form>
+      <Layout hideSideBar>
+        <section className='login'>
+          <div>
+            <form onSubmit={this.handleLogin}>
+              <h1>Login</h1>
+              {this.state.error && (
+                <Alert>{this.state.error}</Alert>
+              )}
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={this.state.username}
+                onChange={this.handleChange}
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={this.state.password}
+                onChange={this.handleChange}
+              />
+              <div className='actions'>
+                <input type="submit" value="Login" />
+                <button className='secondary' onClick={this.handleSignUp}>Sign Up</button>
+              </div>
+            </form>
+          </div>
         </section>
       </Layout>
-    );
+    )
   }
-}
+})
