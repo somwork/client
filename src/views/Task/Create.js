@@ -53,7 +53,6 @@ export default class Create extends Component {
       if (e.message === 'task_urgency_required' || e.message === 'task_urgency_invalid') { // Urgency is either undefined or invalid
         alert('Urgency must be filled out')
         return
-
       }
     }
   }
@@ -110,7 +109,7 @@ export default class Create extends Component {
           Urgency
           <input type="text" onChange={this.handleChange} name="urgency" />
         </label>
-          <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
+        <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
       </Layout>
     )
   }
