@@ -1,7 +1,7 @@
 import request from './request'
 import { struct } from 'superstruct'
 
-const Worker = struct({
+const Employer = struct({
   id: 'number?',
   username: 'string',
   password: 'string',
@@ -12,46 +12,46 @@ const Worker = struct({
 
 export default {
   /**
-   * Get worker and if id is undefined you get all workers
+   * Get employer and if id is undefined you get all employers
    * @param {Number} id
    * @return {Promise}
    */
   async get(id) {
-    const res = await request.get(id ? `workers/${id}` : 'workers')
+    const res = await request.get(id ? `employers/${id}` : 'employers')
     return await res.json()
   },
 
   /**
-   * Create worker
-   * @param {Object} worker
+   * Create employer
+   * @param {Object} employer
    * @return {Promise}
    */
-  async create(worker) {
+  async create(employer) {
       //Validate data for the body
-      Worker(worker);
-      const res = await request.post('workers', worker);
+      Employer(employer);
+      const res = await request.post('employers', employer);
       return await res.json()
   },
 
   /**
-   * Update worker
-   * @param {Object} worker
+   * Update employer
+   * @param {Object} employer
    * @return {Promise}
    */
-  async update(worker) {
+  async update(employer) {
     //Validate data for the body
-    Worker(worker);
-    const res = await request.put(`workers/${worker.id}`, worker);
+    Employer(employer);
+    const res = await request.put(`employers/${employer.id}`, employer);
     return res.ok
   },
 
   /**
-   * Delete worker
+   * Delete employer
    * @param {Number} id
    * @return {Promise}
    */
   async delete(id) {
-     const res = await request.delete(`workers/${id}`);
+     const res = await request.delete(`employers/${id}`);
      return res.ok
   }
 }
