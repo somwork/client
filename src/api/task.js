@@ -6,8 +6,8 @@ import { struct } from 'superstruct'
  */
 const Task = struct({
   title: 'string',
-  startDate: 'date',
-  endDate: 'date',
+  start: 'date',
+  deadline: 'date',
   description: 'string',
   urgency: 'string',
 })

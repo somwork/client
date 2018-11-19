@@ -30,8 +30,8 @@ export default class Create extends Component {
         title: this.state.title,
         description: this.state.description,
         urgency: this.state.urgency,
-        startDate: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
-        endDate: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
+        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
+        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
       }
       task.validateInput(taskData)
       task.create(taskData)
