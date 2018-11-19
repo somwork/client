@@ -6,12 +6,14 @@ import moment from 'moment'
 
 export default class Create extends Component {
 
+  //auth.login("username", "password")
+
   state = {
     startDate: moment(),
     endDate: moment(),
-    title: "",
-    description: "",
-    urgency: ""
+    title: null, //assigned null to get proper validation from Superstruckt
+    description: null, //assigned null to get proper validation from Superstruckt
+    urgency: null //assigned null to get proper validation from Superstruckt
   }
 
 
@@ -19,25 +21,40 @@ export default class Create extends Component {
    * Creates task based on data in inputfields
    */
   createTaskOnClick = () => {
-    const taskData = {
-      title: this.state.title,
-      description: this.state.description,
-      urgency: this.state.urgency,
-      startDate: this.state.startDate,
-      endDate: this.state.endDate
+    try {
+      const taskData = {
+        title: this.state.title,
+        description: this.state.description,
+        urgency: this.state.urgency,
+        startDate: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
+        endDate: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
+      }
+      task.validateInput(taskData)
+      task.create(taskData)
+      //Redirect to employers task-overview
     }
+    catch(e) {
+      console.log(e)
+      if (e.message === 'task_title_required' || e.message ==='task_title_invalid') { // Title is either undefined or invalid
+        alert('Title must be filled out')
+        return
 
-    task.create(taskData)
-    //Redirect to users task-overview
-  }
+      }
+      //if (e.message === 'task_startDate_required' || e.message === 'task_startDate_invalid') { //
+      //  alert('error with date')
+      //  return
 
-  /**
-   * Validate data in inputfields
-   */
+      }
+      if (e.message === 'task_description_required' || e.message === 'task_description_invalid') { // Description is either undefined or invalid
+        alert('Description must be filled out')
+        return
 
-  validateInput() {
-    //TODO
+      }
+      if (e.message === 'task_urgency_required' || e.message === 'task_urgency_invalid') { // Urgency is either undefined or invalid
+        alert('Urgency must be filled out')
+        return
 
+      }
   }
 
   /**
