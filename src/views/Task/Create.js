@@ -22,6 +22,10 @@ export default class Create extends Component {
    */
   createTaskOnClick = () => {
     try {
+      if (this.state.startDate.toDate() > this.state.endDate.toDate()) {
+        alert('Deadline can not be set before Starting date of the task')
+        return
+      }
       const taskData = {
         title: this.state.title,
         description: this.state.description,
@@ -63,6 +67,7 @@ export default class Create extends Component {
    */
   updateStartDate = (date) => {
     this.setState({ startDate: date })
+    this.setState({endDate: date})
   }
 
   /**
