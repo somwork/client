@@ -44,11 +44,6 @@ export default class Create extends Component {
         return
 
       }
-      //if (e.message === 'task_startDate_required' || e.message === 'task_startDate_invalid') { //
-      //  alert('error with date')
-      //  return
-
-      // }
       if (e.message === 'task_description_required' || e.message === 'task_description_invalid') { // Description is either undefined or invalid
         alert('Description must be filled out')
         return
@@ -67,7 +62,7 @@ export default class Create extends Component {
    */
   updateStartDate = (date) => {
     this.setState({ startDate: date })
-    this.setState({endDate: date})
+    this.setState({ endDate: date })
   }
 
   /**
