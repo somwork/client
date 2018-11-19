@@ -33,9 +33,9 @@ export default class Create extends Component {
       task.create(taskData)
       //Redirect to employers task-overview
     }
-    catch(e) {
+    catch (e) {
       console.log(e)
-      if (e.message === 'task_title_required' || e.message ==='task_title_invalid') { // Title is either undefined or invalid
+      if (e.message === 'task_title_required' || e.message === 'task_title_invalid') { // Title is either undefined or invalid
         alert('Title must be filled out')
         return
 
@@ -44,7 +44,7 @@ export default class Create extends Component {
       //  alert('error with date')
       //  return
 
-      }
+      // }
       if (e.message === 'task_description_required' || e.message === 'task_description_invalid') { // Description is either undefined or invalid
         alert('Description must be filled out')
         return
@@ -55,6 +55,7 @@ export default class Create extends Component {
         return
 
       }
+    }
   }
 
   /**
