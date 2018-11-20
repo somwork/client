@@ -1,18 +1,43 @@
 import React, { Component } from 'react';
-import './Sidebar.css';
 import { Link } from 'react-router-dom';
+import './Sidebar.css';
+import auth from '../../api/auth';
 
 class Sidebar extends Component {
+  /**
+   * State for the sidebar
+   * @type {Object}
+   */
+  state = {
+    user: {
+      firstName: ""
+    }
+  }
 
   /**
-  * Array for the menu items
-  * @param  {Array}
-  */
-  items = [
-    ["My projects", "/", "fas fa-tasks"],
-    ["Create Project", "/task/create", "fas fa-plus-square"]
+   * Workers list of menu items
+   * @type {Array}
+   */
+  worker = [
+    ["My Tasks", "/", "fas fa-tasks"],
+    ["Logout", "/logout", "fas fa-lock"]
   ]
 
+  /**
+   * Employers list of menu items
+   * @type {Array}
+   */
+  employer = [
+    ["My Tasks", "/", "fas fa-tasks"],
+    ["Create Task", "/task/create", "fas fa-plus-square"],
+    ["Logout", "/logout", "fas fa-lock"]
+  ]
+
+  /**
+   * Check if path is equal to current window path
+   * @param  {String}  path
+   * @return {String}
+   */
   isActive(path){
     if (window.location.pathname !== path) {
       return '';
@@ -21,14 +46,25 @@ class Sidebar extends Component {
     return 'active';
   }
 
-  renderItem = ([title, path, className]) => {
-      return (
-        <div key={title} className={["menuItem", this.isActive(path)].join(' ')}>
-          <Link to={path}><li><i className={className}></i>{title}</li></Link>
-        </div>
-      );
+  /**
+   * Component setup
+   */
+  componentDidMount () {
+    this.getUser()
   }
 
+  /**
+   * Get current authenticated user
+   * @return {Promise}
+   */
+  getUser = async () => {
+    this.setState({ user: await auth.user() })
+  }
+
+  /**
+   * Render sidebar
+   * @return {JSX}
+   */
   render() {
     return (
       <nav className="sidebar">
@@ -39,14 +75,25 @@ class Sidebar extends Component {
           <div className="circle"></div>
         </div>
         <div className="sidebarUsername">
-          <p>Frederik Kvartborg</p>
+          <p>{this.state.user.firstName}</p>
         </div>
         <div className="sidebarMenu">
-          {this.items.map(this.renderItem)}
+          {this[auth.type()].map(this.renderMenuItem)}
         </div>
       </nav>
     );
   }
+
+  /**
+   * Render menu item
+   * @param  {Array}
+   * @return {JSX}
+   */
+  renderMenuItem = ([title, path, className]) => (
+    <div key={title} className={["menuItem", this.isActive(path)].join(' ')}>
+      <Link to={path}><li><i className={className}></i>{title}</li></Link>
+    </div>
+  )
 }
 
 
