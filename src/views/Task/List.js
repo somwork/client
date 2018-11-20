@@ -3,7 +3,7 @@ import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import { Link } from 'react-router-dom';
 
-export default class OverView extends Component{
+export default class List extends Component{
 
   constructor(props){
     super(props);
