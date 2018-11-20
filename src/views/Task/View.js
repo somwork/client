@@ -56,10 +56,10 @@ export default class View extends Component{
         <ul>
           {this.fieldRender(this.state.tasks)}
         </ul>
-        <input type="button" value="Make Offer"/>
-        <input type="button" value="Chat"/>
+        <input type="submit" value="Make Offer"/>
+        <input type="submit" value="Chat"/>
         <Link to='../List'>
-          <input type="button" value="Back"/>
+          <input type="submit" value="Back"/>
         </Link>
       </Layout>
     )

@@ -112,31 +112,8 @@ button {
   width: auto;
 }
 
-input[type="button"],
-button {
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
-  color: var(--light);
-  font-size: var(--font-size);
-  padding: calc(var(--spacing) / 2) var(--spacing);
-  border-radius: var(--border-radius);
-  margin: var(--spacing-top-bottom);
-  cursor: pointer;
-  appearance: none;
-  width: auto;
-  margin: 0.5%;
-}
-
 input[type="submit"]:hover,
 button:hover {
-  background: var(--light);
-  color: var(--primary-dark);
-  border-color: var(--primary-dark);
-}
-
-input[type="button"]:hover,
-button:hover
-{
   background: var(--light);
   color: var(--primary-dark);
   border-color: var(--primary-dark);
