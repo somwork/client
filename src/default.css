@@ -141,11 +141,25 @@ button:hover {
   border-color: var(--primary-dark);
 }
 
+textarea,
+input {
+  background: var(--light);
+  border-color: var(--secondary);
+  border-radius: calc(var(--border-radius) * 2);
+  border-width: var(--border-width);
+  padding: calc(var(--spacing) / 2);
+  width: 100%;
+  margin: var(--spacing-top-bottom);
+  resize: none;
+  font-family: var(--font-family);
+}
+
 input[type="submit"].secondary:hover,
 button.secondary:hover {
   background: var(--primary-dark);
   color: var(--light);
 }
+
 
 input.valid{
   border-color : var(--succes);
@@ -164,6 +178,7 @@ ul li{
   width: auto;
 }
 
+
 input:focus,
 textarea:focus,
 button:focus,
@@ -171,3 +186,4 @@ a:focus {
   outline: none;
   box-shadow: 0px 0px 0px 2px var(--info);
 }
+
