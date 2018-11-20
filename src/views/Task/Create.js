@@ -52,7 +52,7 @@ export default withRouter(class Create extends Component {
   }
 
   /**
-   * Validates input based on validation mehotd defined in Fields[]
+   * Validates input based on validation method defined in Fields[]
    * @return {bolean}
    */
   validator = () => {
