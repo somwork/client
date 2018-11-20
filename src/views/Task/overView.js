@@ -24,8 +24,8 @@ export default class OverView extends Component{
   /**
    * render a task
    * @param {int} id
-   * @param {DateTime} start
-   * @param {DateTime} deadline
+   * @param {moment} start
+   * @param {moment} deadline
    * @param {String} Description
    * @param {String} Urgency
    * @return {JsX}  a task as a list item

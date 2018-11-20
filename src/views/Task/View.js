@@ -17,7 +17,7 @@ export default class View extends Component{
    *loads all tasks from the db into the state
   */
   loadTasks = async list=>{
-    const res = await Task.getSpecific(this.props.match.params.id);
+    const res = await Task.get(this.props.match.params.id);
     console.log(res);
 
     this.setState({tasks:res})
