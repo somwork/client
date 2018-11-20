@@ -162,7 +162,7 @@ button.secondary:hover {
 
 
 input.valid{
-  border-color : var(--succes);
+  border-color : var(--success);
 }
 
 ul li{
