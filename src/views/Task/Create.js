@@ -6,7 +6,7 @@ import moment from 'moment'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
 
-export default class Create extends Component {
+export default withRouter(class Create extends Component {
 
   //auth.login("username", "password")
 
@@ -34,6 +34,7 @@ export default class Create extends Component {
     event.preventDefault()
     if (!this.validator()) { //invalid input case
       this.setState({ error: "Invalid input" })
+      return
     }
 
     try {
@@ -45,7 +46,7 @@ export default class Create extends Component {
         deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.create(taskData)
-      //Redirect to employers task-overview
+      this.props.history.push('/tasks')
     } catch (e) {
       this.setState({ error: e.message })
     }
@@ -146,12 +147,12 @@ export default class Create extends Component {
           <form onSubmit={this.submitHandler}>
             {this.fields.map(this.fieldRender.bind(this))}
             <label>
-            Starting Date
-            <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
+              Starting Date
+              <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
             </label>
             <label>
-            Deadline
-            <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
+              Deadline
+              <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
             </label>
           </form>
           <input type="submit" value="Create Task" onClick={this.submitHandler} />
@@ -159,4 +160,4 @@ export default class Create extends Component {
       </Layout>
     )
   }
-}
+})
