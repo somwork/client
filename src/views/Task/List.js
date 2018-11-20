@@ -17,19 +17,15 @@ export default class List extends Component{
   /**
    * loads all tasks from the db into the state
    */
-  loadTasks = async list=>{
+  loadTasks = async ()=>{
     const res =await Task.get();
     this.setState({tasks:res})
   }
 
   /**
    * render a task
-   * @param {int} id
-   * @param {moment} start
-   * @param {moment} deadline
-   * @param {String} Description
-   * @param {String} Urgency
-   * @return {JsX}  a task as a list item
+   * @param {Object} task
+   * @return {JSX}  a task as a list item
    */
   fieldRender(task){
     return(
