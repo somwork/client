@@ -108,9 +108,8 @@ input,
 textarea,
 button {
   background: var(--light);
-  border-color: var(--secondary);
+  border: solid var(--border-width) var(--secondary);
   border-radius: var(--border-radius);
-  border-width: var(--border-width);
   padding: calc(var(--spacing) / 2);
   font-size: var(--font-size);
   font-family: var(--font-family);
@@ -125,6 +124,14 @@ button {
   color: var(--light);
   cursor: pointer;
   appearance: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 input[type="submit"].secondary,
