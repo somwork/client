@@ -18,7 +18,7 @@ export default withRouter(class Create extends Component {
   }
 
   fields = [
-    //["label", "Type", Validation method]
+    //["label", "Type", Validation method, isTextArea]
     ["Title", "text", v => v.length > 0, false],
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
@@ -29,11 +29,13 @@ export default withRouter(class Create extends Component {
    */
   submitHandler = async event => {
     event.preventDefault()
-    if (!this.validator()) { //invalid input case
+     //invalid input handling
+    if (!this.validator()) {
       this.setState({ error: "Invalid input" })
       return
     }
 
+    //input valid
     try {
       const taskData = {
         title: this.state.title,
@@ -54,7 +56,7 @@ export default withRouter(class Create extends Component {
    * @return {bolean}
    */
   validator = () => {
-    for (const [label, _, validator] of this.fields) {
+    for (const [label, validator] of this.fields) {
       if (!validator(this.state[camelcase(label)])) {
         return false
       }
