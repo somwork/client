@@ -5,7 +5,7 @@ import Login from "./views/Login";
 import SignUp from "./views/SignUp";
 import Create from "./views/Task/Create";
 import Update from "./views/Task/Update";
-import OverView from "./views/Task/OverView";
+import List from "./views/Task/List";
 import View from "./views/Task/View";
 import auth from "./api/auth";
 
@@ -22,7 +22,7 @@ export default () => (
       <Route path='/sign-up' component={SignUp}/>
       <Route path="/task/create" component={Create} />
       <Route path="/task/update" component={Update} />
-      <Route path='/task/list' component={OverView} />,
+      <Route path='/task/list' component={List} />,
       <Route path='/task/detail/:id' component={View} />,
       <Route path="/logout" component={logout} />
     </div>

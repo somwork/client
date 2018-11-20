@@ -2,6 +2,7 @@ import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import { Link } from 'react-router-dom';
+import './TaskView.css'
 
 export default class View extends Component{
 
@@ -18,7 +19,6 @@ export default class View extends Component{
    */
   loadTasks = async list=>{
     const res = await Task.get(this.props.match.params.id);
-    console.log(res);
 
     this.setState({tasks:res})
   }
@@ -58,7 +58,7 @@ export default class View extends Component{
         </ul>
         <input type="button" value="Make Offer"/>
         <input type="button" value="Chat"/>
-        <Link to='../List'>
+        <Link to='/task/List'>
           <input type="button" value="Back"/>
         </Link>
       </Layout>
