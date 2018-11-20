@@ -21,25 +21,26 @@ export default class Create extends Component {
 
   fields = [
     //["label", "Type", Validation method]
-    ["Title", "text", v => v.length > 0],
-    ["Description", "text", v => v.length > 0],
-    ["Urgency", "test", v => v.length >0],
-
-
+    ["Title", "text", v => v.length > 0, false],
+    ["Description", "text", v => v.length > 0, true],
+    ["Urgency", "text", v => v.length > 0, false]
   ]
 
 
   /**
    * Creates task based on data in inputfields
    */
-  createTaskOnClick = async () => {
+  submitHandler = async event => {
+    event.preventDefault()
+    if (!this.validator()) return false //invalid input case
+
     try {
       const taskData = {
         title: this.state.title,
         description: this.state.description,
         urgency: this.state.urgency,
-        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
+        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.create(taskData)
       //Redirect to employers task-overview
@@ -48,9 +49,13 @@ export default class Create extends Component {
     }
   }
 
+  /**
+   * Validates input based on validation mehotd defined in Fields[]
+   * @return {bolean}
+   */
   validator = () => {
-    for(const[label, _, validator] of this.fields) {
-      if(!validator(this.state[camelcase(label)])) {
+    for (const [label, _, validator] of this.fields) {
+      if (!validator(this.state[camelcase(label)])) {
         return false
       }
     }
@@ -58,22 +63,46 @@ export default class Create extends Component {
   }
 
 
-  fieldRender([label,type,validator]){
+  /**
+   * Renders input fields based on definitions in fields[]
+   * @param {String} label
+   * @param {Mixed} type
+   * @param {Method} validator
+   * @param {boolean} isTextArea
+   * @return {JSX} an input surrounded with a label
+   */
+  fieldRender([label, type, validator, isTextArea]) {
     const name = camelcase(label);
-     return(
-       <label key = {name}>
-         {label}
-         <input
-           name={name}
-           type={type}
-           value={this.state[name]}
-           onChange={this.handleChange}
-           className={validator(this.state[name]) ? "valid": ""}
-           required
-         />
-       </label>
-     )
-   }
+    if (isTextArea === true) {
+      return (
+        <label key={name}>
+          {label}
+          <textarea
+            name={name}
+            value={this.state[name]}
+            onChange={this.handleChange}
+            className={validator(this.state[name]) ? "valid" : ""}
+            required
+          />
+        </label>
+
+      )
+    }
+
+    return (
+      <label key={name}>
+        {label}
+        <input
+          name={name}
+          type={type}
+          value={this.state[name]}
+          onChange={this.handleChange}
+          className={validator(this.state[name]) ? "valid" : ""}
+          required
+        />
+      </label>
+    )
+  }
 
   /**
    * Sets the selected  date
@@ -112,27 +141,18 @@ export default class Create extends Component {
           {this.state.error && (
             <Alert>{this.state.error} </Alert>
           )}
-          <label>
-            Title
-          <input type="text" onChange={this.handleChange} name="title" />
-          </label>
-          <label>
+          <form onSubmit={this.submitHandler}>
+            {this.fields.map(this.fieldRender.bind(this))}
+            <label>
             Starting Date
-          <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
-          </label>
-          <label>
+            <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
+            </label>
+            <label>
             Deadline
-          <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
-          </label>
-          <label>
-            Description
-          <textarea onChange={this.handleChange} name="description"></textarea>
-          </label>
-          <label>
-            Urgency
-          <input type="text" onChange={this.handleChange} name="urgency" />
-          </label>
-          <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
+            <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
+            </label>
+          </form>
+          <input type="submit" value="Create Task" onClick={this.submitHandler} />
         </section>
       </Layout>
     )
