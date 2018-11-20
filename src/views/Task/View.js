@@ -52,7 +52,7 @@ export default class View extends Component{
   render(){
     return (
       <Layout>
-        <h1>Task overview</h1>
+        <h1>Task view</h1>
         <ul>
           {this.fieldRender(this.state.tasks)}
         </ul>
