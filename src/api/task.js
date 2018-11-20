@@ -1,6 +1,7 @@
 import request from './request'
 import { struct } from 'superstruct'
 
+
 /**
  * Defines input-types required for validation
  */

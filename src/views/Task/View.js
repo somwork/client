@@ -10,24 +10,24 @@ export default class View extends Component{
 
     this.state = {tasks:[]}
 
-   this.loadTasks();
+    this.loadTasks();
   };
 
   /**
    *loads all tasks from the db into the state
-  */
+   */
   loadTasks = async list=>{
     const res = await Task.get(this.props.match.params.id);
     console.log(res);
 
     this.setState({tasks:res})
-    }
+  }
 
   /**
    * render a task
    * @param {int} id
-   * @param {DateTime} start
-   * @param {DateTime} deadline
+   * @param {moment} start
+   * @param {moment} deadline
    * @param {String} description
    * @param {String} urgency
    * @return {JSX} a task as a list item
@@ -45,7 +45,7 @@ export default class View extends Component{
     )
   }
 
-    /**
+  /**
    * Creates the Task overview view
    * @return {JSX} View
    */

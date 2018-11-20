@@ -7,16 +7,24 @@ import Create from "./views/Task/Create";
 import Update from "./views/Task/Update";
 import OverView from "./views/Task/OverView";
 import View from "./views/Task/View";
+import auth from "./api/auth";
 
-export default () => [
-  <Route path="/" exact component={Dashboard} />,
-  <Route path="/login" component={Login} />,
-  <Route path='/sign-up' component={SignUp}/>,
-  <Route path="/task/create" component={Create} />,
-  <Route path="/task/update" component={Update} />,
-  <Route path='/task/list' component={OverView} />,
-  <Route path='/task/detail/:id' component={View} />,
-  <Route path="/logout" component={logout} />
-  
-];
+function logout() {
+  auth.logout()
+  return <Redirect to='/login' />
+}
 
+export default () => (
+  <Router>
+    <div>
+      <Route path="/" exact component={Dashboard} />
+      <Route path="/login" component={Login} />
+      <Route path='/sign-up' component={SignUp}/>
+      <Route path="/task/create" component={Create} />
+      <Route path="/task/update" component={Update} />
+      <Route path='/task/list' component={OverView} />,
+      <Route path='/task/detail/:id' component={View} />,
+      <Route path="/logout" component={logout} />
+    </div>
+  </Router>
+);

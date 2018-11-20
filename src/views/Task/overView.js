@@ -10,7 +10,7 @@ export default class OverView extends Component{
 
     this.state = {tasks:[]}
 
-   this.loadTasks();
+    this.loadTasks();
   };
 
   /**
@@ -31,7 +31,6 @@ export default class OverView extends Component{
    * @return {JsX}  a task as a list item
    */
   fieldRender(task){
-
     return(
       <Link to={'detail/'+task.id}>
         <li key ={task.id}>
@@ -46,12 +45,11 @@ export default class OverView extends Component{
     )
   }
 
-    /**
+  /**
    * Creates the Task overview view
    * @return {JSX} View
    */
   render(){
-   // console.log(this.state.tasks)
     return (
       <Layout>
         <h1>Task overview</h1>

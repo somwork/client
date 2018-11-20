@@ -120,7 +120,7 @@ button {
   resize: none;
 }
 
-input[type="submit"],
+input[type="submit"]
 button {
   background: var(--primary-dark);
   color: var(--light);
