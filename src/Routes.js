@@ -9,6 +9,6 @@ export default () => [
   <Route path='/' exact component={Main} />,
   <Route path='/second' component={Second} />,
   <Route path='/task/create' component={Create} />,
-  <Route path='/task/update' component={Update} />,
+  <Route path='/task/update/:id' component={Update} />,
 ]
 

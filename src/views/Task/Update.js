@@ -18,8 +18,16 @@ export default class Update extends Component {
 
   };
 
-  componentDidMount = () => {
+  getTask = async () => {
+    const task = await task.get(this.props.match.params.id);
+    this.setState({
+      title: task.title,
+      description: task.description,
+    })
+  }
 
+  componentDidMount = () => {
+    this.getTask()
   }
 
   fields = [
