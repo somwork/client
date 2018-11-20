@@ -52,7 +52,7 @@ export default withRouter(class SignUp extends Component{
 
     if(!this.validator()){
       this.setState({ error: "Invalid input" })
-      return false;
+      return
     }
 
     try {
