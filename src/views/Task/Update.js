@@ -3,6 +3,7 @@ import Layout from '../../components/Layout'
 import task from '../../api/task'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
+import Alert from '../../components/Alert'
 
 export default class Update extends Component {
   state = {

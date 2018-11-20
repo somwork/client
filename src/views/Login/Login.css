@@ -1,0 +1,30 @@
+.login {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login form {
+  padding: var(--spacing);
+  border: solid 2px var(--secondary);
+  border-radius: calc(var(--border-radius) * 2)
+}
+
+.login form h1 {
+  margin-top: calc(var(--spacing) / 4);
+}
+
+.login form input[type=submit] {
+  width: 100%;
+}
+
+.login form .actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login form .actions button,
+.login form .actions input[type=submit] {
+  width: calc(50% - (var(--spacing) / 2));
+}

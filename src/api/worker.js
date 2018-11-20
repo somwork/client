@@ -2,14 +2,13 @@ import request from './request'
 import { struct } from 'superstruct'
 
 const Worker = struct({
-  id: 'number',
-  Username: 'string',
-  Password: 'string',
-  Email: 'string',
-  FirstName: 'string',
-  LastName: 'string',
+  id: 'number?',
+  username: 'string',
+  password: 'string',
+  email: 'string',
+  firstName: 'string',
+  lastName: 'string',
 })
-
 
 export default {
   /**
@@ -18,13 +17,7 @@ export default {
    * @return {Promise}
    */
   async get(id) {
-
-    if(id === undefined){
-      const res = await request.get('workers')
-      return await res.json()
-    }
-
-    const res = await request.get(`workers/${id}`)
+    const res = await request.get(id ? `workers/${id}` : 'workers')
     return await res.json()
   },
 
@@ -34,10 +27,10 @@ export default {
    * @return {Promise}
    */
   async create(worker) {
-      //Validate data for the body
-      Worker(worker);
-      const res = await request.post('workers', worker);
-      return await res.json()
+    //Validate data for the body
+    Worker(worker);
+    const res = await request.post('workers', worker);
+    return await res.json()
   },
 
   /**
@@ -58,7 +51,7 @@ export default {
    * @return {Promise}
    */
   async delete(id) {
-     const res = await request.delete(`workers/${id}`);
-     return res.ok
-  },
+    const res = await request.delete(`workers/${id}`);
+    return res.ok
+  }
 }
