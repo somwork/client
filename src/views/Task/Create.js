@@ -32,7 +32,9 @@ export default class Create extends Component {
    */
   submitHandler = async event => {
     event.preventDefault()
-    if (!this.validator()) return false //invalid input case
+    if (!this.validator()) { //invalid input case
+      this.setState({ error: "Invalid input" })
+    }
 
     try {
       const taskData = {
