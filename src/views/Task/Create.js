@@ -5,11 +5,9 @@ import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
+import { withRouter } from 'react-router-dom'
 
 export default withRouter(class Create extends Component {
-
-  //auth.login("username", "password")
-
   state = {
     startDate: moment(),
     endDate: moment(),
@@ -25,7 +23,6 @@ export default withRouter(class Create extends Component {
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
   ]
-
 
   /**
    * Creates task based on data in inputfields
