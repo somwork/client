@@ -53,7 +53,7 @@ export default withRouter(class Create extends Component {
 
   /**
    * Validates input based on validation method defined in Fields[]
-   * @return {bolean}
+   * @return {boolean}
    */
   validator = () => {
     for (const [label, validator] of this.fields) {
