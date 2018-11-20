@@ -3,6 +3,8 @@ import Layout from '../../components/Layout'
 import task from '../../api/task'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
+import Alert from '../../components/Alert'
+import camelcase from 'camelcase'
 
 export default class Create extends Component {
 
@@ -11,21 +13,27 @@ export default class Create extends Component {
   state = {
     startDate: moment(),
     endDate: moment(),
-    title: null, //assigned null to get proper validation from Superstruckt
-    description: null, //assigned null to get proper validation from Superstruckt
-    urgency: null //assigned null to get proper validation from Superstruckt
+    title: "",
+    description: "",
+    urgency: "",
+    error: null
   }
+
+  fields = [
+    //["label", "Type", Validation method]
+    ["Title", "text", v => v.length > 0],
+    ["Description", "text", v => v.length > 0],
+    ["Urgency", "test", v => v.length >0],
+
+
+  ]
 
 
   /**
    * Creates task based on data in inputfields
    */
-  createTaskOnClick = () => {
+  createTaskOnClick = async () => {
     try {
-      if (this.state.startDate.toDate() > this.state.endDate.toDate()) {
-        alert('Deadline can not be set before Starting date of the task')
-        return
-      }
       const taskData = {
         title: this.state.title,
         description: this.state.description,
@@ -33,28 +41,39 @@ export default class Create extends Component {
         start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
         deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
       }
-      task.validateInput(taskData)
-      task.create(taskData)
+      await task.create(taskData)
       //Redirect to employers task-overview
-    }
-    catch (e) {
-      console.log(e)
-      if (e.message === 'task_title_required' || e.message === 'task_title_invalid') { // Title is either undefined or invalid
-        alert('Title must be filled out')
-        return
-
-      }
-      if (e.message === 'task_description_required' || e.message === 'task_description_invalid') { // Description is either undefined or invalid
-        alert('Description must be filled out')
-        return
-
-      }
-      if (e.message === 'task_urgency_required' || e.message === 'task_urgency_invalid') { // Urgency is either undefined or invalid
-        alert('Urgency must be filled out')
-        return
-      }
+    } catch (e) {
+      this.setState({ error: e.message })
     }
   }
+
+  validator = () => {
+    for(const[label, _, validator] of this.fields) {
+      if(!validator(this.state[camelcase(label)])) {
+        return false
+      }
+    }
+    return true
+  }
+
+
+  fieldRender([label,type,validator]){
+    const name = camelcase(label);
+     return(
+       <label key = {name}>
+         {label}
+         <input
+           name={name}
+           type={type}
+           value={this.state[name]}
+           onChange={this.handleChange}
+           className={validator(this.state[name]) ? "valid": ""}
+           required
+         />
+       </label>
+     )
+   }
 
   /**
    * Sets the selected  date
@@ -88,28 +107,33 @@ export default class Create extends Component {
   render() {
     return (
       <Layout>
-        <h2>Create Task</h2>
-        <label>
-          Title
+        <section>
+          <h2>Create Task</h2>
+          {this.state.error && (
+            <Alert>{this.state.error} </Alert>
+          )}
+          <label>
+            Title
           <input type="text" onChange={this.handleChange} name="title" />
-        </label>
-        <label>
-          Starting Date
+          </label>
+          <label>
+            Starting Date
           <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
-        </label>
-        <label>
-          Deadline
+          </label>
+          <label>
+            Deadline
           <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
-        </label>
-        <label>
-          Description
+          </label>
+          <label>
+            Description
           <textarea onChange={this.handleChange} name="description"></textarea>
-        </label>
-        <label>
-          Urgency
+          </label>
+          <label>
+            Urgency
           <input type="text" onChange={this.handleChange} name="urgency" />
-        </label>
-        <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
+          </label>
+          <input type="submit" value="Create Task" onClick={this.createTaskOnClick} />
+        </section>
       </Layout>
     )
   }
