@@ -34,14 +34,14 @@ export default class View extends Component{
    */
  fieldRender(task){
     return(
-        <li key ={task.id}>
-          <label>
-            <p><b>Task Id:</b> {task.id}</p>
-            <p>{task.start} → {task.deadline}</p>
-            <p>{task.urgency}</p>
-            <p>{task.description}</p>
-          </label>
-        </li>
+      <li key ={task.id}>
+        <label>
+          <p><b>Task Id:</b> {task.id}</p>
+          <p>{task.start} → {task.deadline}</p>
+          <p>{task.urgency}</p>
+          <p>{task.description}</p>
+        </label>
+      </li>
     )
   }
 
