@@ -11,6 +11,7 @@ export default class OverView extends Component{
     this.state = {tasks:[]}
 
     this.loadTasks();
+
   };
 
   /**
@@ -60,4 +61,3 @@ export default class OverView extends Component{
     )
   }
 }
-
