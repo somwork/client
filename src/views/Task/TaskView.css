@@ -1,0 +1,22 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  color: black;
+}
+
+.chat{
+  display: flex;
+  flex-direction: row;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.chatBox{
+color: var(--black);
+text-align: left;
+background: rgb(239, 245, 245);
+}
