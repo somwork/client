@@ -39,9 +39,9 @@ export default {
    * @param {Object} task
    * @return {Promise}
    */
-  async update(task) {
+  async update(id, task) {
     Task(task);
-    const res = await request.update('tasks', task)
+    const res = await request.put('tasks/' + id, task)
     return await res.json()
   },
 

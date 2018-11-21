@@ -41,7 +41,6 @@ export default withRouter(class Create extends Component {
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
   ]
-
   /**
  * Sets the selected  date
  * @param {Date} date
@@ -57,7 +56,6 @@ export default withRouter(class Create extends Component {
    */
   updateEndDate = (date) => {
     this.setState({ endDate: date })
-
   }
 
 
@@ -73,7 +71,6 @@ export default withRouter(class Create extends Component {
     }
     return true
   }
-
 
   /**
    * Renders input fields based on definitions in fields[]
@@ -133,7 +130,7 @@ export default withRouter(class Create extends Component {
         start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
         deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
-      await task.create(taskData)
+      await task.update(this.props.match.params.id, taskData)
       this.props.history.push('/tasks')
     } catch (e) {
       this.setState({ error: e.message })
