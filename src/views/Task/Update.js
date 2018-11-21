@@ -7,7 +7,7 @@ import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
 import camelcase from 'camelcase'
 
-export default withRouter(class Create extends Component {
+export default withRouter(class Update extends Component {
   state = {
     startDate: moment(),
     endDate: moment(),
