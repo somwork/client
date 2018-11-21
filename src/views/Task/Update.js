@@ -9,8 +9,8 @@ import camelcase from 'camelcase'
 
 export default withRouter(class Update extends Component {
   state = {
-    startDate: moment(),
-    endDate: moment(),
+    start: null,
+    deadline: null,
     title: "",
     description: "",
     urgency: "",
@@ -38,8 +38,8 @@ export default withRouter(class Update extends Component {
         title: this.state.title,
         description: this.state.description,
         urgency: this.state.urgency,
-        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        start: this.state.start.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.deadline.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.update(this.props.match.params.id, taskData)
       this.props.history.push('/tasks')
@@ -123,13 +123,13 @@ export default withRouter(class Update extends Component {
    * Gets Task arguments and Setstate
    */
   getTask = async () => {
-    const task = await task.get(this.props.match.params.id);
+    const loadedTask = await loadedTask.get(this.props.match.params.id);
     this.setState({
-      title: task.title,
-      description: task.description,
-      urgency: task.urgency,
-      startDate: task.startDate,
-      endDate: task.endDate,
+      title: loadedTask.title,
+      description: loadedTask.description,
+      urgency: loadedTask.urgency,
+      start: loadedTask.start,
+      deadline: loadedTask.deadline,
     })
   }
 
@@ -139,8 +139,8 @@ export default withRouter(class Update extends Component {
    */
   updateStartDate = (date) => {
     this.setState({
-      startDate: date,
-      endDate: date,
+      start: date,
+      deadline: date,
     })
 
   }
@@ -149,8 +149,8 @@ export default withRouter(class Update extends Component {
    * Sets selected date of deadline
    * @param {Date} date
    */
-  updateEndDate = (date) => {
-    this.setState({ endDate: date })
+  updateDeadline = (date) => {
+    this.setState({ deadline: date })
   }
 
   /**
@@ -171,18 +171,18 @@ export default withRouter(class Update extends Component {
           {this.state.error && (
             <Alert>{this.state.error} </Alert>
           )}
-          <form onUpdate={this.updateHandler}>
+          <form onSubmit={this.updateHandler}>
             {this.fields.map(this.fieldRender.bind(this))}
             <label>
               Starting Date
-            <DatePicker onChange={this.updateStartDate} minDate={moment()} selected={this.state.startDate} />
+            <DatePicker onChange={this.updateStart} minDate={moment()} selected={this.state.start} />
             </label>
             <label>
               Deadline
-            <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
+            <DatePicker onChange={this.updateDeadline} minDate={this.state.start} selected={this.state.deadline} />
             </label>
           </form>
-          <input type="Update" value="Update" onClick={this.UpdateHandler} />
+          <input type="submit" value="Update" onClick={this.UpdateHandler} />
         </section>
       </Layout>
     )
