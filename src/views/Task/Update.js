@@ -18,7 +18,7 @@ export default withRouter(class Update extends Component {
   }
 
   fields = [
-    //["label", "Type", Validation method]
+    //["label", "Type", Validation method ,isTextArea]
     ["Title", "text", v => v.length > 0, false],
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
@@ -61,7 +61,6 @@ export default withRouter(class Update extends Component {
     return true
   }
 
-
   /**
   * Renders input fields based on definitions in fields[]
   * @param {String} label
@@ -84,7 +83,6 @@ export default withRouter(class Update extends Component {
             required
           />
         </label>
-
       )
     }
 
