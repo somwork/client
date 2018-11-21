@@ -43,6 +43,24 @@ export default class Update extends Component {
     ["Urgency", "text", v => v.length > 0, false]
   ]
 
+  /**
+ * Sets the selected  date
+ * @param {Date} date
+ */
+  updateStartDate = (date) => {
+    this.setState({ startDate: date })
+    this.setState({ endDate: date })
+  }
+
+  /**
+   * Sets selected date of deadline
+   * @param {Date} date
+   */
+  updateEndDate = (date) => {
+    this.setState({ endDate: date })
+
+  }
+
 
 
   updateHandler = async () => {
