@@ -49,9 +49,9 @@ export default withRouter(class Update extends Component {
   }
 
   /**
-     * Validates input based on validation method defined in Fields[]
-     * @return {boolean}
-     */
+  * Validates input based on validation method defined in Fields[]
+  * @return {boolean}
+  */
   validator = () => {
     for (const [label, _, validator] of this.fields) { // eslint-disable-line
       if (!validator(this.state[camelcase(label)])) {
@@ -63,13 +63,13 @@ export default withRouter(class Update extends Component {
 
 
   /**
-* Renders input fields based on definitions in fields[]
-* @param {String} label
-* @param {Mixed} type
-* @param {Method} validator
-* @param {boolean} isTextArea
-* @return {JSX} an input surrounded with a label
-*/
+  * Renders input fields based on definitions in fields[]
+  * @param {String} label
+  * @param {Mixed} type
+  * @param {Method} validator
+  * @param {boolean} isTextArea
+  * @return {JSX} an input surrounded with a label
+  */
   fieldRender([label, type, validator, isTextArea]) {
     const name = camelcase(label);
     if (isTextArea === true) {
@@ -105,9 +105,9 @@ export default withRouter(class Update extends Component {
 
 
   /**
-     * Sets state data when changes are made in text-inputs
-     * @param {Event} event
-     */
+   * Sets state data when changes are made in text-inputs
+   * @param {Event} event
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -151,7 +151,6 @@ export default withRouter(class Update extends Component {
    */
   updateEndDate = (date) => {
     this.setState({ endDate: date })
-
   }
 
   /**
@@ -162,7 +161,6 @@ export default withRouter(class Update extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
-
   }
 
   render() {
