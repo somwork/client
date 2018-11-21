@@ -48,17 +48,17 @@ export default class View extends Component{
   render(){
     return (
       <Layout>
-          <section>
-            <h1>Task view</h1>
-            <ul>
-              {this.fieldRender(this.state.tasks)}
-            </ul>
-            <button>Make Offer</button>
-            <button>Chat</button>
-            <Link to='/task/List'>
-              <button>Back</button>
-            </Link>
-          </section>
+        <section>
+          <h1>Task view</h1>
+          <ul>
+            {this.fieldRender(this.state.tasks)}
+          </ul>
+          <button>Make Offer</button>
+          <button>Chat</button>
+          <Link to='/task/List'>
+            <button>Back</button>
+          </Link>
+        </section>
       </Layout>
     )
   }
