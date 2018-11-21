@@ -7,7 +7,7 @@ export default class View extends Component{
   constructor(props){
     super(props);
 
-    this.state = {tasks:[]}
+    this.state = {Offers:[]}
 
    this.loadOffer();
   };
@@ -16,7 +16,7 @@ export default class View extends Component{
    *loads all tasks from the db into the state
    */
   loadOffer = async list=>{
-   const res = await Offer.getSpecific(this.props.match.params.id);
+   const res = await Offer.get(this.props.match.params.id);
    this.setState({tasks:res})
   }
 
