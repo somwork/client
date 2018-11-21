@@ -24,6 +24,9 @@ export default class Update extends Component {
     this.setState({
       title: task.title,
       description: task.description,
+      urgency: task.urgency,
+      startDate: task.startDate,
+      endDate: task.endDate,
     })
   }
 
@@ -77,7 +80,7 @@ export default class Update extends Component {
             <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
             </label>
           </form>
-          <input type="submit" value="Update" onClick={this.submitHandler} />
+          <input type="submit" value="Update" onClick={this.UpdateHandler} />
         </section>
       </Layout>
     )

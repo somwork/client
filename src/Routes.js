@@ -7,12 +7,7 @@ import Create from "./views/Task/Create";
 import Update from "./views/Task/Update";
 import auth from "./api/auth";
 
-export default () => [
-  <Route path='/' exact component={Main} />,
-  <Route path='/second' component={Second} />,
-  <Route path='/task/create' component={Create} />,
-  <Route path='/task/update/:id' component={Update} />,
-]
+
 function logout() {
   auth.logout()
   return <Redirect to='/login' />
