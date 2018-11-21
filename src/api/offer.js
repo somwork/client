@@ -6,10 +6,10 @@ import { struct } from 'superstruct'
  */
 const offer = struct({
   accepted: 'boolean',
-  price: 'decimal',
+  price: 'number',
   currency: 'string',
-  workerId: 'int',
-  offerId: 'int',
+  workerId: 'number',
+  offerId: 'number',
 })
 
 export default {
