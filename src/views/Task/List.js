@@ -50,7 +50,7 @@ export default class List extends Component{
     return (
       <Layout>
         <section>
-          <h1>Task overview</h1>
+          <h1>Tasks</h1>
           <ul>
             {this.state.tasks.map(this.fieldRender.bind(this))}
           </ul>
