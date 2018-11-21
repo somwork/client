@@ -27,10 +27,11 @@ export default {
    * @return {Promise}
    */
   async create(employer) {
-      //Validate data for the body
-      Employer(employer);
-      const res = await request.post('employers', employer);
-      return await res.json()
+    //Validate data for the body
+    Employer(employer);
+    const path = 'employers?password=' + employer.password
+    const res = await request.post(path, employer);
+    return await res.json()
   },
 
   /**
@@ -51,7 +52,7 @@ export default {
    * @return {Promise}
    */
   async delete(id) {
-     const res = await request.delete(`employers/${id}`);
-     return res.ok
+    const res = await request.delete(`employers/${id}`);
+    return res.ok
   }
 }
