@@ -119,7 +119,6 @@ button {
 }
 
 input[type="submit"],
-input[type="button"],
 button {
   background: var(--primary-dark);
   color: var(--light);
@@ -142,7 +141,6 @@ button.secondary {
 }
 
 input[type="submit"]:hover,
-input[type="button"]:hover,
 button:hover {
   background: var(--light);
   color: var(--primary-dark);

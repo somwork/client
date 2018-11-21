@@ -2,7 +2,6 @@ import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import { Link } from 'react-router-dom';
-import './TaskView.css'
 
 export default class View extends Component{
 
@@ -49,15 +48,17 @@ export default class View extends Component{
   render(){
     return (
       <Layout>
-        <h1>Task view</h1>
-        <ul>
-          {this.fieldRender(this.state.tasks)}
-        </ul>
-        <input type="button" value="Make Offer"/>
-        <input type="button" value="Chat"/>
-        <Link to='/task/List'>
-          <input type="button" value="Back"/>
-        </Link>
+          <section>
+            <h1>Task view</h1>
+            <ul>
+              {this.fieldRender(this.state.tasks)}
+            </ul>
+            <button>Make Offer</button>
+            <button>Chat</button>
+            <Link to='/task/List'>
+              <button>Back</button>
+            </Link>
+          </section>
       </Layout>
     )
   }

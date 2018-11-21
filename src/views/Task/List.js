@@ -49,10 +49,12 @@ export default class List extends Component{
   render(){
     return (
       <Layout>
-        <h1>Task overview</h1>
-        <ul>
-          {this.state.tasks.map(this.fieldRender.bind(this))}
-        </ul>
+        <section>
+          <h1>Task overview</h1>
+          <ul>
+            {this.state.tasks.map(this.fieldRender.bind(this))}
+          </ul>
+        </section>
       </Layout>
     )
   }
