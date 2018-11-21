@@ -19,7 +19,8 @@ class Sidebar extends Component {
    * @type {Array}
    */
   worker = [
-    ["My Tasks", "/", "fas fa-tasks"],
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["My Tasks", "/tasks/list", "fas fa-tasks"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
 
@@ -28,7 +29,8 @@ class Sidebar extends Component {
    * @type {Array}
    */
   employer = [
-    ["My Tasks", "/", "fas fa-tasks"],
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["My Tasks", "/task/list", "fas fa-tasks"],
     ["Create Task", "/task/create", "fas fa-plus-square"],
     ["Logout", "/logout", "fas fa-lock"]
   ]

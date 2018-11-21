@@ -45,7 +45,7 @@ export default withRouter(class Create extends Component {
         deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.create(taskData)
-      this.props.history.push('/tasks')
+      this.props.history.push('/task/list')
     } catch (e) {
       this.setState({ error: e.message })
     }
@@ -56,7 +56,7 @@ export default withRouter(class Create extends Component {
    * @return {boolean}
    */
   validator = () => {
-    for (const [label, validator] of this.fields) {
+    for (const [label, _, validator] of this.fields) { // eslint-disable-line
       if (!validator(this.state[camelcase(label)])) {
         return false
       }
