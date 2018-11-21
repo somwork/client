@@ -14,10 +14,7 @@ export default class Update extends Component {
     urgency: "",
     error: null
   }
-  constructor(props) {
-    super(props);
 
-  };
   /**
    * Gets Task arguments and Setstate
    */
@@ -62,8 +59,68 @@ export default class Update extends Component {
   }
 
 
+  /**
+   * Validates input based on validation method defined in Fields[]
+   * @return {boolean}
+   */
+  validator = () => {
+    for (const [label, validator] of this.fields) {
+      if (!validator(this.state[camelcase(label)])) {
+        return false
+      }
+    }
+    return true
+  }
+
+
+  /**
+   * Renders input fields based on definitions in fields[]
+   * @param {String} label
+   * @param {Mixed} type
+   * @param {Method} validator
+   * @param {boolean} isTextArea
+   * @return {JSX} an input surrounded with a label
+   */
+  fieldRender([label, type, validator, isTextArea]) {
+    const name = camelcase(label);
+    if (isTextArea === true) {
+      return (
+        <label key={name}>
+          {label}
+          <textarea
+            name={name}
+            value={this.state[name]}
+            onChange={this.handleChange}
+            className={validator(this.state[name]) ? "valid" : ""}
+            required
+          />
+        </label>
+
+      )
+    }
+
+    return (
+      <label key={name}>
+        {label}
+        <input
+          name={name}
+          type={type}
+          value={this.state[name]}
+          onChange={this.handleChange}
+          className={validator(this.state[name]) ? "valid" : ""}
+          required
+        />
+      </label>
+    )
+  }
 
   updateHandler = async () => {
+    event.preventDefault()
+    //invalid input handling
+    if (!this.validator()) {
+      this.setState({ error: "Invalid input" })
+      return
+    }
 
     try {
       const taskData = {
@@ -74,12 +131,24 @@ export default class Update extends Component {
         deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
       }
       await task.update(taskData)
-      //Redirect to employers task-overview
+
     } catch (e) {
       this.setState({ error: e.message })
     }
 
   }
+
+  /**
+     * Sets state data when changes are made in text-inputs
+     * @param {Event} event
+     */
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+
+  }
+
 
   render() {
     return (
