@@ -17,54 +17,43 @@ export default withRouter(class Create extends Component {
     error: null
   }
 
-  /**
-   * Gets Task arguments and Setstate
-   */
-  getTask = async () => {
-    const task = await task.get(this.props.match.params.id);
-    this.setState({
-      title: task.title,
-      description: task.description,
-      urgency: task.urgency,
-      startDate: task.startDate,
-      endDate: task.endDate,
-    })
-  }
-
-  componentDidMount = () => {
-    this.getTask()
-  }
-
   fields = [
     //["label", "Type", Validation method]
     ["Title", "text", v => v.length > 0, false],
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
   ]
-  /**
- * Sets the selected  date
- * @param {Date} date
- */
-  updateStartDate = (date) => {
-    this.setState({ startDate: date })
-    this.setState({ endDate: date })
+
+  updateHandler = async event => {
+    event.preventDefault()
+    //invalid input handling
+    if (!this.validator()) {
+      this.setState({ error: "Invalid input" })
+      return
+    }
+
+    //input valid
+    try {
+      const taskData = {
+        title: this.state.title,
+        description: this.state.description,
+        urgency: this.state.urgency,
+        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+      }
+      await task.update(this.props.match.params.id, taskData)
+      this.props.history.push('/tasks')
+    } catch (e) {
+      this.setState({ error: e.message })
+    }
   }
 
   /**
-   * Sets selected date of deadline
-   * @param {Date} date
-   */
-  updateEndDate = (date) => {
-    this.setState({ endDate: date })
-  }
-
-
-  /**
-   * Validates input based on validation method defined in Fields[]
-   * @return {boolean}
-   */
+     * Validates input based on validation method defined in Fields[]
+     * @return {boolean}
+     */
   validator = () => {
-    for (const [label, validator] of this.fields) {
+    for (const [label, _, validator] of this.fields) { // eslint-disable-line
       if (!validator(this.state[camelcase(label)])) {
         return false
       }
@@ -72,14 +61,15 @@ export default withRouter(class Create extends Component {
     return true
   }
 
+
   /**
-   * Renders input fields based on definitions in fields[]
-   * @param {String} label
-   * @param {Mixed} type
-   * @param {Method} validator
-   * @param {boolean} isTextArea
-   * @return {JSX} an input surrounded with a label
-   */
+* Renders input fields based on definitions in fields[]
+* @param {String} label
+* @param {Mixed} type
+* @param {Method} validator
+* @param {boolean} isTextArea
+* @return {JSX} an input surrounded with a label
+*/
   fieldRender([label, type, validator, isTextArea]) {
     const name = camelcase(label);
     if (isTextArea === true) {
@@ -113,29 +103,7 @@ export default withRouter(class Create extends Component {
     )
   }
 
-  updateHandler = async event => {
-    event.preventDefault()
-    //invalid input handling
-    if (!this.validator()) {
-      this.setState({ error: "Invalid input" })
-      return
-    }
 
-    //input valid
-    try {
-      const taskData = {
-        title: this.state.title,
-        description: this.state.description,
-        urgency: this.state.urgency,
-        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-      }
-      await task.update(this.props.match.params.id, taskData)
-      this.props.history.push('/tasks')
-    } catch (e) {
-      this.setState({ error: e.message })
-    }
-  }
   /**
      * Sets state data when changes are made in text-inputs
      * @param {Event} event
@@ -147,6 +115,55 @@ export default withRouter(class Create extends Component {
 
   }
 
+  componentDidMount = () => {
+    this.getTask()
+  }
+
+  /**
+   * Gets Task arguments and Setstate
+   */
+  getTask = async () => {
+    const task = await task.get(this.props.match.params.id);
+    this.setState({
+      title: task.title,
+      description: task.description,
+      urgency: task.urgency,
+      startDate: task.startDate,
+      endDate: task.endDate,
+    })
+  }
+
+  /**
+   * Sets the selected  date
+   * @param {Date} date
+   */
+  updateStartDate = (date) => {
+    this.setState({
+      startDate: date,
+      endDate: date,
+    })
+
+  }
+
+  /**
+   * Sets selected date of deadline
+   * @param {Date} date
+   */
+  updateEndDate = (date) => {
+    this.setState({ endDate: date })
+
+  }
+
+  /**
+   * Sets state data when changes are made in text-inputs
+   * @param {Event} event
+   */
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+
+  }
 
   render() {
     return (
@@ -172,6 +189,4 @@ export default withRouter(class Create extends Component {
       </Layout>
     )
   }
-
-
 })
