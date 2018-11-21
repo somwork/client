@@ -4,8 +4,10 @@ import task from '../../api/task'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
 import Alert from '../../components/Alert'
+import { withRouter } from 'react-router-dom'
+import camelcase from 'camelcase'
 
-export default class Update extends Component {
+export default withRouter(class Create extends Component {
   state = {
     startDate: moment(),
     endDate: moment(),
@@ -114,7 +116,7 @@ export default class Update extends Component {
     )
   }
 
-  updateHandler = async () => {
+  updateHandler = async event => {
     event.preventDefault()
     //invalid input handling
     if (!this.validator()) {
@@ -122,22 +124,21 @@ export default class Update extends Component {
       return
     }
 
+    //input valid
     try {
       const taskData = {
         title: this.state.title,
         description: this.state.description,
         urgency: this.state.urgency,
-        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS, due to Superstruckt limitations
+        start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
-      await task.update(taskData)
-
+      await task.create(taskData)
+      this.props.history.push('/tasks')
     } catch (e) {
       this.setState({ error: e.message })
     }
-
   }
-
   /**
      * Sets state data when changes are made in text-inputs
      * @param {Event} event
@@ -158,7 +159,7 @@ export default class Update extends Component {
           {this.state.error && (
             <Alert>{this.state.error} </Alert>
           )}
-          <form onSubmit={this.submitHandler}>
+          <form onUpdate={this.updateHandler}>
             {this.fields.map(this.fieldRender.bind(this))}
             <label>
               Starting Date
@@ -169,10 +170,11 @@ export default class Update extends Component {
             <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
             </label>
           </form>
-          <input type="submit" value="Update" onClick={this.UpdateHandler} />
+          <input type="Update" value="Update" onClick={this.UpdateHandler} />
         </section>
       </Layout>
     )
   }
 
-}
+
+})
