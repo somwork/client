@@ -108,9 +108,8 @@ input,
 textarea,
 button {
   background: var(--light);
-  border-color: var(--secondary);
+  border: solid var(--border-width) var(--secondary);
   border-radius: var(--border-radius);
-  border-width: var(--border-width);
   padding: calc(var(--spacing) / 2);
   font-size: var(--font-size);
   font-family: var(--font-family);
@@ -128,6 +127,14 @@ button {
   appearance: none;
 }
 
+input[type="radio"],
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 input[type="submit"].secondary,
 button.secondary {
   background: var(--light);
@@ -140,19 +147,6 @@ button:hover {
   background: var(--light);
   color: var(--primary-dark);
   border-color: var(--primary-dark);
-}
-
-textarea,
-input {
-  background: var(--light);
-  border-color: var(--secondary);
-  border-radius: calc(var(--border-radius) * 2);
-  border-width: var(--border-width);
-  padding: calc(var(--spacing) / 2);
-  width: 100%;
-  margin: var(--spacing-top-bottom);
-  resize: none;
-  font-family: var(--font-family);
 }
 
 input[type="submit"].secondary:hover,
@@ -178,7 +172,6 @@ ul li{
   appearance: none;
   width: auto;
 }
-
 
 input:focus,
 textarea:focus,

@@ -1,17 +1,24 @@
 import React,{ Component } from "react";
+import { withRouter } from "react-router-dom";
 import Layout from '../../components/Layout';
+import Alert from '../../components/Alert';
 import camelcase from 'camelcase';
 import worker from '../../api/worker';
+import employer from '../../api/employer';
+import './SignUp.css'
 
-export default class SignUp extends Component{
+const api = { worker, employer }
 
+export default withRouter(class SignUp extends Component{
   state = {
     firstName: '',
     lastName: '',
     email: '',
     username:'',
     password:'',
-    verifyPassword:''
+    verifyPassword:'',
+    type: 'worker',
+    error: null
   };
 
   fields = [
@@ -20,8 +27,8 @@ export default class SignUp extends Component{
     ["Last name","text", v => v.length > 0],
     ["Email","email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line
     ["Username","text", v => v.length > 0],
-    ["Password","password", v => v.length >= 8],
-    ["Verify password","password", v => v === this.state.password && v.length>=8]
+    ["Password","password", v => v.length >= 4],
+    ["Verify password","password", v => v === this.state.password && v.length >= 4]
   ]
 
   /**
@@ -44,17 +51,27 @@ export default class SignUp extends Component{
     event.preventDefault();
 
     if(!this.validator()){
-      //invalid input
-      return false;
+      this.setState({ error: "Invalid input" })
+      return
     }
 
-    await worker.create({
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      username: this.state.username,
-      password: this.state.password,
-    });
+    try {
+      const res = await api[this.state.type].create({
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        username: this.state.username,
+        password: this.state.password,
+      });
+
+      if (res.error) {
+        return this.setState({ error: res.error })
+      }
+
+      this.props.history.push('/login')
+    } catch(err) {
+      this.setState({ error: err.message })
+    }
   }
 
   /**
@@ -101,9 +118,33 @@ export default class SignUp extends Component{
   render(){
     return (
       <Layout hideSideBar>
-        <section>
-          <h1>Sign Up</h1>
+        <section className="sign-up">
           <form onSubmit={this.submitHandler}>
+            <h1>Sign Up</h1>
+            {this.state.error && (
+              <Alert>{this.state.error}</Alert>
+            )}
+            <label>
+              <input
+                name='type'
+                type='radio'
+                value='worker'
+                onChange={this.changeHandler}
+                checked={this.state.type === 'worker'}
+                required
+              /> Worker
+            </label>
+            <span />
+            <label>
+              <input
+                name='type'
+                type='radio'
+                value='employer'
+                onChange={this.changeHandler}
+                checked={this.state.type === 'employer'}
+                required
+              /> Employer
+            </label><br />
             {this.fields.map(this.fieldRender.bind(this))}
             <input type="submit" value="Submit"/>
           </form>
@@ -111,4 +152,4 @@ export default class SignUp extends Component{
       </Layout>
     )
   }
-}
+})
