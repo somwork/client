@@ -18,7 +18,9 @@ export default class Update extends Component {
     super(props);
 
   };
-
+  /**
+   * Gets Task arguments and Setstate
+   */
   getTask = async () => {
     const task = await task.get(this.props.match.params.id);
     this.setState({
