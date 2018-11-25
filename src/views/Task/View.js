@@ -5,6 +5,7 @@ import Offer from '../../api/offer';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import'./TaskView.css'
+import Chat from "./Chat";
 
 export default class View extends Component{
 
@@ -26,15 +27,8 @@ export default class View extends Component{
         workerId:'',
         taskId:''
       }],
-      mesaggeInput:[{
-        sendtAt:'',
-        text:''
-      }],
-      message:[["11:11:11","asdASDAS"],["11:11:11","asdASDAS"],["11:11:11","asdASDAS"]],
-
       error: null
     }
-
     this.loadTasks(this.props.match.params.id);
   }
 
@@ -46,14 +40,6 @@ export default class View extends Component{
     const res = await Task.get(id);
 
     this.setState({tasks:res})
-  }
-
-  /**
-   * loads all messages from the db into the state
-   */
-  loadChat = async ()=>{
-    const res =await Task.getChat(); //TODO
-    this.setState({message:res})
   }
 
   /**
@@ -85,31 +71,8 @@ export default class View extends Component{
         accepted: '',
         price: this.state.offer.price,
         currency: '', //TODO
-        workerId: '',//TODO
+        workerId: '', //TODO
         taskId: this.state.Task.id,
-      });
-
-      if (res.error) {
-        return this.setState({ error: res.error })
-      }
-
-    } catch(err) {
-      this.setState({ error: err.message })
-    }
-  }
-
-  mesaggeSubmithandler = async event =>{
-    event.preventDefault();
-
-    if(!this.state){
-      this.setState({ error: "Invalid input" })
-      return
-    }
-
-    try {
-      const res = await Task.createMessage({//TODO
-        sendtAt: this.mesaggeInput.sendtAt,
-        text: this.mesaggeInput.text
       });
 
       if (res.error) {
@@ -158,20 +121,9 @@ export default class View extends Component{
           <div>
           <hr></hr>
           <p><h6>Task Description:</h6></p>
-          <p>{task.description}</p> <p>TEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST </p>
+          <p>{task.description}TEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST </p>
           </div>
       </label>
-    )
-  }
-
-  fieldRenderChat(message){
-    return(
-      <li class="chatBox">
-        <label>
-          <p>sendt at: {message.sendtAt}</p>
-          <p> TEMP CHAT TEXT BLA BLA BLA{message.text}</p>
-        </label>
-      </li>
     )
   }
 
@@ -185,12 +137,12 @@ export default class View extends Component{
       <Layout>
         <section>
           <h1>Title Task</h1>
-          <h3>Taks Details</h3>
+          <h3>Task Details</h3>
           <hr></hr>
           {this.fieldRenderTaskDescription(this.state.Task)}
 
           <Popup trigger={<button> Make offer</button>}>
-            <div>
+            <div class="popUpInner">
               <label>
                 <input name='price:' type='number' onChange={this.changeHandler}  placeholder=" Estimated Hours" required/>
                 <input type="submit" value="Submit" submitHandler="offerSubmitHandler"/>
@@ -198,14 +150,7 @@ export default class View extends Component{
             </div>
           </Popup>
           <hr></hr>
-
-          <ul>
-          {this.state.message.map(this.fieldRenderChat.bind(this))}
-          </ul>
-          <div class="chat">
-          <input name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
-          <input type="submit" value="send" submitHandler="mesaggeSubmithandler" class="sendbutton"/>
-          </div>
+         <Chat taskId={this.state.Task.id}/>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>
