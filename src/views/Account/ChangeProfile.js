@@ -1,22 +1,20 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import Layout from '../../components/Layout';
-import Alert from '../../components/Alert';
-import camelcase from 'camelcase';
+import React, { Component } from 'react'
+import Layout from '../../components/Layout'
+import Alert from '../../components/Alert'
+import camelcase from 'camelcase'
+import { withRouter } from 'react-router-dom'
 import worker from '../../api/worker';
 import employer from '../../api/employer';
 import auth from '../../api/auth';
 
 const api = { worker, employer }
 
-export default withRouter(class SignUp extends Component {
+export default withRouter(class ChangeProfile extends Component {
   state = {
-    user: {
-      firstName: "",
-      lastName: '',
-      email: '',
-      username: '',
-    },
+    firstName: "",
+    lastName: '',
+    email: '',
+    username: '',
     type: '',
     error: null
   };
@@ -54,7 +52,13 @@ export default withRouter(class SignUp extends Component {
     }
 
     try {
-      const res = await api[this.state.type].update(this.state.user);
+      const res = await api[this.state.type].update({
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        username: this.state.username,
+        id: auth.id()
+      });
 
       if (res.error) {
         return this.setState({ error: res.error })
@@ -80,9 +84,8 @@ export default withRouter(class SignUp extends Component {
   /**
   * Component setup
   */
-  componentDidMount() {
-    console.log("DidMount")
-    this.getUser()
+  async componentDidMount() {
+    await this.getUser()
   }
 
   /**
@@ -90,31 +93,35 @@ export default withRouter(class SignUp extends Component {
    * @return {Promise}
    */
   getUser = async () => {
-    console.log("getUser")
     const userType = auth.type()
+    let userData;
     if (userType === 'worker') {
-      console.log("worker")
-      this.setState({ user: await worker.get(auth.id()) })
+      userData = await worker.get(auth.id())
       this.setState({ type: await userType })
-      return
+    }
+    else if (userType === 'employer') {
+      userData = await employer.get(auth.id())
+      this.setState({ type: await userType })
     }
 
-    if (userType === 'employer') {
-      this.setState({ user: await employer.get(auth.id()) })
-      this.setState({ type: await userType })
-      return
-    }
+    this.setState({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      username: userData.username,
+    })
   }
 
+
   /**
- * Constructor for an inputfield
- * @param {String} label
- * @param {Mixed} type
- * @param {Method} validator
- * @return {JSX} an input surrounded with a label
- */
+   * Renders input fields based on definitions in fields[]
+   * @param {String} label
+   * @param {Mixed} type
+   * @param {Method} validator
+   * @param {boolean} isTextArea
+   * @return {JSX} an input surrounded with a label
+   */
   fieldRender([label, type, validator]) {
-    console.log("fieldrender " + label)
     const name = camelcase(label);
     return (
       <label key={name}>
@@ -122,31 +129,28 @@ export default withRouter(class SignUp extends Component {
         <input
           name={name}
           type={type}
-          value={this.state[name]}
+          defaultValue={this.state[name]}
           onChange={this.changeHandler}
-          //className={validator(this.state[name]) ? "valid" : ""}
+          className={validator(this.state[name]) ? "valid" : ""}
           required
         />
       </label>
     )
   }
 
-  /**
-  * Creates the signUp view
-  * @return {JSX} View
-  */
   render() {
+    console.log("render")
     return (
-      <Layout hideSideBar>
-        <section className="sign-up">
+      <Layout>
+        <section>
+          <h2>Change profile</h2>
+          {this.state.error && (
+            <Alert>{this.state.error} </Alert>
+          )}
           <form onSubmit={this.submitHandler}>
-            <h1>Change profile</h1>
-            {this.state.error && (
-              <Alert>{this.state.error}</Alert>
-            )}
             {this.fields.map(this.fieldRender.bind(this))}
-            <input type="submit" value="Submit" />
           </form>
+          <input type="submit" value="Change profile" onClick={this.submitHandler} />
         </section>
       </Layout>
     )
