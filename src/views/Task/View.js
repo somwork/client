@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import'./TaskView.css'
 import Chat from "./Chat";
+import auth from '../../api/auth';
 
 export default class View extends Component{
 
@@ -40,6 +41,7 @@ export default class View extends Component{
     const res = await Task.get(id);
 
     this.setState({tasks:res})
+    
   }
 
   /**
@@ -71,7 +73,7 @@ export default class View extends Component{
         accepted: '',
         price: this.state.offer.price,
         currency: '', //TODO
-        workerId: '', //TODO
+        workerId: auth.id(),
         taskId: this.state.Task.id,
       });
 

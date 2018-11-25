@@ -19,9 +19,12 @@ export default class Chat extends Component{
       chatContext:[
         ["11:11:11","asdASDAS"],
         ["11:11:11","asdASDAS"],
-        ["11:11:11","asdASDAS"]]
+        ["11:11:11","asdASDAS"]
+      ],
+      taskId: this.props.taskId
     }
-    this.loadChat(this.props.taskId);
+      
+    this.loadChat(this.state.taskId);
   }
 
   /**
