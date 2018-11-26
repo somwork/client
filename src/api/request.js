@@ -1,5 +1,6 @@
 import url from 'url'
 import config from '../config'
+import auth from './auth'
 
 /**
  * Default fetch options
@@ -21,6 +22,20 @@ function authorized() {
 }
 
 /**
+ * Handle if token expired and send the request again
+ * @param {function} request
+ * @return {Promise} response
+ */
+const handleExpiredToken = request => async response => {
+  if (!response.headers['Expired-Token']) {
+    return response
+  }
+
+  await auth.refresh()
+  return request()
+}
+
+/**
  * Create a new fetch request
  * @param  {String} method
  * @param  {String} path
@@ -35,11 +50,15 @@ function createRequest (method, path, body, options = defaultOptions) {
     options.headers.Authorization = `Bearer ${accessToken}`
   }
 
-  return fetch(url.resolve(config.host, path), {
+  const request = () => fetch(url.resolve(config.host, path), {
     method,
     body: body ? JSON.stringify(body) : undefined,
     ...options,
   })
+
+  return request().then(
+    handleExpiredToken(request)
+  )
 }
 
 export default {
