@@ -121,7 +121,7 @@ export default withRouter(class Update extends Component {
    * Gets Task arguments and Setstate
    */
   getTask = async () => {
-    const loadedTask = await loadedTask.get(this.props.match.params.id);
+    const loadedTask = await task.get(this.props.match.params.id);
     this.setState({
       title: loadedTask.title,
       description: loadedTask.description,
