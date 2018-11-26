@@ -17,6 +17,11 @@ export default withRouter(class Update extends Component {
     error: null
   }
 
+  constructor(props) {
+    super(props);
+
+  };
+
   fields = [
     //["label", "Type", Validation method ,isTextArea]
     ["Title", "text", v => v.length > 0, false],
@@ -121,13 +126,14 @@ export default withRouter(class Update extends Component {
    * Gets Task arguments and Setstate
    */
   getTask = async () => {
+
     const loadedTask = await task.get(this.props.match.params.id);
     this.setState({
       title: loadedTask.title,
       description: loadedTask.description,
       urgency: loadedTask.urgency,
-      start: loadedTask.start,
-      deadline: loadedTask.deadline,
+      start: moment(loadedTask.start),
+      deadline: moment(loadedTask.deadline),
     })
   }
 
