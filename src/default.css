@@ -23,6 +23,8 @@
   --border-radius: 6px;
   --border-width: 2px;
 
+  --shadow: 0px 0px 40px rgba(0, 0, 0, 0.1);
+
   --sidebar-width: 240px;
 }
 
@@ -156,19 +158,6 @@ button.secondary:hover {
 
 input.valid{
   border-color : var(--success);
-}
-
-ul li{
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
-  color: var(--light);
-  font-size: var(--font-size);
-  padding: calc(var(--spacing) / 2) var(--spacing);
-  border-radius: var(--border-radius);
-  margin: var(--spacing-top-bottom);
-  cursor:pointer;
-  appearance: none;
-  width: auto;
 }
 
 input:focus,

@@ -20,7 +20,7 @@ class Sidebar extends Component {
    */
   worker = [
     ["Dashboard", "/", "fas fa-tachometer-alt"],
-    ["My Tasks", "/tasks/list", "fas fa-tasks"],
+    ["My Tasks", "/task/list", "fas fa-tasks"],
     ["Account", "/account", "fas fa-user"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
