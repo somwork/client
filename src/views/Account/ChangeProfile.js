@@ -15,7 +15,6 @@ export default withRouter(class ChangeProfile extends Component {
     lastName: '',
     email: '',
     username: '',
-    type: '',
     error: null
   };
 
@@ -52,7 +51,8 @@ export default withRouter(class ChangeProfile extends Component {
     }
 
     try {
-      const res = await api[this.state.type].update({
+      localStorage.removeItem('user')
+      const res = await api[auth.type()].update({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
@@ -93,23 +93,7 @@ export default withRouter(class ChangeProfile extends Component {
    * @return {Promise}
    */
   getUser = async () => {
-    const userType = auth.type()
-    let userData;
-    if (userType === 'worker') {
-      userData = await worker.get(auth.id())
-      this.setState({ type: await userType })
-    }
-    else if (userType === 'employer') {
-      userData = await employer.get(auth.id())
-      this.setState({ type: await userType })
-    }
-
-    this.setState({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      username: userData.username,
-    })
+    this.setState(await auth.user())
   }
 
 
