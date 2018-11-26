@@ -8,7 +8,7 @@ import auth from './auth'
  */
 const defaultOptions = {
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json; charset=utf-8'
   },
 }
 
@@ -27,12 +27,27 @@ function authorized() {
  * @return {Promise} response
  */
 const handleExpiredToken = request => async response => {
-  if (!response.headers['Expired-Token']) {
+  if (response.status !== 401) {
     return response
   }
 
   await auth.refresh()
-  return request()
+  return request(authorize(defaultOptions))
+}
+
+/**
+ * Autherize with default options
+ * @param  {Object} options
+ * @return {Object} options
+ */
+function authorize(options) {
+  const [isAuthorized, accessToken] = authorized()
+
+  if (isAuthorized && !options.ignoreAuth) {
+    options.headers.Authorization = `Bearer ${accessToken}`
+  }
+
+  return options
 }
 
 /**
@@ -43,20 +58,16 @@ const handleExpiredToken = request => async response => {
  * @param  {Object} [options=defaultOptions]
  * @return {Promise}
  */
-function createRequest (method, path, body, options = defaultOptions) {
-  const [isAuthorized, accessToken] = authorized()
+async function createRequest (method, path, body, options = defaultOptions) {
+  options = authorize(options)
 
-  if (isAuthorized && !options.ignoreAuth) {
-    options.headers.Authorization = `Bearer ${accessToken}`
-  }
-
-  const request = () => fetch(url.resolve(config.host, path), {
+  const request = options => fetch(url.resolve(config.host, path), {
     method,
     body: body ? JSON.stringify(body) : undefined,
     ...options,
   })
 
-  return request().then(
+  return request(options).then(
     handleExpiredToken(request)
   )
 }
