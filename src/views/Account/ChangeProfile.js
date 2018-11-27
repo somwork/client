@@ -123,7 +123,6 @@ export default withRouter(class ChangeProfile extends Component {
   }
 
   render() {
-    console.log("render")
     return (
       <Layout>
         <section>
