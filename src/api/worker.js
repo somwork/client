@@ -62,7 +62,11 @@ export default {
    * @return {Promise}
    */
   async getSkills(id) {
-    const res = await request.get(`workers/${id}/skills`)
-    return await res.json()
+    try {
+      const res = await request.get(`workers/${id}/skills`)
+      return await res.json()
+    } catch (err) {
+      return err
+    }
   }
 }

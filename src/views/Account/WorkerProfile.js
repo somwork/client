@@ -35,13 +35,20 @@ export default withRouter(class WorkerProfile extends Component {
    * @return {Promise}
    */
   getUser = async () => {
-    const userData = await worker.get(this.state.id)
-    this.setState({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      username: userData.username,
-    })
+    try {
+      this.setState(await worker.get(this.state.id))
+
+      // const userData = await worker.get(this.state.id)
+
+      // this.setState({
+      //   firstName: userData.firstName,
+      //   lastName: userData.lastName,
+      //   email: userData.email,
+      //   username: userData.username,
+      // })
+    } catch (err) {
+      this.setState({ error: err })
+    }
   }
 
   render() {

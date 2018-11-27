@@ -46,7 +46,6 @@ class Skills extends Component {
       </div>
     )
   }
-
 }
 
 export default Skills;
