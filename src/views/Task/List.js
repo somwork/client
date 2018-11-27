@@ -1,25 +1,30 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
-import Task from '../../api/task';
+import task from '../../api/task';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+import './Task.css'
 
 export default class List extends Component{
 
-  constructor(props){
-    super(props);
+  state = {
+    tasks: []
+  }
 
-    this.state = {tasks:[]}
-
+  /**
+   * Run when component mounts
+   */
+  componentDidMount () {
     this.loadTasks();
-
-  };
+  }
 
   /**
    * loads all tasks from the db into the state
    */
-  loadTasks = async ()=>{
-    const res =await Task.get();
-    this.setState({tasks:res})
+  loadTasks = async () => {
+    this.setState({
+      tasks: await task.get()
+    })
   }
 
   /**
@@ -27,16 +32,25 @@ export default class List extends Component{
    * @param {Object} task
    * @return {JSX}  a task as a list item
    */
-  fieldRender(task){
+  renderListItem(task){
     return(
       <Link to={'detail/'+task.id}>
-        <li key ={task.id}>
-          <label>
-            <p><b>Task Id:</b> {task.id}</p>
-            <p>{task.start} → {task.deadline}</p>
-            <p>{task.urgency}</p>
+        <li key={task.id}>
+          <div>
+            <h4>{task.title}</h4>
             <p>{task.description}</p>
-          </label>
+          </div>
+          <div>
+            <p>
+              <b>Deadline:</b><br />
+              {moment(task.deadline).format('DD. MMM YYYY')}
+              <br/>
+              <br/>
+              <b>Urgency:</b><br />
+              {task.urgency}
+            </p>
+            <button>See task</button>
+          </div>
         </li>
       </Link>
     )
@@ -49,10 +63,10 @@ export default class List extends Component{
   render(){
     return (
       <Layout>
-        <section>
-          <h1>Task overview</h1>
+        <section className='task-list'>
+          <h1>Tasks</h1>
           <ul>
-            {this.state.tasks.map(this.fieldRender.bind(this))}
+            {this.state.tasks.map(this.renderListItem.bind(this))}
           </ul>
         </section>
       </Layout>

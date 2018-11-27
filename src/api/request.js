@@ -1,5 +1,6 @@
 import url from 'url'
 import config from '../config'
+import auth from './auth'
 
 /**
  * Default fetch options
@@ -7,7 +8,7 @@ import config from '../config'
  */
 const defaultOptions = {
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json; charset=utf-8'
   },
 }
 
@@ -21,6 +22,35 @@ function authorized() {
 }
 
 /**
+ * Handle if token expired and send the request again
+ * @param {function} request
+ * @return {Promise} response
+ */
+const handleExpiredToken = request => async response => {
+  if (response.status !== 401) {
+    return response
+  }
+
+  await auth.refresh()
+  return request(authorize(defaultOptions))
+}
+
+/**
+ * Autherize with default options
+ * @param  {Object} options
+ * @return {Object} options
+ */
+function authorize(options) {
+  const [isAuthorized, accessToken] = authorized()
+
+  if (isAuthorized && !options.ignoreAuth) {
+    options.headers.Authorization = `Bearer ${accessToken}`
+  }
+
+  return options
+}
+
+/**
  * Create a new fetch request
  * @param  {String} method
  * @param  {String} path
@@ -28,18 +58,18 @@ function authorized() {
  * @param  {Object} [options=defaultOptions]
  * @return {Promise}
  */
-function createRequest (method, path, body, options = defaultOptions) {
-  const [isAuthorized, accessToken] = authorized()
+async function createRequest (method, path, body, options = defaultOptions) {
+  options = authorize(options)
 
-  if (isAuthorized && !options.ignoreAuth) {
-    options.headers.Authorization = `Bearer ${accessToken}`
-  }
-
-  return fetch(url.resolve(config.host, path), {
+  const request = options => fetch(url.resolve(config.host, path), {
     method,
     body: body ? JSON.stringify(body) : undefined,
     ...options,
   })
+
+  return request(options).then(
+    handleExpiredToken(request)
+  )
 }
 
 export default {
