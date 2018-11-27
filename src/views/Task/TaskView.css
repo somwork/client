@@ -24,7 +24,6 @@ ul {
   position: relative;
   width: 20%;
   z-index: 2;
-  background: rgb(219, 0, 0);
   border: 1px solid rgb(187, 187, 187);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
   padding: 5px;
@@ -43,4 +42,3 @@ ul {
 .sendbutton{
 width: 20%;
 }
-

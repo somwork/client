@@ -53,5 +53,13 @@ export default {
   async delete(id) {
     const res = await request.delete(`tasks/${id}`)
     return await res.json()
+  },
+
+  async getTaskMessages(taskId){
+  //TODO
+  },
+
+  async createTaskMessage(taskId,message){
+  //TODO
   }
 }

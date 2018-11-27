@@ -1,9 +1,6 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
-import Offer from '../../api/offer';
-import { Link } from 'react-router-dom';
-import Popup from "reactjs-popup";
 import'./TaskView.css'
 
 export default class Chat extends Component{
@@ -13,29 +10,31 @@ export default class Chat extends Component{
 
     this.state = {
       mesaggeInput:[{
+        taskId:"",
         sendtAt:'',
         text:''
       }],
-      chatContext:[
-        ["11:11:11","asdASDAS"],
-        ["11:11:11","asdASDAS"],
-        ["11:11:11","asdASDAS"]
-      ],
+      messageList:[{taskId:"1",
+      sendtAt:'22:33:11',
+      text:'bla bla bla'}],
       taskId: this.props.taskId
     }
-      
+
     this.loadChat(this.state.taskId);
   }
 
   /**
    * loads all messages from the db into the state
    */
-  loadChat = async ID=>{
-    const res =await Task.getChat(); //TODO
-    this.setState({chatContext:res})
+  loadChat = async taksId=>{
+    const res =await Task.getTaskMessages(taksId); //TODO
+    this.setState({messageList:res})
+    if(res===undefined){
+      this.setState({messageList:"no Comments"})
+    }
   }
 
-    /**
+  /**
    * event listener for input
    * adds changes to this.state
    * @param  {Object} event
@@ -46,7 +45,6 @@ export default class Chat extends Component{
     })
   }
 
-
   mesaggeSubmithandler = async event =>{
     event.preventDefault();
 
@@ -56,7 +54,8 @@ export default class Chat extends Component{
     }
 
     try {
-      const res = await Task.createMessage({//TODO
+      const res = await Task.createTaskMessage(this.state.taskId,{//TODO
+        taskId: this.taskId,
         sendtAt: this.mesaggeInput.sendtAt,
         text: this.mesaggeInput.text
       });
@@ -74,8 +73,9 @@ export default class Chat extends Component{
     return(
       <li class="chatBox">
         <label>
+          <p> Id: {message.taskId}</p>
           <p>sendt at: {message.sendtAt}</p>
-          <p> TEMP CHAT TEXT BLA BLA BLA{message.text}</p>
+          <p>{message.text}</p>
         </label>
       </li>
     )
@@ -86,7 +86,7 @@ export default class Chat extends Component{
       <Layout>
         <section>
           <ul>
-            {this.state.message.map(this.fieldRenderChat.bind(this))}
+            {this.state.messageList.map(this.fieldRenderChat.bind(this))}
           </ul>
           <div class="chat">
             <input id='messageInput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
@@ -96,6 +96,4 @@ export default class Chat extends Component{
     </Layout>
     )
   }
-
-
 }

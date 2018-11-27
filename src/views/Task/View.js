@@ -24,11 +24,12 @@ export default class View extends Component{
       offer:[{
         accepted: '',
         price:'',
+        totalHours:"",
         currency:'',
+        complexity:"",
         workerId:'',
         taskId:''
-      }],
-      error: null
+      }]
     }
     this.loadTasks(this.props.match.params.id);
   }
@@ -41,7 +42,6 @@ export default class View extends Component{
     const res = await Task.get(id);
 
     this.setState({tasks:res})
-    
   }
 
   /**
@@ -70,7 +70,7 @@ export default class View extends Component{
 
     try {
       const res = await Offer.create({
-        accepted: '',
+        accepted: 'false',
         price: this.state.offer.price,
         currency: '', //TODO
         workerId: auth.id(),
@@ -98,37 +98,36 @@ export default class View extends Component{
           <div>
             <b>Task Id</b>
             <div>
-            {task.id} !2345!
+            {task.id}
             </div>
           </div>
           <div>
             <b>published</b>
             <div>
-            {task.start} 11:11:12
+            {task.start}
             </div>
           </div>
           <div>
             <b>Deadline</b>
             <div>
-            {task.deadline} 99:99:99
+            {task.deadline}
             </div>
           </div>
           <div>
             <b>Urgency</b>
             <div >
-            {task.urgency}! FIRE!
+            {task.urgency}
             </div>
           </div>
           </div>
           <div>
           <hr></hr>
           <p><h6>Task Description:</h6></p>
-          <p>{task.description}TEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST DATATEST </p>
+          <p>{task.description}</p>
           </div>
       </label>
     )
   }
-
 
   /**
    * Creates the Task overview view
@@ -146,7 +145,9 @@ export default class View extends Component{
           <Popup trigger={<button> Make offer</button>}>
             <div class="popUpInner">
               <label>
-                <input name='price:' type='number' onChange={this.changeHandler}  placeholder=" Estimated Hours" required/>
+                <input name='price' type='number' onChange={this.changeHandler}  placeholder="Horly pay" required/>
+                <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder=" Estimated Hours" required/>
+                <input name='complexity' type='number' onChange={this.changeHandler}  placeholder=" //Task complexity" required/>
                 <input type="submit" value="Submit" submitHandler="offerSubmitHandler"/>
               </label>
             </div>

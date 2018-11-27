@@ -8,6 +8,8 @@ const offer = struct({
   accepted: 'boolean',
   price: 'number',
   currency: 'string',
+  totalHours:'number',
+  Complexity:'number',
   workerId: 'number',
   offerId: 'number',
 })
