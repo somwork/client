@@ -19,7 +19,9 @@ class Sidebar extends Component {
    * @type {Array}
    */
   worker = [
-    ["My Tasks", "/", "fas fa-tasks"],
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["My Tasks", "/task/list", "fas fa-tasks"],
+    ["Account", "/account", "fas fa-user"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
 
@@ -28,8 +30,10 @@ class Sidebar extends Component {
    * @type {Array}
    */
   employer = [
-    ["My Tasks", "/", "fas fa-tasks"],
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["My Tasks", "/task/list", "fas fa-tasks"],
     ["Create Task", "/task/create", "fas fa-plus-square"],
+    ["Account", "/account", "fas fa-user"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
 
@@ -38,7 +42,7 @@ class Sidebar extends Component {
    * @param  {String}  path
    * @return {String}
    */
-  isActive(path){
+  isActive(path) {
     if (window.location.pathname !== path) {
       return '';
     }
@@ -49,7 +53,7 @@ class Sidebar extends Component {
   /**
    * Component setup
    */
-  componentDidMount () {
+  componentDidMount() {
     this.getUser()
   }
 

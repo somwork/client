@@ -4,7 +4,7 @@ import { struct } from 'superstruct'
 const Worker = struct({
   id: 'number?',
   username: 'string',
-  password: 'string',
+  password: 'string?',
   email: 'string',
   firstName: 'string',
   lastName: 'string',
@@ -27,10 +27,11 @@ export default {
    * @return {Promise}
    */
   async create(worker) {
-      //Validate data for the body
-      Worker(worker);
-      const res = await request.post('workers', worker);
-      return await res.json()
+    //Validate data for the body
+    Worker(worker);
+    const path = 'workers?password=' + worker.password;
+    const res = await request.post(path, worker);
+    return await res.json()
   },
 
   /**
@@ -51,7 +52,7 @@ export default {
    * @return {Promise}
    */
   async delete(id) {
-     const res = await request.delete(`workers/${id}`);
-     return res.ok
+    const res = await request.delete(`workers/${id}`);
+    return res.ok
   }
 }

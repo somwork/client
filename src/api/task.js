@@ -41,7 +41,7 @@ export default {
    */
   async update(task) {
     Task(task);
-    const res = await request.update('tasks', task)
+    const res = await request.put('tasks', task)
     return await res.json()
   },
 
