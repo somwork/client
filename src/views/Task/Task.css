@@ -1,0 +1,39 @@
+.task-list h1 {
+  margin-bottom: calc(var(--spacing) / 2);
+}
+
+.task-list ul {
+  padding: 0px;
+}
+
+.task-list ul li {
+  margin: var(--spacing-top-bottom);
+  box-shadow: var(--shadow);
+  border-radius: calc(var(--border-radius) * 2);
+  padding: var(--spacing);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-list ul a {
+  text-decoration: none;
+}
+
+.task-list ul li h4 {
+  margin-top: 0px;
+  font-weight: 400;
+}
+
+.task-list ul li p {
+  margin-bottom: 0px;
+}
+
+.task-list li div:last-child {
+  min-width: 200px;
+  padding-left: var(--spacing);
+}
+
+.task-list li div:last-child p {
+  margin: 0px;
+}
