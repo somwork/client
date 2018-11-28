@@ -6,7 +6,7 @@ export default {
    * @return {Promise}
    */
   async get(id) {
-    const res = await request.get(id ? `Currencies/${id}` : 'Currencies')
+    const res = await request.get(id ? `currencies/${id}` : 'currencies')
     return await res.json()
   }
 }
