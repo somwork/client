@@ -22,7 +22,7 @@ export default class Chat extends Component{
         taskId: 'number',
         task: 'Object',
       }],
-      messages:[],
+      messages:[{}],
       error:''
     }
   }
@@ -33,6 +33,7 @@ export default class Chat extends Component{
 
   /**
    * loads all messages from the database into the state
+   * @param {int} taskId
    */
   loadMessages = async taksId=>{
     const res =await Message.get(taksId);
@@ -51,7 +52,10 @@ export default class Chat extends Component{
        mesaggeInput:tempMessage
     })
   }
-
+  /**
+   * Checks if the active user is an worker or employer
+   * @return {Object} user
+   */
   getUser(){ //TODO
     if(Auth.type===Worker){
       return Worker.get(Auth.id);
@@ -64,7 +68,12 @@ export default class Chat extends Component{
     })
   }
 
-  mesaggeSubmithandler = async event =>{
+  /**
+   * event listener for Submit
+   * posts a request to the server
+   * @param {Object} event
+   */
+  Submithandler = async event =>{
     event.preventDefault();
 
     try {
@@ -85,7 +94,10 @@ export default class Chat extends Component{
       this.setState({ error: err.message })
     }
   }
-
+  /**
+   * creates the list og messages, if there are message objects is state, otherwise create an item saying no messages
+   * @return {JSX} View
+   */
   renderMessages(){
     if(this.state.messages.length===0){
       return(
@@ -110,6 +122,10 @@ export default class Chat extends Component{
     )
   }
 
+  /**
+   * Creates the messages list
+   * @return {JSX} View
+   */
   render(){
     return(
       <div>
@@ -118,7 +134,7 @@ export default class Chat extends Component{
           </ul>
           <div class="chat">
             <input id='messageInput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
-            <input type="submit" value="send" submitHandler="mesaggeSubmithandler" class="sendbutton"/>
+            <input type="submit" value="send" submitHandler="Submithandler" class="sendbutton"/>
             {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}
