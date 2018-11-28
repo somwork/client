@@ -10,6 +10,7 @@ export default {
     return null;
   },
   async create(message){
+    console.log(message)
     return null;
   }
 }

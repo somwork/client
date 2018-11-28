@@ -73,7 +73,8 @@ export default class Chat extends Component{
    * posts a request to the server
    * @param {Object} event
    */
-  Submithandler = async event =>{
+  SubmitHandler = async event =>{
+    console.log("submit clicked")
     event.preventDefault();
 
     try {
@@ -110,8 +111,8 @@ export default class Chat extends Component{
     return(
       <div>
         {this.state.messages.map(message=>(
-          <li class="chatBox">
-            <label>
+          <li key ={message.id} className="chatBox">
+            <label key ={message.id}>
               <p> Id: {message.taskId}</p>
               <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
               <p>{message.text}</p>
@@ -132,13 +133,14 @@ export default class Chat extends Component{
           <ul>
             {this.renderMessages()}
           </ul>
-          <div class="chat">
+          <form onSubmit={this.SubmitHandler} className="chat">
             <input id='messageInput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
-            <input type="submit" value="send" submitHandler="Submithandler" class="sendbutton"/>
+            <input type="submit" value="send" className="sendbutton"/>
+          </form>
             {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}
-          </div>
+
       </div>
     )
   }
