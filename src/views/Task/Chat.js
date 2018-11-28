@@ -134,7 +134,7 @@ export default class Chat extends Component{
             {this.renderMessages()}
           </ul>
           <form onSubmit={this.SubmitHandler} className="chat">
-            <input id='messageInput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
+            <input id='messageInaput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
             <input type="submit" value="send" className="sendbutton"/>
           </form>
             {this.state.error && (

@@ -1,4 +1,5 @@
 import request from './request'
+  ///DELETE THIS FILE BEFORE MEREGE!!!!
 
 export default {
   /**
@@ -13,4 +14,5 @@ export default {
     console.log(message)
     return null;
   }
+  ///DELETE THIS FILE BEFORE MEREGE!!!!
 }
