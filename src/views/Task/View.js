@@ -2,6 +2,7 @@ import React,{Component} from "react";
 import Layout from '../../components/Layout';
 import task from '../../api/task';
 import offer from '../../api/offer';
+import currencies from '../../api/currencies';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import'./TaskView.css'
@@ -15,9 +16,9 @@ export default class View extends Component{
   constructor(props){
     super(props);
 
-    this.state = {
+    this.state={
       task:{
-        id: '',
+        id:'',
         start:'',
         deadline:'',
         urgency:'',
@@ -38,12 +39,12 @@ export default class View extends Component{
     }
   }
 
-  componentDidMount () {
+  componentDidMount(){
     this.loadtasks(this.props.match.params.id);
   }
 
   /**
-   *loads the selected task from the db into the state
+   *loads the selected task from the database into the state
    * @param {int} id
    */
   loadtasks = async id=>{
@@ -78,12 +79,11 @@ export default class View extends Component{
         accepted:false,
         price: Number(this.state.offer.price),
         totalHours:Number(this.state.offer.totalHours),
-        currency: ''/*TODO*/,
+        currency: String(currencies.get()),
         complexity:Number(this.state.offer.complexity),
         workerId: Number(auth.id),
         taskId:Number(this.props.match.params.id)
       })
-      console.log("result:"+res)
 
     } catch(err) {
       this.setState({ error: err.message })
@@ -102,7 +102,7 @@ export default class View extends Component{
           <div>
             <b>published</b>
             <div>
-            {moment(task.start).format('DD. MMM YYYY')}
+              {moment(task.start).format('DD. MMM YYYY')}
             </div>
           </div>
           <div>
@@ -114,14 +114,14 @@ export default class View extends Component{
           <div>
             <b>Urgency</b>
             <div >
-            {task.urgency}
+              {task.urgency}
             </div>
           </div>
-          </div>
+        </div>
           <div>
-          <hr></hr>
-          <h6>task Description:</h6>
-          <p>{task.description}</p>
+            <hr></hr>
+            <h6>task Description:</h6>
+            <p>{task.description}</p>
           </div>
       </label>
     )
@@ -158,7 +158,7 @@ export default class View extends Component{
             </div>
           </Popup>
           <hr></hr>
-         <Chat taskId={this.state.task.id}></Chat>
+          <Chat taskId={this.state.task.id}></Chat>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>
