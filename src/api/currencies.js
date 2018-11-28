@@ -2,7 +2,7 @@ import request from './request'
 
 export default {
   /**
-   * Get Currencies and if id is undefined you get all employers
+   * Get a Currencie and if id is undefined you get all Currencies
    * @return {Promise}
    */
   async get(id) {
