@@ -29,8 +29,7 @@ export default {
   async create(message) {
     //Validate data for the body
     Message(message);
-    const path = 'messages?password=' + message.password
-    const res = await request.post(path, message);
+    const res = await request.post('messages/', message);
     return await res.json()
   },
 
