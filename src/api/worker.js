@@ -4,7 +4,7 @@ import { struct } from 'superstruct'
 const Worker = struct({
   id: 'number?',
   username: 'string',
-  password: 'string',
+  password: 'string?',
   email: 'string',
   firstName: 'string',
   lastName: 'string',
@@ -29,7 +29,8 @@ export default {
   async create(worker) {
     //Validate data for the body
     Worker(worker);
-    const res = await request.post('workers', worker);
+    const path = 'workers?password=' + worker.password;
+    const res = await request.post(path, worker);
     return await res.json()
   },
 

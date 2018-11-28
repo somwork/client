@@ -41,7 +41,7 @@ export default {
    */
   async update(id, task) {
     Task(task);
-    const res = await request.put('tasks/' + id, task)
+    const res = await request.put('tasks', task)
     return await res.json()
   },
 
