@@ -1,12 +1,14 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
-import Task from '../../api/task';
-import Offer from '../../api/offer';
+import task from '../../api/task';
+import offer from '../../api/offer';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import'./TaskView.css'
 import Chat from "./Chat";
 import auth from '../../api/auth';
+import moment from 'moment';
+import Alert from '../../components/Alert';
 
 export default class View extends Component{
 
@@ -14,34 +16,41 @@ export default class View extends Component{
     super(props);
 
     this.state = {
-      Task:[{
+      task:{
         id: '',
         start:'',
         deadline:'',
         urgency:'',
-        description:''
-      }],
-      offer:[{
-        accepted: '',
+        description:'',
+        employerId:'',
+        title:''
+      },
+      offer:{
+        accepted:'',
         price:'',
-        totalHours:"",
+        totalHours:'',
         currency:'',
-        complexity:"",
+        complexity:'',
         workerId:'',
         taskId:''
-      }]
+      },
+      error:''
     }
-    this.loadTasks(this.props.match.params.id);
   }
 
-    /**
+  componentDidMount () {
+    this.loadtasks(this.props.match.params.id);
+  }
+
+  /**
    *loads the selected task from the db into the state
    * @param {int} id
    */
-  loadTasks = async id=>{
-    const res = await Task.get(id);
+  loadtasks = async id=>{
 
-    this.setState({tasks:res})
+    const res = await task.get(id);
+
+    this.setState({task:res})
   }
 
   /**
@@ -50,36 +59,31 @@ export default class View extends Component{
    * @param  {Object} event
    */
   changeHandler = event => {
-    this.setState({
-      [event.target.name] : event.target.value
-    })
-  }
+      const tempOffer = JSON.parse(JSON.stringify(this.state.offer))
+      tempOffer[event.target.name] = event.target.value
+      this.setState({
+         offer:tempOffer
+      })
+    }
 
   /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
    */
-  offerSubmitHandler= async event =>{
+  submitHandler= async event =>{
     event.preventDefault();
-
-    if(!this.state.offer.price>0){
-      this.setState({ error: "Invalid input" })
-      return
-    }
-
     try {
-      const res = await Offer.create({
-        accepted: 'false',
-        price: this.state.offer.price,
-        currency: '', //TODO
-        workerId: auth.id(),
-        taskId: this.state.Task.id,
-      });
-
-      if (res.error) {
-        return this.setState({ error: res.error })
-      }
+      const res = await offer.create({
+        accepted:false,
+        price: Number(this.state.offer.price),
+        totalHours:Number(this.state.offer.totalHours),
+        currency: ''/*TODO*/,
+        complexity:Number(this.state.offer.complexity),
+        workerId: Number(auth.id),
+        taskId:Number(this.props.match.params.id)
+      })
+      console.log("result:"+res)
 
     } catch(err) {
       this.setState({ error: err.message })
@@ -91,26 +95,20 @@ export default class View extends Component{
    * @param {Object} task
    * @return {JSX} a task as a list item
    */
-  fieldRenderTaskDescription(task){
+  fieldRendertaskDescription(task){
     return(
       <label key ={task.id}>
-        <div class="flex-container">
-          <div>
-            <b>Task Id</b>
-            <div>
-            {task.id}
-            </div>
-          </div>
+        <div className="flex-container">
           <div>
             <b>published</b>
             <div>
-            {task.start}
+            {moment(task.start).format('DD. MMM YYYY')}
             </div>
           </div>
           <div>
             <b>Deadline</b>
             <div>
-            {task.deadline}
+            {moment(task.deadline).format('DD. MMM YYYY')}
             </div>
           </div>
           <div>
@@ -122,7 +120,7 @@ export default class View extends Component{
           </div>
           <div>
           <hr></hr>
-          <p><h6>Task Description:</h6></p>
+          <h6>task Description:</h6>
           <p>{task.description}</p>
           </div>
       </label>
@@ -130,30 +128,37 @@ export default class View extends Component{
   }
 
   /**
-   * Creates the Task overview view
+   * Creates the task overview view
    * @return {JSX} View
    */
   render(){
     return (
       <Layout>
         <section>
-          <h1>Title Task</h1>
-          <h3>Task Details</h3>
+          <h1>{this.state.task.title}</h1>
+          <h3>task Details</h3>
+          {this.state.error && (
+            <Alert>{this.state.error}</Alert>
+          )}
           <hr></hr>
-          {this.fieldRenderTaskDescription(this.state.Task)}
-
+          {this.fieldRendertaskDescription(this.state.task)}
           <Popup trigger={<button> Make offer</button>}>
-            <div class="popUpInner">
+            <div className="popUpInner">
               <label>
-                <input name='price' type='number' onChange={this.changeHandler}  placeholder="Horly pay" required/>
-                <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder=" Estimated Hours" required/>
-                <input name='complexity' type='number' onChange={this.changeHandler}  placeholder=" //Task complexity" required/>
-                <input type="submit" value="Submit" submitHandler="offerSubmitHandler"/>
+                <form onSubmit={this.submitHandler}>
+                  <p>hourly pay:</p>
+                  <input name='price' type='number' onChange={this.changeHandler}  placeholder="hourly pay" required/>
+                  <p>total hours:</p>
+                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder=" Estimated Hours" required/>
+                  <p>Complexity:</p>
+                  <input name='complexity' type='number' onChange={this.changeHandler}  placeholder=" task complexity" required/>
+                  <input type="submit" value="Submit"/>
+                </form>
               </label>
             </div>
           </Popup>
           <hr></hr>
-         <Chat taskId={this.state.Task.id}/>
+         <Chat taskId={this.state.task.id}></Chat>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>

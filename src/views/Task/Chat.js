@@ -1,5 +1,4 @@
 import React,{Component} from "react";
-import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import'./TaskView.css'
 
@@ -14,24 +13,23 @@ export default class Chat extends Component{
         sendtAt:'',
         text:''
       }],
-      messageList:[{taskId:"1",
+      messages:[{taskId:"1",
       sendtAt:'22:33:11',
       text:'bla bla bla'}],
       taskId: this.props.taskId
     }
+  }
 
-    this.loadChat(this.state.taskId);
+  componentDidMount () {
+    this.loadMessages(this.props.taskId);
   }
 
   /**
    * loads all messages from the db into the state
    */
-  loadChat = async taksId=>{
+  loadMessages = async taksId=>{
     const res =await Task.getTaskMessages(taksId); //TODO
     this.setState({messageList:res})
-    if(res===undefined){
-      this.setState({messageList:"no Comments"})
-    }
   }
 
   /**
@@ -69,31 +67,41 @@ export default class Chat extends Component{
     }
   }
 
-  fieldRenderChat(message){
-    return(
+  renderMessages(){
+    if(this.state.messages.length===0){
+      return(
       <li class="chatBox">
-        <label>
-          <p> Id: {message.taskId}</p>
-          <p>sendt at: {message.sendtAt}</p>
-          <p>{message.text}</p>
-        </label>
+          <p>No messages :(</p>
       </li>
+      )
+    }
+
+    return(
+      <div>
+        {this.state.messages.map(message=>(
+          <li class="chatBox">
+            <label>
+              <p> Id: {message.taskId}</p>
+              <p>sendt at: {message.sendtAt}</p>
+              <p>{message.text}</p>
+            </label>
+          </li>
+        ))}
+      </div>
     )
   }
 
   render(){
     return(
-      <Layout>
-        <section>
+      <div>
           <ul>
-            {this.state.messageList.map(this.fieldRenderChat.bind(this))}
+            {this.renderMessages()}
           </ul>
           <div class="chat">
             <input id='messageInput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
             <input type="submit" value="send" submitHandler="mesaggeSubmithandler" class="sendbutton"/>
           </div>
-      </section>
-    </Layout>
+      </div>
     )
   }
 }

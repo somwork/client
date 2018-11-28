@@ -4,14 +4,14 @@ import { struct } from 'superstruct'
 /**
  * Defines input-types required for validation
  */
-const offer = struct({
+const Offer = struct({
   accepted: 'boolean',
   price: 'number',
   currency: 'string',
   totalHours:'number',
-  Complexity:'number',
+  complexity:'number',
   workerId: 'number',
-  offerId: 'number',
+  taskId: 'number',
 })
 
 export default {
@@ -31,7 +31,7 @@ export default {
    * @return {Promise}
    */
   async create(offer) {
-    offer(offer)
+    Offer(offer)
     const res = await request.post('offers', offer)
     return await res.json()
   },
@@ -42,7 +42,7 @@ export default {
    * @return {Promise}
    */
   async update(offer) {
-    offer(offer);
+    Offer(offer);
     const res = await request.update('offers', offer)
     return await res.json()
   },

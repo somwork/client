@@ -13,22 +13,13 @@
 
 ul {
   list-style-type: none;
+  padding: 0%;
 }
 
 .chatBox{
   color: var(--black);
   text-align: left;
   background: rgb(239, 245, 245);
-}
-.popUp{  /* TODO can't override react import */
-  position: relative;
-  width: 20%;
-  z-index: 2;
-  border: 1px solid rgb(187, 187, 187);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
-  padding: 5px;
-  top: 541.512px;
-  left: 342.806px;
 }
 
 .popUpInner{
