@@ -1,13 +1,13 @@
 import React,{Component} from "react";
 import Layout from '../../components/Layout';
-import task from '../../api/task';
-import offer from '../../api/offer';
+import Task from '../../api/task';
+import Offer from '../../api/offer';
 import currencies from '../../api/currencies';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import'./TaskView.css'
 import Chat from "./Chat";
-import auth from '../../api/auth';
+import Auth from '../../api/auth';
 import moment from 'moment';
 import Alert from '../../components/Alert';
 
@@ -49,7 +49,7 @@ export default class View extends Component{
    */
   loadtasks = async id=>{
 
-    const res = await task.get(id);
+    const res = await Task.get(id);
 
     this.setState({task:res})
   }
@@ -75,13 +75,13 @@ export default class View extends Component{
   submitHandler= async event =>{
     event.preventDefault();
     try {
-      const res = await offer.create({
+      const res = await Offer.create({
         accepted:false,
         price: Number(this.state.offer.price),
         totalHours:Number(this.state.offer.totalHours),
         currency: String(currencies.get()),
         complexity:Number(this.state.offer.complexity),
-        workerId: Number(auth.id),
+        workerId: Number(Auth.id),
         taskId:Number(this.props.match.params.id)
       })
 
