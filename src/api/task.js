@@ -5,6 +5,7 @@ import { struct } from 'superstruct'
  * Defines input-types required for validation
  */
 const Task = struct({
+  id: 'number?',
   title: 'string',
   start: 'date',
   deadline: 'date',
@@ -41,7 +42,7 @@ export default {
    */
   async update(id, task) {
     Task(task);
-    const res = await request.put('tasks', task)
+    const res = await request.put(`tasks/${id}`, task)
     return await res.json()
   },
 

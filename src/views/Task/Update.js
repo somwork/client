@@ -7,6 +7,7 @@ import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
 import camelcase from 'camelcase'
 
+
 export default withRouter(class Update extends Component {
   state = {
     start: null,
@@ -17,11 +18,6 @@ export default withRouter(class Update extends Component {
     error: null
   }
 
-  constructor(props) {
-    super(props);
-
-  };
-
   fields = [
     //["label", "Type", Validation method ,isTextArea]
     ["Title", "text", v => v.length > 0, false],
@@ -30,6 +26,7 @@ export default withRouter(class Update extends Component {
   ]
 
   updateHandler = async event => {
+    console.log("hej")
     event.preventDefault()
     //invalid input handling
     if (!this.validator()) {
@@ -40,6 +37,7 @@ export default withRouter(class Update extends Component {
     //input valid
     try {
       const taskData = {
+        id: Number(this.props.match.params.id),
         title: this.state.title,
         description: this.state.description,
         urgency: this.state.urgency,
@@ -185,8 +183,9 @@ export default withRouter(class Update extends Component {
               Deadline
             <DatePicker onChange={this.updateDeadline} minDate={this.state.start} selected={this.state.deadline} />
             </label>
+            <input type="submit" value="Update" />
           </form>
-          <input type="submit" value="Update" onClick={this.UpdateHandler} />
+
         </section>
       </Layout>
     )
