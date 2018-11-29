@@ -38,6 +38,16 @@ class Sidebar extends Component {
   ]
 
   /**
+   * QualityAssurance list of menu items
+   * @type {Array}
+   */
+  qualityassurance = [
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["All Tasks", "/task/list", "fas fa-tasks"],
+    ["Logout", "/logout", "fas fa-lock"]
+  ]
+
+  /**
    * Check if path is equal to current window path
    * @param  {String}  path
    * @return {String}
@@ -99,6 +109,5 @@ class Sidebar extends Component {
     </div>
   )
 }
-
 
 export default Sidebar;
