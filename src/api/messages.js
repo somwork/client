@@ -6,6 +6,7 @@ const Message = struct({
   sendAt: 'date',
   userId: 'number',
   firstName:'string',
+  lastName: 'String',
   taskId: 'number',
 })
 
