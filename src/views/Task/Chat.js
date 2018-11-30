@@ -82,7 +82,8 @@ export default class Chat extends Component{
         text: String(this.state.mesaggeInput.text),
         sendAt: Date(this.state.mesaggeInput.sendAt),
         userId: Number(Auth.id),
-        name: String(Auth.user.firstfirstName),
+        firstName: String(Auth.user.firstName),
+        lastName: String(Auth.user.lastName),
         taskId: String(this.props.taskId),
       });
       console.log(res);
