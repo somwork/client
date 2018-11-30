@@ -5,9 +5,8 @@ const Message = struct({
   text: 'string',
   sendAt: 'date',
   userId: 'number',
-  User: 'Object',
+  name:'string',
   taskId: 'number',
-  task: 'Object',
 })
 
 export default {
