@@ -5,7 +5,7 @@ const Message = struct({
   text: 'string',
   sendAt: 'date',
   userId: 'number',
-  name:'string',
+  firstName:'string',
   taskId: 'number',
 })
 
