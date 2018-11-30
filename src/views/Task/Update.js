@@ -47,7 +47,7 @@ export default withRouter(class Update extends Component {
       await task.update(this.props.match.params.id, taskData)
       this.props.history.push('/tasks')
     } catch (e) {
-      this.setState({ error: e.message })
+      //  this.setState({ error: e.message })
     }
   }
 
