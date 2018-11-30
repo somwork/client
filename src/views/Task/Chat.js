@@ -19,6 +19,7 @@ export default class Chat extends Component{
         sendAt: 'date',
         userId: 'number',
         firstName:'string',
+        lastName: 'String',
         taskId: 'number'
       }],
       messages:[],
@@ -112,7 +113,7 @@ export default class Chat extends Component{
         {this.state.messages.map(message=>(
           <li key ={message.id} className="chatBox">
             <label key ={message.id}>
-              <p> <b>{message.firstName}</b></p>
+              <p> <b>{message.firstName} {message.lastName}</b></p>
               <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
               <p>{message.text}</p>
             </label>
