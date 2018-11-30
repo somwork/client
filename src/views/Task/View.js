@@ -75,8 +75,8 @@ export default class View extends Component{
   submitHandler= async event =>{
     event.preventDefault();
     try {
-      const res = await Offer.create({
-        accepted:false,
+        await Offer.create({
+        accepted:Boolean(false),
         price: Number(this.state.offer.price),
         totalHours:Number(this.state.offer.totalHours),
         currency: String(currencies.get()),

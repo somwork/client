@@ -1,5 +1,4 @@
 import React,{Component} from "react";
-import Task from '../../api/task';
 import Message from '../../api/messages';
 import'./TaskView.css'
 import Auth from '../../api/auth';

@@ -19,7 +19,7 @@ export default {
    */
   async get(id) {
     const res = await request.get(id ? `messages/${id}` : 'messages')
-    console.log(res)
+    console.log("responds from message.get(id): "+res+ "!FAILS! : should return an offer") // TODO
     return null;
   },
   async create(message){

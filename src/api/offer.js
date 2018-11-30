@@ -31,6 +31,7 @@ export default {
    * @return {Promise}
    */
   async create(offer) {
+    console.log(offer)
     Offer(offer)
     const res = await request.post('offers', offer)
     return await res.json()
