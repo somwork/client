@@ -50,7 +50,9 @@ export default class View extends Component{
   loadtasks = async id=>{
 
     const res = await Task.get(id);
-
+    if(res=== null){
+      return null;
+    }
     this.setState({task:res})
   }
 
@@ -75,15 +77,15 @@ export default class View extends Component{
   submitHandler= async event =>{
     event.preventDefault();
     try {
-        await Offer.create({
-        accepted:Boolean(false),
-        price: Number(this.state.offer.price),
-        totalHours:Number(this.state.offer.totalHours),
-        currency: String(currencies.get()),
-        complexity:Number(this.state.offer.complexity),
-        workerId: Number(Auth.id),
-        taskId:Number(this.props.match.params.id)
-      })
+      const res = await Offer.create({
+      accepted:Boolean(false),
+      price: Number(this.state.offer.price),
+      totalHours:Number(this.state.offer.totalHours),
+      currency: String(await currencies.get()),
+      complexity:Number(this.state.offer.complexity),
+      workerId: Number(await Auth.id()),
+      taskId:Number(this.props.match.params.id)
+  });
 
     } catch(err) {
       this.setState({ error: err.message })

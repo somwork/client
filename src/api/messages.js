@@ -18,9 +18,8 @@ export default {
    * @return {Promise}
    */
   async get(id) {
-    const res = await request.get(id ? `messages/${id}` : 'messages')
-    console.log("responds from message.get(id): "+res+ "!FAILS! : should return an offer") // TODO
-    return null;
+    const res = await request.get(id ? `messages/${id}` : 'messages')//ERROR here
+    return res;
   },
   async create(message){
     Message(message)
