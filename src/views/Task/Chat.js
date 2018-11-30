@@ -58,7 +58,7 @@ export default class Chat extends Component{
    */
   getUser(){ //TODO
     if(Auth.type===Worker){
-      return Worker.get(Auth.id);
+     return Worker.get(Auth.id);
     }
     if(Auth.type===Employer){
       return Employer.get(Auth.id);
@@ -74,22 +74,25 @@ export default class Chat extends Component{
    * @param {Object} event
    */
   SubmitHandler = async event =>{
-    console.log("submit clicked")
     event.preventDefault();
 
     try {
+      const user = await Auth.user();
       const res = await Message.create({
         text: String(this.state.mesaggeInput.text),
         sendAt: Date(this.state.mesaggeInput.sendAt),
-        userId: Number(Auth.id),
-        firstName: String(Auth.user.firstName),
-        lastName: String(Auth.user.lastName),
+        userId: Number(Auth.id()),
+        firstName:user.firstName,
+        lastName: user.lastName,
         taskId: String(this.props.taskId),
       });
-      console.log(res);
-      if (res.error) {
-        return this.setState({ error: res.error })
-      }
+
+      //adds the message to the chat
+      const tempMessage = JSON.parse(JSON.stringify(this.state.mesaggeInput))
+      tempMessage.push(res)
+       this.setState({
+        mesaggeInput:tempMessage
+      })
 
     } catch(err) {
       this.setState({ error: err.message })

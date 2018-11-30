@@ -1,5 +1,16 @@
 import request from './request'
-  ///DELETE THIS FILE BEFORE MEREGE!!!!
+import { struct } from 'superstruct'
+
+      const Message = struct({
+          mesaggeInput:{
+            text: 'string',
+            sendAt: 'date',
+            userId: 'number',
+            firstName:'string',
+            lastName: 'string',
+            taskId: 'number'
+          }
+        })
 
 export default {
   /**
@@ -7,12 +18,13 @@ export default {
    * @return {Promise}
    */
   async get(id) {
-    const res = await request.get(id ? `currencies/${id}` : 'currencies')
+    const res = await request.get(id ? `messages/${id}` : 'messages')
+    console.log(res)
     return null;
   },
   async create(message){
-    console.log(message)
-    return null;
+    Message(message)
+    const res = await request.post('messages', message)
+    return await res.json()
   }
-  ///DELETE THIS FILE BEFORE MEREGE!!!!
 }
