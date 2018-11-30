@@ -35,8 +35,11 @@ export default class Chat extends Component{
    * @param {int} taskId
    */
   loadMessages = async taksId=>{
-    const res =await Message.get(taksId);
-    this.setState({messages:res})
+    const res =await (Message.get(taksId));
+
+    if(res.length!==0){
+      this.setState({messages:res})
+    }
   }
 
   /**
@@ -51,6 +54,7 @@ export default class Chat extends Component{
        mesaggeInput:tempMessage
     })
   }
+
   /**
    * Checks if the active user is an worker or employer
    * @return {Object} user
@@ -74,36 +78,37 @@ export default class Chat extends Component{
    */
   SubmitHandler = async event =>{
     event.preventDefault();
+    console.log("sendat: "+Date())
 
     try {
       const user = await Auth.user();
       const res = await Message.create({
         text: String(this.state.mesaggeInput.text),
-        sendAt: Date(this.state.mesaggeInput.sendAt),
+        sendAt: moment().toDate(),
         userId: Number(Auth.id()),
-        firstName:user.firstName,
-        lastName: user.lastName,
-        taskId: String(this.props.taskId),
+        firstName:String(user.firstName),
+        lastName: String(user.lastName),
+        taskId: Number(this.props.taskId),
       });
 
       //adds the message to the chat
-      const tempMessage = JSON.parse(JSON.stringify(this.state.mesaggeInput))
+      const tempMessage = JSON.parse(JSON.stringify(this.state.messages))
       tempMessage.push(res)
        this.setState({
-        mesaggeInput:tempMessage
+        messages:tempMessage
       })
 
     } catch(err) {
       this.setState({ error: err.message })
     }
-
   }
+
   /**
    * creates the list og messages, if there are message objects is state, otherwise create an item saying no messages
    * @return {JSX} View
    */
   renderMessages(){
-    if(this.state.messages===null || this.state.messages.length===0){
+    if(this.state.messages.length===0){
       return(
       <li className="chatBox">
           <p>No messages :(</p>
@@ -143,7 +148,6 @@ export default class Chat extends Component{
             {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}
-
       </div>
     )
   }

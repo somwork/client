@@ -1,16 +1,14 @@
 import request from './request'
 import { struct } from 'superstruct'
 
-      const Message = struct({
-          mesaggeInput:{
-            text: 'string',
-            sendAt: 'date',
-            userId: 'number',
-            firstName:'string',
-            lastName: 'string',
-            taskId: 'number'
-          }
-        })
+  const Message = struct({
+    text: 'string',
+    sendAt: 'date',
+    userId: 'number',
+    firstName:'string',
+    lastName: 'string',
+    taskId: 'number'
+  })
 
 export default {
   /**
@@ -19,7 +17,7 @@ export default {
    */
   async get(id) {
     const res = await request.get(id ? `messages/${id}` : 'messages')//ERROR here
-    return res;
+    return res.json();
   },
   async create(message){
     Message(message)
