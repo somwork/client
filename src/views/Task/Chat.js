@@ -18,9 +18,8 @@ export default class Chat extends Component{
         text: 'string',
         sendAt: 'date',
         userId: 'number',
-        User: 'Object',
-        taskId: 'number',
-        task: 'Object',
+        name:'string',
+        taskId: 'number'
       }],
       messages:[{}],
       error:''
@@ -82,9 +81,8 @@ export default class Chat extends Component{
         text: String(this.state.mesaggeInput.text),
         sendAt: Date(this.state.mesaggeInput.sendAt),
         userId: Number(Auth.id),
-        User: Object(this.getUser()),
+        name: Object(this.getUser().name),
         taskId: Number(this.props.taskId),
-        task: Object(Task.get(this.props.taksId)),
       });
 
       if (res.error) {
@@ -113,7 +111,7 @@ export default class Chat extends Component{
         {this.state.messages.map(message=>(
           <li key ={message.id} className="chatBox">
             <label key ={message.id}>
-              <p> Id: {message.taskId}</p>
+              <p> {message.name}</p>
               <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
               <p>{message.text}</p>
             </label>
