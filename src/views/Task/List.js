@@ -1,20 +1,23 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 import Layout from '../../components/Layout';
 import task from '../../api/task';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Task.css'
+import employer from '../../api/employer';
+import auth from "../../api/auth";
 
-export default class List extends Component{
+export default class List extends Component {
 
   state = {
-    tasks: []
+    tasks: [],
+    value: 'all'
   }
 
   /**
    * Run when component mounts
    */
-  componentDidMount () {
+  componentDidMount() {
     this.loadTasks();
   }
 
@@ -22,9 +25,16 @@ export default class List extends Component{
    * loads all tasks from the db into the state
    */
   loadTasks = async () => {
-    this.setState({
-      tasks: await task.get()
-    })
+    if (this.state.value === "all") {
+      this.setState({
+        tasks: await task.get()
+      })
+    } else if (this.state.value === "yours") {
+      this.setState({
+        tasks: await employer.getEmployerTasks(auth.id())
+      })
+    }
+
   }
 
   /**
@@ -32,9 +42,9 @@ export default class List extends Component{
    * @param {Object} task
    * @return {JSX}  a task as a list item
    */
-  renderListItem(task){
-    return(
-      <Link to={'detail/'+task.id}>
+  renderListItem(task) {
+    return (
+      <Link to={'detail/' + task.id}>
         <li key={task.id}>
           <div>
             <h4>{task.title}</h4>
@@ -44,8 +54,8 @@ export default class List extends Component{
             <p>
               <b>Deadline:</b><br />
               {moment(task.deadline).format('DD. MMM YYYY')}
-              <br/>
-              <br/>
+              <br />
+              <br />
               <b>Urgency:</b><br />
               {task.urgency}
             </p>
@@ -57,14 +67,40 @@ export default class List extends Component{
   }
 
   /**
+   * QualityAssurance list of menu items
+   * @type {Array}
+   */
+  options = [
+    ["all", "All"],
+    ["yours", "Yours"]
+  ]
+
+  handleSelectChange = async event => {
+    await this.setState({ value: event.target.value })
+    await this.loadTasks()
+  }
+
+  /**
+  * Render options item
+  * @param  {Array}
+  * @return {JSX}
+  */
+  renderOption = ([option, name]) => (
+    <option key={option} value={option}>{name}</option>
+  )
+
+  /**
    * Creates the Task overview view
    * @return {JSX} View
    */
-  render(){
+  render() {
     return (
       <Layout>
         <section className='task-list'>
           <h1>Tasks</h1>
+          <select className="custom-select" value={this.state.value} onChange={this.handleSelectChange}>
+            {this["options"].map(this.renderOption)}
+          </select>
           <ul>
             {this.state.tasks.map(this.renderListItem.bind(this))}
           </ul>
