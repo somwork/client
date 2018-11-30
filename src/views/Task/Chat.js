@@ -18,10 +18,10 @@ export default class Chat extends Component{
         text: 'string',
         sendAt: 'date',
         userId: 'number',
-        name:'string',
+        firstName:'string',
         taskId: 'number'
       }],
-      messages:[{}],
+      messages:[],
       error:''
     }
   }
@@ -81,10 +81,10 @@ export default class Chat extends Component{
         text: String(this.state.mesaggeInput.text),
         sendAt: Date(this.state.mesaggeInput.sendAt),
         userId: Number(Auth.id),
-        name: Object(this.getUser().name),
-        taskId: Number(this.props.taskId),
+        name: String(Auth.user.firstfirstName),
+        taskId: String(this.props.taskId),
       });
-
+      console.log(res);
       if (res.error) {
         return this.setState({ error: res.error })
       }
@@ -92,15 +92,16 @@ export default class Chat extends Component{
     } catch(err) {
       this.setState({ error: err.message })
     }
+
   }
   /**
    * creates the list og messages, if there are message objects is state, otherwise create an item saying no messages
    * @return {JSX} View
    */
   renderMessages(){
-    if(this.state.messages.length===0){
+    if(this.state.messages===null || this.state.messages.length===0){
       return(
-      <li class="chatBox">
+      <li className="chatBox">
           <p>No messages :(</p>
       </li>
       )
@@ -111,7 +112,7 @@ export default class Chat extends Component{
         {this.state.messages.map(message=>(
           <li key ={message.id} className="chatBox">
             <label key ={message.id}>
-              <p> {message.name}</p>
+              <p> <b>{message.firstName}</b></p>
               <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
               <p>{message.text}</p>
             </label>
