@@ -54,5 +54,10 @@ export default {
   async delete(id) {
     const res = await request.delete(`employers/${id}`);
     return res.ok
+  },
+
+  async getEmployerTasks(id) {
+    const res = await request.get(`employers/${id}/tasks`)
+    return await res.json()
   }
 }

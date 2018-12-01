@@ -27,8 +27,8 @@ export default withRouter(class SignUp extends Component{
     ["Last name","text", v => v.length > 0],
     ["Email","email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line
     ["Username","text", v => v.length > 0],
-    ["Password","password", v => v.length >= 4],
-    ["Verify password","password", v => v === this.state.password && v.length >= 4]
+    ["Password","password", v => v.length >= 8],
+    ["Verify password","password", v => v === this.state.password && v.length >= 8]
   ]
 
   /**

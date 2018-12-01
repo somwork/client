@@ -2,14 +2,15 @@ import request from './request'
 import config from '../config'
 import worker from './worker'
 import employer from './employer'
+import qualityassurance from './qualityAssurance'
 
-const api = { worker, employer }
+const api = { worker, employer, qualityassurance }
 
 /**
  * Save tokens
  * @param  {Object} tokens
  */
-function save ({ accessToken, refreshToken }) {
+function save({ accessToken, refreshToken }) {
   localStorage.setItem('accessToken', accessToken)
   localStorage.setItem('refreshToken', refreshToken)
 }
@@ -18,7 +19,7 @@ function save ({ accessToken, refreshToken }) {
  * Get saved tokens
  * @return {Object}
  */
-function getTokens () {
+function getTokens() {
   return {
     accessToken: localStorage.getItem('accessToken'),
     refreshToken: localStorage.getItem('refreshToken')
@@ -28,7 +29,7 @@ function getTokens () {
 /**
  * Clear all saved tokens
  */
-function cleanup () {
+function cleanup() {
   localStorage.removeItem('accessToken')
   localStorage.removeItem('refreshToken')
   localStorage.removeItem('user')
@@ -57,7 +58,7 @@ async function cacheUser() {
   try {
     const user = await api[type].get(id)
     localStorage.setItem('user', JSON.stringify(user))
-  } catch(err) {
+  } catch (err) {
     console.log(err)
   }
 }
@@ -71,7 +72,7 @@ let accessTokenUpdate = setAccessTokenUpdateInterval()
 /**
  * Set access token refresh interval
  */
-function setAccessTokenUpdateInterval () {
+function setAccessTokenUpdateInterval() {
   if (accessTokenUpdate) {
     accessTokenUpdate = clearInterval(accessTokenUpdate)
   }
@@ -96,7 +97,7 @@ const auth = {
    * @param  {String}  password
    * @return {Promise}
    */
-  async login (username, password) {
+  async login(username, password) {
     const res = await request.post('token', { username, password })
 
     if (!res.ok) {
@@ -112,7 +113,7 @@ const auth = {
    * Refresh access token with the corresponding refresh token
    * @return {Promise}
    */
-  async refresh () {
+  async refresh() {
     const res = await request.put('token', getTokens(), {
       ignoreAuth: true,
       headers: {
@@ -134,7 +135,7 @@ const auth = {
    * Clear saved access token and refresh token and invalidate them server side
    * @return {Promise}
    */
-  async logout () {
+  async logout() {
     clearInterval(accessTokenUpdate)
     cleanup()
     // TODO make a call to the server, this should invalidate the current active
@@ -145,7 +146,7 @@ const auth = {
    * Check wether a user is authenticated
    * @return {Boolean}
    */
-  ok () {
+  ok() {
     const { accessToken, refreshToken } = getTokens()
     return accessToken && refreshToken
   },
@@ -154,7 +155,7 @@ const auth = {
    * Get id of authenticated user
    * @return {Number}
    */
-  id () {
+  id() {
     const { accessToken } = getTokens()
     const id = JSON.parse(b64DecodeUnicode(accessToken.split('.')[1]))["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
     return Number(id)
@@ -164,7 +165,7 @@ const auth = {
    * Get type of the authenticated user
    * @return {String}
    */
-  type () {
+  type() {
     const { accessToken } = getTokens()
     const type = JSON.parse(b64DecodeUnicode(accessToken.split('.')[1]))["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
       .replace("TaskHouseApi.Model.", "")
@@ -177,7 +178,7 @@ const auth = {
    * Get authenticated user
    * @return {Object}
    */
-  async user () {
+  async user() {
     if (localStorage.getItem('user')) {
       return JSON.parse(localStorage.getItem('user'))
     }

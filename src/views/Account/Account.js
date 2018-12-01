@@ -2,24 +2,14 @@ import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
-import worker from '../../api/worker';
 import auth from '../../api/auth';
 import { Link } from 'react-router-dom';
 import Skills from "../../components/Skill/Skills";
+import user from "../../api/user";
 
-export default withRouter(class WorkerProfile extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state.id = (this.props.match.params.id);
-  };
-
+export default withRouter(class Account extends Component {
   state = {
-    firstName: "",
-    lastName: '',
-    email: '',
-    username: '',
-    id: 0,
+    id: (this.props.match.params.id),
     error: null
   }
 
@@ -35,27 +25,28 @@ export default withRouter(class WorkerProfile extends Component {
    * @return {Promise}
    */
   getUser = async () => {
-    try {
-      this.setState(await worker.get(this.state.id))
-
-      // const userData = await worker.get(this.state.id)
-
-      // this.setState({
-      //   firstName: userData.firstName,
-      //   lastName: userData.lastName,
-      //   email: userData.email,
-      //   username: userData.username,
-      // })
-    } catch (err) {
-      this.setState({ error: err })
+    if (this.state.id !== undefined) {
+      await this.setState(await user.get(this.state.id))
+    } else {
+      await this.setState(await user.get(auth.id()))
     }
   }
 
   render() {
+    console.log("render")
+    let workerSpecifice;
+    if (this.state !== null && this.state.discriminator === 'Worker') {
+      workerSpecifice =
+        <div>
+          <Skills
+            workerId={this.state.id}
+          /></div>
+    }
+
     let editProfileButton
     if (auth.id() === Number(this.state.id)) {
       editProfileButton =
-        <Link to='/account'>
+        <Link to='/changeAccount'>
           <button>Edit profile</button>
         </Link>
     }
@@ -71,10 +62,7 @@ export default withRouter(class WorkerProfile extends Component {
           <h4>{this.state.username}</h4>
           <h4>{this.state.email}</h4>
           {editProfileButton}
-
-          <Skills
-            workerId={this.state.id}
-          />
+          {workerSpecifice}
 
         </section>
       </Layout>

@@ -20,7 +20,7 @@ class Sidebar extends Component {
    */
   worker = [
     ["Dashboard", "/", "fas fa-tachometer-alt"],
-    ["My Tasks", "/tasks/list", "fas fa-tasks"],
+    ["My Tasks", "/task/list", "fas fa-tasks"],
     ["Account", "/account", "fas fa-user"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
@@ -31,9 +31,19 @@ class Sidebar extends Component {
    */
   employer = [
     ["Dashboard", "/", "fas fa-tachometer-alt"],
-    ["My Tasks", "/task/list", "fas fa-tasks"],
+    ["Tasks", "/task/list", "fas fa-tasks"],
     ["Create Task", "/task/create", "fas fa-plus-square"],
     ["Account", "/account", "fas fa-user"],
+    ["Logout", "/logout", "fas fa-lock"]
+  ]
+
+  /**
+   * QualityAssurance list of menu items
+   * @type {Array}
+   */
+  qualityassurance = [
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["All Tasks", "/task/list", "fas fa-tasks"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
 
@@ -99,6 +109,5 @@ class Sidebar extends Component {
     </div>
   )
 }
-
 
 export default Sidebar;

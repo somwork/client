@@ -56,17 +56,8 @@ export default {
     return res.ok
   },
 
-  /**
-   * Get worker skills
-   * @param {Number} id
-   * @return {Promise}
-   */
-  async getSkills(id) {
-    try {
-      const res = await request.get(`workers/${id}/skills`)
-      return await res.json()
-    } catch (err) {
-      return err
-    }
+  async getWorkerSkills(id) {
+    const res = await request.get(`workers/${id}/skills`)
+    return await res.json()
   }
 }

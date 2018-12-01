@@ -8,7 +8,7 @@ import Update from "./views/Task/Update";
 import List from "./views/Task/List";
 import View from "./views/Task/View";
 import ChangeProfile from "./views/Account/ChangeProfile";
-import WorkerProfile from "./views/Account/WorkerProfile";
+import Account from "./views/Account/Account";
 import auth from "./api/auth";
 
 function logout() {
@@ -27,8 +27,8 @@ export default () => (
       <Route path='/task/list' component={List} />,
       <Route path='/task/detail/:id' component={View} />,
       <Route path="/logout" component={logout} />
-      <Route path="/account" component={ChangeProfile} />
-      <Route path="/profile/:id" component={WorkerProfile} />
+      <Route path="/account/:id?" component={Account} />
+      <Route path="/changeAccount" component={ChangeProfile} />
     </div>
   </Router>
 );

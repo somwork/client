@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import Layout from '../../components/Layout'
 import worker from '../../api/worker';
 import SmallSkill from "./SmallSkill";
-import { Link } from 'react-router-dom';
 import auth from '../../api/auth';
+import AddSkill from "./AddSkill";
 
-class Skills extends Component {
+export default class Skills extends Component {
   state = {
-    skills: []
+    skills: [],
+    showAddSkill: false
   }
 
   /**
@@ -22,16 +22,25 @@ class Skills extends Component {
    * @return {Promise}
    */
   getSkills = async () => {
-    this.setState({ skills: await worker.getSkills(this.props.workerId) })
+    console.log("getSkills " + this.props.workerId)
+    await this.setState({ skills: await worker.getWorkerSkills(this.props.workerId) })
+    console.log("getSkillsEND")
+  }
+
+  handleAddSkill = () => {
+    console.log("handleAddSkill")
+    this.setState({ showAddSkill: !this.state.showAddSkill })
   }
 
   render() {
+    console.log("render")
     let addSkill
     if (auth.id() === Number(this.props.workerId)) {
       addSkill =
-        <Link to='/skills/create'>
-          <button>Add skill</button>
-        </Link>
+        <div>
+          <input type="submit" value="Add Skill" onClick={this.handleAddSkill} />
+          {this.state.showAddSkill ? <AddSkill /> : null}
+        </div>
     }
     return (
       <div>
@@ -47,5 +56,3 @@ class Skills extends Component {
     )
   }
 }
-
-export default Skills;
