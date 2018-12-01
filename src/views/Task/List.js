@@ -8,7 +8,6 @@ import employer from '../../api/employer';
 import auth from "../../api/auth";
 
 export default class List extends Component {
-
   state = {
     tasks: [],
     value: 'all'
