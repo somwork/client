@@ -169,7 +169,7 @@ a:focus {
 }
 
 /*the container must be positioned relative:*/
-.custom-select {
+select {
   position: relative;
   font-family: var(--font-family);
   font-size: var(--font-size);

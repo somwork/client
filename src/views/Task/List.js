@@ -34,7 +34,6 @@ export default class List extends Component {
         tasks: await employer.getEmployerTasks(auth.id())
       })
     }
-
   }
 
   /**
@@ -98,7 +97,7 @@ export default class List extends Component {
       <Layout>
         <section className='task-list'>
           <h1>Tasks</h1>
-          <select className="custom-select" value={this.state.value} onChange={this.handleSelectChange}>
+          <select value={this.state.value} onChange={this.handleSelectChange}>
             {this["options"].map(this.renderOption)}
           </select>
           <ul>
