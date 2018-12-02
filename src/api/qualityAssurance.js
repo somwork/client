@@ -29,7 +29,7 @@ export default {
   async create(qualityassurance) {
     //Validate data for the body
     QualityAssurance(qualityassurance);
-    const path = 'employers?password=' + qualityassurance.password
+    const path = 'qualityassurances?password=' + qualityassurance.password
     const res = await request.post(path, qualityassurance);
     return await res.json()
   },

@@ -138,8 +138,6 @@ const auth = {
   async logout() {
     clearInterval(accessTokenUpdate)
     cleanup()
-    // TODO make a call to the server, this should invalidate the current active
-    // accessToken and refreshToken
   },
 
   /**
