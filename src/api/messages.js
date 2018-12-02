@@ -29,7 +29,7 @@ export default {
   async create(message) {
     //Validate data for the body
     Message(message);
-    const res = await request.post('messages/', message);
+    const res = await request.post('messages', message);
     return await res.json()
   },
 
