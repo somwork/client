@@ -145,15 +145,15 @@ export default class View extends Component{
           <hr></hr>
           {this.fieldRendertaskDescription(this.state.task)}
           <Popup trigger={<button> Make offer</button>}>
-            <div className="popUpInner">
+            <div className='popUpInner'>
               <label>
                 <form onSubmit={this.submitHandler}>
-                  <p>hourly pay:</p>
-                  <input name='price' type='number' onChange={this.changeHandler}  placeholder="hourly pay" required/>
-                  <p>total hours:</p>
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder=" Estimated Hours" required/>
-                  <p>Complexity:</p>
-                  <input name='complexity' type='number' onChange={this.changeHandler}  placeholder=" task complexity" required/>
+                  <p><b>hourly pay:</b></p>
+                  <input name='price' type='number' onChange={this.changeHandler}  placeholder="Hourly pay..." required/>
+                  <p><b>total hours:</b></p>
+                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                  <p> <b>Task Complexity:</b></p>
+                  <input name='complexity' type='number' onChange={this.changeHandler}  placeholder="Complexity..." required/>
                   <input type="submit" value="Submit"/>
                 </form>
               </label>

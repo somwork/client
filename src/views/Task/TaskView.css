@@ -22,14 +22,11 @@ ul {
   background: rgb(239, 245, 245);
 }
 
-.popUpInner{
-  left: 50%;
-  right: 50%;
-  top: 25%;
-  bottom: 25%;
-  background: white;
-}
-
 .sendbutton{
 width: 20%;
 }
+
+.popUpInner{
+  margin: 5%;
+}
+
