@@ -4,5 +4,5 @@ import 'react-datepicker/dist/react-datepicker.css'
 import './DatePicker.css'
 
 export default (props) => (
-  <ReactDatePicker {...props}/>
+  <ReactDatePicker {...props} />
 )

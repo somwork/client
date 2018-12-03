@@ -11,6 +11,7 @@ import ChangeProfile from "./views/Account/ChangeProfile";
 import Account from "./views/Account/Account";
 import auth from "./api/auth";
 
+
 function logout() {
   auth.logout()
   return <Redirect to='/login' />
@@ -23,7 +24,7 @@ export default () => (
       <Route path="/login" component={Login} />
       <Route path='/sign-up' component={SignUp} />
       <Route path="/task/create" component={Create} />
-      <Route path="/task/update" component={Update} />
+      <Route path="/task/update/:id" component={Update} />
       <Route path='/task/list' component={List} />,
       <Route path='/task/detail/:id' component={View} />,
       <Route path="/logout" component={logout} />

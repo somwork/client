@@ -29,7 +29,7 @@ export default withRouter(class Create extends Component {
    */
   submitHandler = async event => {
     event.preventDefault()
-     //invalid input handling
+    //invalid input handling
     if (!this.validator()) {
       this.setState({ error: "Invalid input" })
       return

@@ -99,6 +99,9 @@ export default class List extends Component {
           <select value={this.state.value} onChange={this.handleSelectChange}>
             {this["options"].map(this.renderOption)}
           </select>
+          {this.state.tasks.length === 0 && (
+            <h4 className="secondary">You have no tasks available at the moment</h4>
+          )}
           <ul>
             {this.state.tasks.map(this.renderListItem.bind(this))}
           </ul>
