@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
+import budget from '../../api/budget'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
 import Alert from '../../components/Alert'
@@ -14,7 +15,10 @@ export default withRouter(class Create extends Component {
     title: "",
     description: "",
     urgency: "",
-    error: null
+    error: null,
+    budgets: [],
+    currency: "USD",
+    currentBudget: 1
   }
 
   fields = [
@@ -23,6 +27,16 @@ export default withRouter(class Create extends Component {
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
   ]
+
+  componentDidMount() {
+      this.getBudgets();
+  }
+
+  async getBudgets(){
+    this.setState({
+      budgets: await budget.get()
+    })
+  }
 
   /**
    * Creates task based on data in inputfields
@@ -34,7 +48,6 @@ export default withRouter(class Create extends Component {
       this.setState({ error: "Invalid input" })
       return
     }
-
     //input valid
     try {
       const taskData = {
@@ -42,7 +55,8 @@ export default withRouter(class Create extends Component {
         description: this.state.description,
         urgency: this.state.urgency,
         start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.endDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        budgetId: Number(this.state.currentBudget)
       }
       await task.create(taskData)
       this.props.history.push('/task/list')
@@ -107,6 +121,18 @@ export default withRouter(class Create extends Component {
   }
 
   /**
+   * Renders budgets inputs based on definitions in budgetTypes[]
+   * @param {String} value
+   * @param {String} Title
+   * @return {JSX} an input surrounded with a label
+   */
+  renderBudgets({id, from, to}) {
+    return (
+        <option key={id} value={id}>{from}$ to {to}$</option>
+    )
+  }
+
+  /**
    * Sets the selected  date
    * @param {Date} date
    */
@@ -152,6 +178,12 @@ export default withRouter(class Create extends Component {
             <label>
               Deadline
               <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
+            </label>
+            <label>
+              Select your budget:
+              <select value={this.state.currentBudget} onChange={this.handleChange} name="currentBudget">
+                {this.state.budgets.map(this.renderBudgets.bind(this))}
+              </select>
             </label>
           </form>
           <input type="submit" value="Create Task" onClick={this.submitHandler} />

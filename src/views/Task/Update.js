@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
+import budget from '../../api/budget'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
 import Alert from '../../components/Alert'
@@ -15,7 +16,10 @@ export default withRouter(class Update extends Component {
     title: "",
     description: "",
     urgency: "",
-    error: null
+    error: null,
+    budgets: [],
+    currency: "USD",
+    currentBudget: 0
   }
 
   fields = [
@@ -41,7 +45,8 @@ export default withRouter(class Update extends Component {
         description: this.state.description,
         urgency: this.state.urgency,
         start: this.state.start.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-        deadline: this.state.deadline.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.deadline.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        budgetId: Number(this.state.currentBudget)
       }
       await task.update(this.props.match.params.id, taskData)
       this.props.history.push('/task/list') // updates Task/list
@@ -117,6 +122,13 @@ export default withRouter(class Update extends Component {
   // Load data from Task and insert
   componentDidMount = () => {
     this.getTask()
+    this.getBudgets()
+  }
+
+  async getBudgets(){
+    this.setState({
+      budgets: await budget.get()
+    })
   }
 
   /**
@@ -131,6 +143,7 @@ export default withRouter(class Update extends Component {
       urgency: loadedTask.urgency,
       start: moment(loadedTask.start),
       deadline: moment(loadedTask.deadline),
+      currentBudget: loadedTask.budgetId
     })
   }
 
@@ -164,6 +177,18 @@ export default withRouter(class Update extends Component {
     })
   }
 
+  /**
+   * Renders budgets inputs based on definitions in budgetTypes[]
+   * @param {String} value
+   * @param {String} Title
+   * @return {JSX} an input surrounded with a label
+   */
+  renderBudgets({id, from, to}) {
+    return (
+        <option key={id} value={id}>{from}$ to {to}$</option>
+    )
+  }
+
   render() {
     return (
       <Layout>
@@ -181,6 +206,12 @@ export default withRouter(class Update extends Component {
             <label>
               Deadline
             <DatePicker onChange={this.updateDeadline} minDate={this.state.start} selected={this.state.deadline} />
+            </label>
+            <label>
+              Select your budget:
+              <select value={this.state.currentBudget} onChange={this.handleChange} name="currentBudget">
+                {this.state.budgets.map(this.renderBudgets.bind(this))}
+              </select>
             </label>
             <input type="submit" value="Update" />
           </form>
