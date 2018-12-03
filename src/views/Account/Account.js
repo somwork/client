@@ -52,7 +52,7 @@ export default withRouter(class Account extends Component {
   editProfileButtonRender() {
     if (auth.id() === Number(this.state.id)) {
       return (
-        <Link to='/changeAccount'>
+        <Link to='/change-account'>
           <button>Edit profile</button>
         </Link>
       );
