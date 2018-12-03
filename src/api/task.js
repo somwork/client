@@ -5,6 +5,7 @@ import { struct } from 'superstruct'
  * Defines input-types required for validation
  */
 const Task = struct({
+  id: 'number?',
   title: 'string',
   start: 'date',
   deadline: 'date',
@@ -39,10 +40,10 @@ export default {
    * @param {Object} task
    * @return {Promise}
    */
-  async update(task) {
+  async update(id, task) {
     Task(task);
-    const res = await request.put('tasks', task)
-    return await res.json()
+    const res = await request.put(`tasks/${id}`, task)
+    return res.ok
   },
 
   /**
@@ -52,14 +53,6 @@ export default {
    */
   async delete(id) {
     const res = await request.delete(`tasks/${id}`)
-    return await res.json()
-  },
-
-  async getTaskMessages(taskId){
-  //TODO
-  },
-
-  async createTaskMessage(taskId,message){
-  //TODO
+    return res.ok
   }
 }

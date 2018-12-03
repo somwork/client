@@ -31,9 +31,19 @@ class Sidebar extends Component {
    */
   employer = [
     ["Dashboard", "/", "fas fa-tachometer-alt"],
-    ["My Tasks", "/task/list", "fas fa-tasks"],
+    ["Tasks", "/task/list", "fas fa-tasks"],
     ["Create Task", "/task/create", "fas fa-plus-square"],
     ["Account", "/account", "fas fa-user"],
+    ["Logout", "/logout", "fas fa-lock"]
+  ]
+
+  /**
+   * QualityAssurance list of menu items
+   * @type {Array}
+   */
+  qualityassurance = [
+    ["Dashboard", "/", "fas fa-tachometer-alt"],
+    ["All Tasks", "/task/list", "fas fa-tasks"],
     ["Logout", "/logout", "fas fa-lock"]
   ]
 
@@ -76,10 +86,11 @@ class Sidebar extends Component {
           <h2>Taskhouse.io</h2>
         </div>
         <div className="sidebarAvatar">
+        <a href="/account"><img className="center-image" alt="" src={'/img/man-user.png'} /></a>
           <div className="circle"></div>
         </div>
         <div className="sidebarUsername">
-          <p>{this.state.user.firstName}</p>
+          <p>{this.state.user.firstName} {this.state.user.lastName}</p>
         </div>
         <div className="sidebarMenu">
           {this[auth.type()].map(this.renderMenuItem)}
@@ -99,6 +110,5 @@ class Sidebar extends Component {
     </div>
   )
 }
-
 
 export default Sidebar;
