@@ -13,12 +13,15 @@
   display: block;
 }
 
-.sidebar .circle{
-  border-radius: 50%;
-  margin: auto;
-  width: 60px;
-  height: 60px;
-  background:var(--light);
+.sidebar .center-image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background:var(--light);
+    padding: 5px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
 }
 
 .sidebar .menuItem{

@@ -86,10 +86,11 @@ class Sidebar extends Component {
           <h2>Taskhouse.io</h2>
         </div>
         <div className="sidebarAvatar">
+        <a href="/account"><img className="center-image" alt="" src={'/img/man-user.png'} /></a>
           <div className="circle"></div>
         </div>
         <div className="sidebarUsername">
-          <p>{this.state.user.firstName}</p>
+          <p>{this.state.user.firstName} {this.state.user.lastName}</p>
         </div>
         <div className="sidebarMenu">
           {this[auth.type()].map(this.renderMenuItem)}

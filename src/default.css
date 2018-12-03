@@ -74,6 +74,16 @@ h6 {
   margin: var(--spacing-top-bottom);
 }
 
+h1.secondary,
+h2.secondary,
+h3.secondary,
+h4.secondary,
+h5.secondary,
+h6.secondary {
+  color: var(--seconday);
+  font-weight: 400;
+}
+
 h1 {
   font-size: 3em;
 }
