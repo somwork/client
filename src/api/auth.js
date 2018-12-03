@@ -2,9 +2,9 @@ import request from './request'
 import config from '../config'
 import worker from './worker'
 import employer from './employer'
-import qualityassurance from './qualityAssurance'
+import qualityAssurance from './qualityAssurance'
 
-const api = { worker, employer, qualityassurance }
+const api = { worker, employer, qualityAssurance }
 
 /**
  * Save tokens
