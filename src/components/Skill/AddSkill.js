@@ -83,7 +83,7 @@ export default withRouter(class Create extends Component {
 
   render() {
     return (
-      <section>
+      <div>
         <h2>Create Skill</h2>
         {this.state.error && (
           <Alert>{this.state.error} </Alert>
@@ -92,7 +92,7 @@ export default withRouter(class Create extends Component {
           {this.fields.map(this.fieldRender.bind(this))}
         </form>
         <input type="submit" value="Create Task" onClick={this.submitHandler} />
-      </section>
+      </div>
     )
   }
 })
