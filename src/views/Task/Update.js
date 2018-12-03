@@ -24,7 +24,7 @@ export default withRouter(class Update extends Component {
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
   ]
-
+  // Updateds Task
   updateHandler = async event => {
     event.preventDefault()
     //invalid input handling
@@ -33,7 +33,7 @@ export default withRouter(class Update extends Component {
       return
     }
 
-    //input valid
+    // sets input
     try {
       const taskData = {
         id: Number(this.props.match.params.id),
@@ -44,7 +44,7 @@ export default withRouter(class Update extends Component {
         deadline: this.state.deadline.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.update(this.props.match.params.id, taskData)
-      this.props.history.push('/task/list')
+      this.props.history.push('/task/list') // updates Task/list
     } catch (e) {
       this.setState({ error: e.message })
     }
@@ -114,7 +114,7 @@ export default withRouter(class Update extends Component {
     })
 
   }
-
+  // Load data from Task and insert
   componentDidMount = () => {
     this.getTask()
   }
