@@ -66,6 +66,12 @@
   font-size: 12px;
   letter-spacing: 1px;
 }
+
+.sidebar .menuItem a:focus li {
+  box-shadow: none;
+  background: var(--info);
+}
+
 .sidebar li{
   list-style-type: none;
 }
