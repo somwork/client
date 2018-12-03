@@ -56,29 +56,12 @@ export default class Chat extends Component{
   }
 
   /**
-   * Checks if the active user is an worker or employer
-   * @return {Object} user
-   */
-  getUser(){ //TODO
-    if(Auth.type===Worker){
-     return Worker.get(Auth.id);
-    }
-    if(Auth.type===Employer){
-      return Employer.get(Auth.id);
-    }
-    this.setState({
-      error:"active user has no user tpye"
-    })
-  }
-
-  /**
    * event listener for Submit
    * posts a request to the server
    * @param {Object} event
    */
   SubmitHandler = async event =>{
     event.preventDefault();
-    console.log("sendat: "+Date())
 
     try {
       const user = await Auth.user();
@@ -91,7 +74,7 @@ export default class Chat extends Component{
         taskId: Number(this.props.taskId),
       });
 
-      //adds the message to the chat
+      //adds the new message to the chat
       const tempMessage = JSON.parse(JSON.stringify(this.state.messages))
       tempMessage.push(res)
        this.setState({
@@ -104,7 +87,8 @@ export default class Chat extends Component{
   }
 
   /**
-   * creates the list og messages, if there are message objects is state, otherwise create an item saying no messages
+   * Creates the list of messages from database, if there are message objects is state.
+   * otherwise create an comment saying no messages.
    * @return {JSX} View
    */
   renderMessages(){
