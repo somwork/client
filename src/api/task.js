@@ -43,7 +43,7 @@ export default {
   async update(id, task) {
     Task(task);
     const res = await request.put(`tasks/${id}`, task)
-    return await res.json()
+    return res.ok
   },
 
   /**
@@ -53,6 +53,6 @@ export default {
    */
   async delete(id) {
     const res = await request.delete(`tasks/${id}`)
-    return await res.json()
+    return res.ok
   }
 }

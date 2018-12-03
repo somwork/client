@@ -26,7 +26,6 @@ export default withRouter(class Update extends Component {
   ]
 
   updateHandler = async event => {
-    console.log("hej")
     event.preventDefault()
     //invalid input handling
     if (!this.validator()) {
@@ -45,9 +44,9 @@ export default withRouter(class Update extends Component {
         deadline: this.state.deadline.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.update(this.props.match.params.id, taskData)
-      this.props.history.push('/tasks')
+      this.props.history.push('/task/list')
     } catch (e) {
-      //  this.setState({ error: e.message })
+      this.setState({ error: e.message })
     }
   }
 
