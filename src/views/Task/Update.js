@@ -44,7 +44,7 @@ export default withRouter(class Update extends Component {
         deadline: this.state.deadline.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
       }
       await task.update(this.props.match.params.id, taskData)
-      this.props.history.push('/task/list') // updates Task/list
+      this.props.history.push('/task/list') // redirect to Task/list
     } catch (e) {
       this.setState({ error: e.message })
     }
