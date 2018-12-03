@@ -56,7 +56,7 @@ export default {
     return res.ok
   },
 
-  async getWorkerSkills(id) {
+  async getSkills(id) {
     const res = await request.get(`workers/${id}/skills`)
     return await res.json()
   }

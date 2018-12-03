@@ -30,7 +30,7 @@ export default class List extends Component {
       })
     } else if (this.state.value === "yours") {
       this.setState({
-        tasks: await employer.getEmployerTasks(auth.id())
+        tasks: await employer.getTasks(auth.id())
       })
     }
   }

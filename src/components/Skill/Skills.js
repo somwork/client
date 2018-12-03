@@ -24,7 +24,7 @@ export default class Skills extends Component {
    * @return {Promise}
    */
   getSkills = async () => {
-    await this.setState({ skills: await worker.getWorkerSkills(this.props.workerId) })
+    await this.setState({ skills: await worker.getSkills(this.props.workerId) })
   }
 
   /**

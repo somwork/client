@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import skill from '../../api/skill'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
 import { withRouter } from 'react-router-dom'
