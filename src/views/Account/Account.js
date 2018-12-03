@@ -32,15 +32,19 @@ export default withRouter(class Account extends Component {
     }
   }
 
+  /**
+   * Creates the account view
+   * @return {JSX} View
+   */
   render() {
-    console.log("render")
     let workerSpecifice;
     if (this.state !== null && this.state.discriminator === 'Worker') {
       workerSpecifice =
         <div>
           <Skills
             workerId={this.state.id}
-          /></div>
+          />
+        </div>
     }
 
     let editProfileButton

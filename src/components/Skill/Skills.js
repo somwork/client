@@ -3,11 +3,13 @@ import worker from '../../api/worker';
 import SmallSkill from "./SmallSkill";
 import auth from '../../api/auth';
 import AddSkill from "./AddSkill";
+import skill from "../../api/skill";
 
 export default class Skills extends Component {
   state = {
     skills: [],
-    showAddSkill: false
+    showAddSkill: false,
+    error: null
   }
 
   /**
@@ -22,24 +24,42 @@ export default class Skills extends Component {
    * @return {Promise}
    */
   getSkills = async () => {
-    console.log("getSkills " + this.props.workerId)
     await this.setState({ skills: await worker.getWorkerSkills(this.props.workerId) })
-    console.log("getSkillsEND")
   }
 
+  /**
+   * Handle add skill event
+   */
   handleAddSkill = () => {
-    console.log("handleAddSkill")
     this.setState({ showAddSkill: !this.state.showAddSkill })
   }
 
+  /**
+  * Add a skill
+  */
+  addSkill = async title => {
+    const skills = [...this.state.skills]
+    await skill.create({ title })
+
+    skills.push({ title, id: skills.length + 1 })
+
+    this.setState({ skills })
+  }
+
+  /**
+   * Creates the Skills list
+   * @return {JSX} View
+   */
   render() {
-    console.log("render")
     let addSkill
     if (auth.id() === Number(this.props.workerId)) {
       addSkill =
         <div>
           <input type="submit" value="Add Skill" onClick={this.handleAddSkill} />
-          {this.state.showAddSkill ? <AddSkill /> : null}
+          {this.state.showAddSkill ?
+            <AddSkill onAddSkill={this.addSkill} /> :
+            null
+          }
         </div>
     }
     return (

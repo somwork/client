@@ -168,21 +168,5 @@ a:focus {
   box-shadow: 0px 0px 0px 2px var(--info);
 }
 
-/*the container must be positioned relative:*/
-.custom-select {
-  position: relative;
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  background: var(--white);
-  padding: 8px 16px;
-  border: none;
-  border-bottom:1px solid black;
-}
-
-/* turn it off completely */
-select:active, select:hover, select:focus, select:visited {
-  outline: none
-}
-
 
 

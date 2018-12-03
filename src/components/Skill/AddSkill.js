@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Layout from '../../components/Layout'
 import skill from '../../api/skill'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
@@ -14,25 +13,6 @@ export default withRouter(class Create extends Component {
     //["label", "Type", Validation method, isTextArea]
     ["Title", "text", v => v.length > 0, false]
   ]
-
-  /**
-   * Creates task based on data in inputfields
-   */
-  submitHandler = async event => {
-    event.preventDefault()
-    //invalid input handling
-    if (!this.validator()) {
-      this.setState({ error: "Invalid input" })
-      return
-    }
-
-    //input valid
-    try {
-      await skill.create({ title: this.state.title })
-    } catch (e) {
-      this.setState({ error: e.message })
-    }
-  }
 
   /**
    * Validates input based on validation method defined in Fields[]
@@ -95,23 +75,25 @@ export default withRouter(class Create extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
 
+  submitHandler = () => {
+    this.props.onAddSkill(this.state.title)
+    this.setState({ title: "" });
   }
 
   render() {
     return (
-      <Layout>
-        <section>
-          <h2>Create Skill</h2>
-          {this.state.error && (
-            <Alert>{this.state.error} </Alert>
-          )}
-          <form onSubmit={this.submitHandler}>
-            {this.fields.map(this.fieldRender.bind(this))}
-          </form>
-          <input type="submit" value="Create Task" onClick={this.submitHandler} />
-        </section>
-      </Layout>
+      <section>
+        <h2>Create Skill</h2>
+        {this.state.error && (
+          <Alert>{this.state.error} </Alert>
+        )}
+        <form onSubmit={this.submitHandler}>
+          {this.fields.map(this.fieldRender.bind(this))}
+        </form>
+        <input type="submit" value="Create Task" onClick={this.submitHandler} />
+      </section>
     )
   }
 })
