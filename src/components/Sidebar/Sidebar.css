@@ -13,12 +13,15 @@
   display: block;
 }
 
-.sidebar .circle{
-  border-radius: 50%;
-  margin: auto;
-  width: 60px;
-  height: 60px;
-  background:var(--light);
+.sidebar .center-image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background:var(--light);
+    padding: 5px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
 }
 
 .sidebar .menuItem{
@@ -63,6 +66,12 @@
   font-size: 12px;
   letter-spacing: 1px;
 }
+
+.sidebar .menuItem a:focus li {
+  box-shadow: none;
+  background: var(--info);
+}
+
 .sidebar li{
   list-style-type: none;
 }
