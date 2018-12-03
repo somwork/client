@@ -33,28 +33,38 @@ export default withRouter(class Account extends Component {
   }
 
   /**
+   * REnder worker specific
+   */
+  workerSpecificRender() {
+    if (this.state !== null && this.state.discriminator === 'Worker') {
+      return (
+        <Skills
+          workerId={this.state.id}
+        />
+      );
+    }
+    return null
+  }
+
+  /**
+   * Render edit profile button
+   */
+  editProfileButtonRender() {
+    if (auth.id() === Number(this.state.id)) {
+      return (
+        <Link to='/changeAccount'>
+          <button>Edit profile</button>
+        </Link>
+      );
+    }
+    return null;
+  }
+
+  /**
    * Creates the account view
    * @return {JSX} View
    */
   render() {
-    let workerSpecifice;
-    if (this.state !== null && this.state.discriminator === 'Worker') {
-      workerSpecifice =
-        <div>
-          <Skills
-            workerId={this.state.id}
-          />
-        </div>
-    }
-
-    let editProfileButton
-    if (auth.id() === Number(this.state.id)) {
-      editProfileButton =
-        <Link to='/changeAccount'>
-          <button>Edit profile</button>
-        </Link>
-    }
-
     return (
       <Layout>
         <section>
@@ -65,8 +75,8 @@ export default withRouter(class Account extends Component {
           <h2>{this.state.firstName + " " + this.state.lastName} </h2>
           <h4>{this.state.username}</h4>
           <h4>{this.state.email}</h4>
-          {editProfileButton}
-          {workerSpecifice}
+          {this.editProfileButtonRender()}
+          {this.workerSpecificRender()}
 
         </section>
       </Layout>

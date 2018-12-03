@@ -15,8 +15,7 @@ export default {
   async create(skill) {
     //Validate data for the body
     Skill(skill);
-    const path = 'skills?password=' + skill.password;
-    const res = await request.post(path, skill);
+    const res = await request.post("skills", skill);
     return await res.json()
   },
 
