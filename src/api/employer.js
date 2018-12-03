@@ -61,7 +61,7 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-  async getEmployerTasks(id) {
+  async getTasks(id) {
     const res = await request.get(`employers/${id}/tasks`)
     return await res.json()
   }

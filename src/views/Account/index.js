@@ -1,2 +1,2 @@
-import ChangeProfile from './ChangeProfile'
-export default ChangeProfile
+import Account from './Account'
+export default Account
