@@ -4,8 +4,6 @@ import'./TaskView.css'
 import Auth from '../../api/auth';
 import Alert from '../../components/Alert';
 import moment from 'moment';
-import Worker from '../../api/worker'
-import Employer from '../../api/employer'
 
 export default class Chat extends Component{
 
