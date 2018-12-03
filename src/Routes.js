@@ -23,7 +23,7 @@ export default () => (
       <Route path="/login" component={Login} />
       <Route path='/sign-up' component={SignUp} />
       <Route path="/task/create" component={Create} />
-      <Route path="/task/update:id" component={Update} />
+      <Route path="/task/update/:id" component={Update} />
       <Route path='/task/list' component={List} />,
       <Route path='/task/detail/:id' component={View} />,
       <Route path="/logout" component={logout} />
