@@ -16,8 +16,8 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-  async get(id) {
-    const res = await request.get(id ? `messages/${id}` : 'messages')
+  async get(taskId) {
+    const res = await request.get(`messages/${taskId}`)
     return await res.json()
   },
 
@@ -26,32 +26,11 @@ export default {
    * @param {Object} message
    * @return {Promise}
    */
-  async create(message) {
+  async create(taskId,message) {
     //Validate data for the body
-    Message(message);
-    const res = await request.post('messages', message);
+    Message(taskId,message);
+    const res = await request.post(`tasks/${taskId}/message`, message);
     return await res.json()
   },
 
-  /**
-   * Update message
-   * @param {Object} message
-   * @return {Promise}
-   */
-  async update(message) {
-    //Validate data for the body
-    Message(message);
-    const res = await request.put(`messages/${message.id}`, message);
-    return res.ok
-  },
-
-  /**
-   * Delete message
-   * @param {Number} id
-   * @return {Promise}
-   */
-  async delete(id) {
-    const res = await request.delete(`messages/${id}`);
-    return res.ok
-  }
 }

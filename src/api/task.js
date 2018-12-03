@@ -54,5 +54,17 @@ export default {
   async delete(id) {
     const res = await request.delete(`tasks/${id}`)
     return res.ok
+  },
+
+    /**
+   * add estimate through task id
+   * @param {Number} id
+   * @param {Object} Estimate
+   * @return {Promise}
+   */
+  async createEstimate(id,estimate) {
+    const res = await request.post(`tasks/${id}/estimate`,estimate)
+    return await res.json()
   }
+
 }

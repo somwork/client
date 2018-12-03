@@ -30,3 +30,7 @@ width: 20%;
   margin: 5%;
 }
 
+.AlertAccepted{
+    background-color: #00ff554d; /*Green*/
+    border-color: rgb(6, 117, 6);
+}
