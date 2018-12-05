@@ -5,7 +5,7 @@ const Message = struct({
   text: 'string',
   sendAt: 'date',
   userId: 'number',
-  firstName:'string',
+  firstName: 'string',
   lastName: 'string',
   taskId: 'number',
 })
@@ -22,15 +22,16 @@ export default {
   },
 
   /**
-   * Create message
-   * @param {Object} message
-   * @return {Promise}
-   */
-  async create(taskId,message) {
+     * Create message
+     * @param {Object} message
+     * @return {Promise}
+     */
+  async create(taskId, message) {
     //Validate data for the body
-    Message(taskId,message);
+    Message(taskId, message);
     const res = await request.post(`tasks/${taskId}/message`, message);
     return await res.json()
   },
 
 }
+

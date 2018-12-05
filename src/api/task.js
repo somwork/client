@@ -56,15 +56,41 @@ export default {
     return res.ok
   },
 
-    /**
-   * add estimate through task id
-   * @param {Number} id
-   * @param {Object} Estimate
+  /**
+ * add estimate through task id
+ * @param {Number} id
+ * @param {Object} Estimate
+ * @return {Promise}
+ */
+  async createEstimate(id, estimate) {
+    const res = await request.post(`tasks/${id}/estimate`, estimate)
+    return await res.json()
+  },
+
+  /**
+   * Create message
+   * @param {Object} message
    * @return {Promise}
    */
-  async createEstimate(id,estimate) {
-    const res = await request.post(`tasks/${id}/estimate`,estimate)
+  async createMessage(taskId, message) {
+    const res = await request.post(`tasks/${taskId}/messages`, message);
     return await res.json()
+  },
+
+  /**
+   * Get list of messages
+   * @param {Number} id
+   * @param {Object} message
+   * @return {Promise}
+   */
+  async getMessage(taskId, message) {
+    const res = await request.get(taskId ? `messages/${taskId}` : message);
+    return await res.json();
   }
 
 }
+
+
+
+
+
