@@ -36,7 +36,7 @@ export default class View extends Component {
    * Loads all tasks into state when componet mount
    */
   componentDidMount() {
-    this.loadtasks(this.props.match.params.id);
+    this.loadTasks(this.props.match.params.id);
   }
 
   /**

@@ -72,6 +72,8 @@ export default class Chat extends Component {
         taskId: Number(this.props.taskId),
       });
 
+      console.log(res);
+
       //adds the new message to the chat
       const tempMessage = JSON.parse(JSON.stringify(this.state.messages))
       tempMessage.push(res)
