@@ -9,41 +9,41 @@ import moment from 'moment';
 import Alert from '../../components/Alert';
 
 export default class View extends Component {
+  state = {
+    task: {
+      id:'',
+      start:'',
+      deadline:'',
+      urgency:'',
+      description:'',
+      title:''
+    },
+    estimate: {
+      price:'',
+      totalHours:'',
+      currency:'',
+      complexity:'',
+    },
+    error:''
+  }
 
-  constructor(props) {
-    super(props);
-
-    this.state={
-      task:{
-        id:'',
-        start:'',
-        deadline:'',
-        urgency:'',
-        description:'',
-        title:''
-      },
-      estimate:{
-        price:'',
-        totalHours:'',
-        currency:'',
-        complexity:'',
-      },
-      error:''
-    }
+  urgency = {
+    1.2: 'norush',
+    1.4: 'urgent',
+    1.5: 'asap'
   }
 
   /**
    * Loads all tasks into state when componet mount
    */
   componentDidMount(){
-    this.loadtasks(this.props.match.params.id);
+    this.loadTasks(this.props.match.params.id);
   }
 
   /**
    *loads the selected task from the database into the state
    * @param {int} id
    */
-
   loadTasks = async id => {
     const res = await Task.get(id);
     if(res=== null){
@@ -109,7 +109,7 @@ export default class View extends Component {
           <div>
             <b>Urgency</b>
             <div >
-              {task.urgency}
+              {this.urgency[task.urgency]}
             </div>
           </div>
         </div>
@@ -137,19 +137,23 @@ export default class View extends Component {
           )}
           <hr/>
           {this.fieldRendertaskDescription(this.state.task)}
-          <Popup trigger={<button> Make estimate</button>}>
+          <Popup trigger={<button>Make estimate</button>}>
             <div className='popUpInner'>
-              <label>
-                <form onSubmit={this.submitHandler}>
-                  <p><b>hourly pay:</b></p>
+              <form onSubmit={this.submitHandler}>
+                <label>
+                  Hourly pay:
                   <input name='price' type='number' onChange={this.changeHandler}  placeholder="Hourly pay..." required/>
-                  <p><b>total hours:</b></p>
+                </label>
+                <label>
+                  Total hours:
                   <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
-                  <p> <b>Task Complexity:</b></p>
+                </label>
+                <label>
+                  Task Complexity:
                   <input name='complexity' type='number' onChange={this.changeHandler}  placeholder="Complexity..." required/>
-                  <input type="submit" value="Submit"/>
-                </form>
-              </label>
+                </label>
+                <input type="submit" value="Send"/>
+              </form>
             </div>
           </Popup>
           <hr/>
