@@ -135,7 +135,7 @@ export default class View extends Component{
           {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}
-          <hr></hr>
+          <hr />
           {this.fieldRendertaskDescription(this.state.task)}
           <Popup trigger={<button> Make estimate</button>}>
             <div className='popUpInner'>
