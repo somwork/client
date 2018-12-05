@@ -1,0 +1,32 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  color: black;
+}
+
+.chat{
+  display: flex;
+  flex-direction: row;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0%;
+}
+
+.chatBox{
+  color: var(--black);
+  text-align: left;
+  background: rgb(239, 245, 245);
+}
+
+.sendbutton{
+  width: 20%;
+}
+
+.popUpInner{
+  margin: 5%;
+}
+
