@@ -66,5 +66,4 @@ export default {
     const res = await request.post(`tasks/${id}/estimate`,estimate)
     return await res.json()
   }
-
 }
