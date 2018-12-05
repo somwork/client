@@ -75,6 +75,7 @@ export default {
    */
   async createMessage(message) {
     const res = await request.post(`tasks/${message.taskId}/messages`, message);
+    return res.ok
   },
 
   /**
