@@ -34,7 +34,7 @@ export default class View extends Component{
         <label>
           <p><b>Task Id:</b> {task.id}</p>
           <p>{task.start} → {task.deadline}</p>
-          <p>{task.urgency}</p>
+          <p>{task.urgencyString}</p>
           <p>{task.description}</p>
         </label>
       </li>

@@ -6,7 +6,7 @@ import moment from 'moment'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
 import { withRouter } from 'react-router-dom'
-import './Create.css'
+import './Task.css'
 
 export default withRouter(class Create extends Component {
   state = {
@@ -14,7 +14,7 @@ export default withRouter(class Create extends Component {
     endDate: moment(),
     title: "",
     description: "",
-    urgencystring: 'norush',
+    urgencystring: 'norush', //Basic value in raio togglegroup, setting it ensures something is selected
     error: null
   }
 
@@ -29,7 +29,7 @@ export default withRouter(class Create extends Component {
    */
   submitHandler = async event => {
     event.preventDefault()
-     //invalid input handling
+    //invalid input handling
     if (!this.validator()) {
       this.setState({ error: "Invalid input" })
       return
@@ -154,41 +154,42 @@ export default withRouter(class Create extends Component {
               <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
             </label>
             <div>
-            <label>
-              Urgency
-              <br></br>
               <label>
-              <input
-              type="radio"
-              name="urgencystring"
-              value="norush"
-              onChange={this.handleChange}
-              checked={this.state.urgencystring === 'norush'}
-              required/>
-              No Rush
+                Urgency
+              <div></div>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="norush"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'norush'}
+                  required />
+                No Rush
               </label>
               <span></span>
               <label>
-              <input
-              type="radio"
-              name="urgencystring"
-              value="urgent"
-              onChange={this.handleChange}
-              checked={this.state.urgencystring === 'urgent'}
-              required/>
-              Urgent
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="urgent"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'urgent'}
+                  required />
+                Urgent
               </label>
               <span></span>
               <label>
-              <input
-              type="radio"
-              name="urgencystring"
-              value="asap"
-              onChange={this.handleChange}
-              checked={this.state.urgencystring === 'asap'}
-              required/>
-              ASAP </label>
-            </label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="asap"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'asap'}
+                  required />
+                 ASAP
+                 </label>
+              </label>
             </div>
           </form>
           <input type="submit" value="Create Task" onClick={this.submitHandler} />
