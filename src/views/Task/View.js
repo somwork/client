@@ -152,7 +152,7 @@ export default class View extends Component{
               </label>
             </div>
           </Popup>
-          <hr></hr>
+          <hr />
           <Link to='/task/List'>
             <button>Back</button>
           </Link>
