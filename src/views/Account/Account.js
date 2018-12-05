@@ -82,7 +82,6 @@ export default withRouter(class Account extends Component {
    * @return {JSX} View
    */
   render() {
-    console.log(this.state.error)
     if (!!this.state.error) {
       return this.renderNotFound()
     }
