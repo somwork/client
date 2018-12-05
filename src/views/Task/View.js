@@ -75,9 +75,9 @@ export default class View extends Component{
     try {
       await Task.createEstimate( this.state.task.id,{
       price: Number(this.state.estimate.price),
-      totalHours:Number(this.state.estimate.totalHours),
+      totalHours: Number(this.state.estimate.totalHours),
       currency: String(await currencies.get()),
-      complexity:Number(this.state.estimate.complexity),
+      complexity: Number(this.state.estimate.complexity),
     });
 
     } catch(err) {
