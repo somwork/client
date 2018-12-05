@@ -7,6 +7,7 @@ import worker from '../../api/worker';
 import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
+import Chat from './Chat';
 import './Task.css'
 
 export default class View extends Component {
@@ -166,6 +167,7 @@ export default class View extends Component {
         <section className='task'>
           <section>
             {this.renderTaskDetails()}
+            <Chat taskId={this.state.task.id} />
           </section>
           <section>
             {(

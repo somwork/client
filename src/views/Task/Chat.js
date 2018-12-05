@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import './TaskView.css'
 import Auth from '../../api/auth';
 import Alert from '../../components/Alert';
 import moment from 'moment';
@@ -12,12 +11,12 @@ export default class Chat extends Component {
 
     this.state = {
       messageInput: [{
-        text: 'string',
-        sendAt: 'date',
-        userId: 'number',
-        firstName: 'string',
-        lastName: 'String',
-        taskId: 'number'
+        text: '',
+        sendAt: '',
+        userId: '',
+        firstName: '',
+        lastName: '',
+        taskId: ''
       }],
       messages: [],
       error: ''
@@ -72,10 +71,8 @@ export default class Chat extends Component {
         taskId: Number(this.props.taskId),
       });
 
-      console.log(res);
-
       //adds the new message to the chat
-      const tempMessage = JSON.parse(JSON.stringify(this.state.messages))
+      const tempMessage = [ ...this.state.messages ]
       tempMessage.push(res)
       this.setState({
         messages: tempMessage
