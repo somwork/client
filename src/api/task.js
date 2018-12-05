@@ -75,7 +75,6 @@ export default {
    */
   async createMessage(message) {
     const res = await request.post(`tasks/${message.taskId}/messages`, message);
-    return await res.json()
   },
 
   /**
@@ -87,5 +86,16 @@ export default {
   async getMessage(taskId) {
     const res = await request.get(taskId ? `tasks/${taskId}/messages` : `messages`);
     return await res.json();
+  },
+
+  /**
+   * Get all estimates to a task
+   * @param {Number} id
+   * @param {Object} Estimate
+   * @return {Promise}
+   */
+  async getEstimates(id) {
+    const res = await request.get(`tasks/${id}/estimates`)
+    return await res.json()
   }
 }

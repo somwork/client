@@ -210,11 +210,11 @@ export default withRouter(class Update extends Component {
             {this.fields.map(this.fieldRender.bind(this))}
             <label>
               Starting Date
-            <DatePicker onChange={this.updateStart} minDate={moment()} selected={this.state.start} />
+              <DatePicker onChange={this.updateStart} minDate={moment()} selected={this.state.start} />
             </label>
             <label>
               Deadline
-            <DatePicker onChange={this.updateDeadline} minDate={this.state.start} selected={this.state.deadline} />
+              <DatePicker onChange={this.updateDeadline} minDate={this.state.start} selected={this.state.deadline} />
             </label>
             <div>
               <label>

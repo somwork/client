@@ -57,6 +57,36 @@ export default {
   },
 
   /**
+   * Get all accepted tasks for a worker with id
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async getAcceptedTasks(id){
+    const res = await request.get(`workers/${id}/tasks/accepted`)
+    return await res.json()
+  },
+
+  /**
+   * Get all accepted tasks for a worker with id
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async getEstimatedTasks(id){
+    const res = await request.get(`workers/${id}/tasks/estimated`)
+    return await res.json()
+  },
+
+  /**
+   * Get all accepted tasks for a worker with id
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async getAvailableTasks(){
+    const res = await request.get(`workers/tasks`)
+    return await res.json()
+  },
+
+  /**
    * Get all skills of worker with id
    * @param {Number} id
    * @return {Promise}
