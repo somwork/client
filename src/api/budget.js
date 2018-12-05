@@ -40,7 +40,7 @@ export default {
     //Validate data for the body
     Budget(budget);
     const res = await request.put(`budgets/${budget.id}`, budget);
-    return await res.json()
+    return await res.ok
   },
 
   /**
@@ -50,6 +50,6 @@ export default {
    */
   async delete(id) {
     const res = await request.delete(`budgets/${id}`);
-    return await res.json()
+    return await res.ok
   }
 }
