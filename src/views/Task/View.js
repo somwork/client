@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import currencies from '../../api/currencies';
@@ -8,9 +8,9 @@ import'./TaskView.css'
 import moment from 'moment';
 import Alert from '../../components/Alert';
 
-export default class View extends Component{
+export default class View extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state={
@@ -43,8 +43,8 @@ export default class View extends Component{
    *loads the selected task from the database into the state
    * @param {int} id
    */
-  loadtasks = async id=>{
 
+  loadTasks = async id => {
     const res = await Task.get(id);
     if(res=== null){
       return null;
@@ -82,6 +82,7 @@ export default class View extends Component{
     } catch(err) {
       this.setState({ error: err.message })
     }
+
   }
 
   /**
@@ -118,6 +119,7 @@ export default class View extends Component{
             <p>{task.description}</p>
           </div>
       </label>
+
     )
   }
 
@@ -125,7 +127,7 @@ export default class View extends Component{
    * Creates the task overview view
    * @return {JSX} View
    */
-  render(){
+  render() {
     return (
       <Layout>
         <section>
