@@ -22,7 +22,7 @@ export default class View extends Component{
         description:'',
         title:''
       },
-      offer:{
+      estimate:{
         price:'',
         totalHours:'',
         currency:'',
@@ -58,10 +58,10 @@ export default class View extends Component{
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempOffer = JSON.parse(JSON.stringify(this.state.offer))
-    tempOffer[event.target.name] = event.target.value
+    const tempestimate = {...this.state.estimate }
+    tempestimate[event.target.name] = event.target.value
     this.setState({
-        offer:tempOffer
+        estimate:tempestimate
     })
   }
 
@@ -74,11 +74,11 @@ export default class View extends Component{
     event.preventDefault();
     try {
       const res = await Task.createEstimate( this.state.task.id,{
-      price: Number(this.state.offer.price),
-      totalHours:Number(this.state.offer.totalHours),
+      price: Number(this.state.estimate.price),
+      totalHours:Number(this.state.estimate.totalHours),
       currency: String(await currencies.get()),
-      complexity:Number(this.state.offer.complexity),
-      });
+      complexity:Number(this.state.estimate.complexity),
+    });
 
     } catch(err) {
       this.setState({ error: err.message })
@@ -137,7 +137,7 @@ export default class View extends Component{
           )}
           <hr></hr>
           {this.fieldRendertaskDescription(this.state.task)}
-          <Popup trigger={<button> Make offer</button>}>
+          <Popup trigger={<button> Make estimate</button>}>
             <div className='popUpInner'>
               <label>
                 <form onSubmit={this.submitHandler}>
