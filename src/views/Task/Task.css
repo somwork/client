@@ -37,3 +37,8 @@
 .task-list li div:last-child p {
   margin: 0px;
 }
+
+form span {
+  display: inline-block;
+  width: var(--spacing);
+}

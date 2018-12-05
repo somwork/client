@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
+import budget from '../../api/budget'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
 import { withRouter } from 'react-router-dom'
+import './Task.css'
 
 export default withRouter(class Create extends Component {
   state = {
@@ -13,16 +15,35 @@ export default withRouter(class Create extends Component {
     endDate: moment(),
     title: "",
     description: "",
-    urgency: "",
-    error: null
+    urgencystring: 'norush', //Basic value in radio togglegroup, setting it ensures something is selected
+    error: null,
+    budgets: [],
+    currency: "USD",
+    currentBudget: 1,
   }
 
   fields = [
     //["label", "Type", Validation method, isTextArea]
     ["Title", "text", v => v.length > 0, false],
     ["Description", "text", v => v.length > 0, true],
-    ["Urgency", "text", v => v.length > 0, false]
   ]
+
+  /**
+   * This function is called when the component is mounted to the DOM.
+   * when the component is mounted we get the budgets
+   */
+  componentDidMount() {
+      this.getBudgets();
+  }
+
+  /**
+   * Get existing budgets from database and add them to state
+   */
+  async getBudgets(){
+    this.setState({
+      budgets: await budget.get()
+    })
+  }
 
   /**
    * Creates task based on data in inputfields
@@ -34,15 +55,15 @@ export default withRouter(class Create extends Component {
       this.setState({ error: "Invalid input" })
       return
     }
-
     //input valid
     try {
       const taskData = {
         title: this.state.title,
         description: this.state.description,
-        urgency: this.state.urgency,
+        urgencystring: this.state.urgencystring,
         start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.endDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        budgetId: Number(this.state.currentBudget)
       }
       await task.create(taskData)
       this.props.history.push('/task/list')
@@ -107,6 +128,19 @@ export default withRouter(class Create extends Component {
   }
 
   /**
+   * Renders budgets inputs based on definitions in budgetTypes[]
+   * @param {number} id
+   * @param {number} from
+   * @param {number} to
+   * @return {JSX} an input surrounded with a label
+   */
+  renderBudgets({id, from, to}) {
+    return (
+        <option key={id} value={id}>{from}$ to {to}$</option>
+    )
+  }
+
+  /**
    * Sets the selected  date
    * @param {Date} date
    */
@@ -152,6 +186,53 @@ export default withRouter(class Create extends Component {
             <label>
               Deadline
               <DatePicker onChange={this.updateEndDate} minDate={this.state.startDate} selected={this.state.endDate} />
+            </label>
+            <div>
+              <label>
+                Urgency
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="norush"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'norush'}
+                  required
+                />
+                No Rush
+              </label>
+              <span/>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="urgent"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'urgent'}
+                  required
+                />
+                Urgent
+              </label>
+              <span/>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="asap"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'asap'}
+                  required
+                />
+                 ASAP
+              </label>
+            </div>
+            <label>
+              Select your budget:
+              <select value={this.state.currentBudget} onChange={this.handleChange} name="currentBudget">
+                {this.state.budgets.map(this.renderBudgets.bind(this))}
+              </select>
             </label>
           </form>
           <input type="submit" value="Create Task" onClick={this.submitHandler} />

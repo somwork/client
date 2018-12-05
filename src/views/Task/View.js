@@ -1,41 +1,41 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
 import currencies from '../../api/currencies';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
-import'./TaskView.css'
-import Chat from "./Chat";
-import Auth from '../../api/auth';
+import './TaskView.css'
 import moment from 'moment';
 import Alert from '../../components/Alert';
-import auth from "../../api/auth";
 
-export default class View extends Component{
+export default class View extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
-    this.state={
-      task:{
-        id:'',
-        start:'',
-        deadline:'',
-        urgency:'',
-        description:'',
-        title:''
+    this.state = {
+      task: {
+        id: '',
+        start: '',
+        deadline: '',
+        urgency: '',
+        description: '',
+        title: ''
       },
-      offer:{
-        price:'',
-        totalHours:'',
-        currency:'',
-        complexity:'',
+      estimate: {
+        price: '',
+        totalHours: '',
+        currency: '',
+        complexity: '',
       },
-      error:''
+      error: ''
     }
   }
 
-  componentDidMount(){
+  /**
+   * Loads all tasks into state when componet mount
+   */
+  componentDidMount() {
     this.loadtasks(this.props.match.params.id);
   }
 
@@ -43,13 +43,13 @@ export default class View extends Component{
    *loads the selected task from the database into the state
    * @param {int} id
    */
-  loadtasks = async id=>{
 
+  loadTasks = async id => {
     const res = await Task.get(id);
-    if(res=== null){
+    if (res === null) {
       return null;
     }
-    this.setState({task:res})
+    this.setState({ task: res })
   }
 
   /**
@@ -58,31 +58,31 @@ export default class View extends Component{
    * @param  {Object} event
    */
   changeHandler = event => {
-      const tempOffer = JSON.parse(JSON.stringify(this.state.offer))
-      tempOffer[event.target.name] = event.target.value
-      this.setState({
-         offer:tempOffer
-      })
-    }
+    const tempestimate = { ...this.state.estimate }
+    tempestimate[event.target.name] = event.target.value
+    this.setState({
+      estimate: tempestimate
+    })
+  }
 
   /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
    */
-  submitHandler= async event =>{
+  submitHandler = async event => {
     event.preventDefault();
     try {
-      const res = await Task.createEstimate( this.state.task.id,{
-      price: Number(this.state.offer.price),
-      totalHours:Number(this.state.offer.totalHours),
-      currency: String(await currencies.get()),
-      complexity:Number(this.state.offer.complexity),
-  });
-
-    } catch(err) {
+      await Task.createEstimate(this.state.task.id, {
+        price: Number(this.state.estimate.price),
+        totalHours: Number(this.state.estimate.totalHours),
+        currency: 'DKK',
+        complexity: Number(this.state.estimate.complexity),
+      });
+    } catch (err) {
       this.setState({ error: err.message })
     }
+
   }
 
   /**
@@ -90,9 +90,9 @@ export default class View extends Component{
    * @param {Object} task
    * @return {JSX} a task as a list item
    */
-  fieldRendertaskDescription(task){
-    return(
-      <label key ={task.id}>
+  fieldRendertaskDescription(task) {
+    return (
+      <label key={task.id}>
         <div className="flex-container">
           <div>
             <b>published</b>
@@ -103,7 +103,7 @@ export default class View extends Component{
           <div>
             <b>Deadline</b>
             <div>
-            {moment(task.deadline).format('DD. MMM YYYY')}
+              {moment(task.deadline).format('DD. MMM YYYY')}
             </div>
           </div>
           <div>
@@ -113,11 +113,11 @@ export default class View extends Component{
             </div>
           </div>
         </div>
-          <div>
-            <hr></hr>
-            <h6>task Description:</h6>
-            <p>{task.description}</p>
-          </div>
+        <div>
+          <hr />
+          <h6>task Description:</h6>
+          <p>{task.description}</p>
+        </div>
       </label>
     )
   }
@@ -126,7 +126,7 @@ export default class View extends Component{
    * Creates the task overview view
    * @return {JSX} View
    */
-  render(){
+  render() {
     return (
       <Layout>
         <section>
@@ -135,25 +135,24 @@ export default class View extends Component{
           {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}
-          <hr></hr>
+          <hr />
           {this.fieldRendertaskDescription(this.state.task)}
-          <Popup trigger={<button> Make offer</button>}>
+          <Popup trigger={<button> Make estimate</button>}>
             <div className='popUpInner'>
               <label>
                 <form onSubmit={this.submitHandler}>
                   <p><b>hourly pay:</b></p>
-                  <input name='price' type='number' onChange={this.changeHandler}  placeholder="Hourly pay..." required/>
+                  <input name='price' type='number' onChange={this.changeHandler} placeholder="Hourly pay..." required />
                   <p><b>total hours:</b></p>
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                  <input name='totalHours' type='number' onChange={this.changeHandler} placeholder="Man Hours..." required />
                   <p> <b>Task Complexity:</b></p>
-                  <input name='complexity' type='number' onChange={this.changeHandler}  placeholder="Complexity..." required/>
-                  <input type="submit" value="Submit"/>
+                  <input name='complexity' type='number' onChange={this.changeHandler} placeholder="Complexity..." required />
+                  <input type="submit" value="Submit" />
                 </form>
               </label>
             </div>
           </Popup>
-          <hr></hr>
-          <Chat taskId={this.state.task.id}></Chat>
+          <hr />
           <Link to='/task/List'>
             <button>Back</button>
           </Link>

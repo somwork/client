@@ -10,7 +10,8 @@ import auth from "../../api/auth";
 export default class List extends Component {
   state = {
     tasks: [],
-    value: 'all'
+    value: 'all',
+    error: null
   }
 
   /**
@@ -24,14 +25,18 @@ export default class List extends Component {
    * loads all tasks from the db into the state
    */
   loadTasks = async () => {
-    if (this.state.value === "all") {
-      this.setState({
-        tasks: await task.get()
-      })
-    } else if (this.state.value === "yours") {
-      this.setState({
-        tasks: await employer.getTasks(auth.id())
-      })
+    try {
+      if (this.state.value === "all") {
+        this.setState({
+          tasks: await task.get()
+        })
+      } else if (this.state.value === "yours") {
+        this.setState({
+          tasks: await employer.getTasks(auth.id())
+        })
+      }
+    } catch (e) {
+      this.setState({ error: "Task not found" })
     }
   }
 
@@ -55,7 +60,7 @@ export default class List extends Component {
               <br />
               <br />
               <b>Urgency:</b><br />
-              {task.urgency}
+              {task.urgencyString}
             </p>
             <button>See task</button>
           </div>

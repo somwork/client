@@ -10,7 +10,8 @@ const Task = struct({
   start: 'date',
   deadline: 'date',
   description: 'string',
-  urgency: 'string',
+  urgencystring: 'string',
+  budgetId: 'number'
 })
 
 export default {
@@ -87,10 +88,4 @@ export default {
     const res = await request.get(taskId ? `messages/${taskId}` : message);
     return await res.json();
   }
-
 }
-
-
-
-
-
