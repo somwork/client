@@ -66,6 +66,16 @@ export default {
   async createEstimate(id,estimate) {
     const res = await request.post(`tasks/${id}/estimate`,estimate)
     return await res.json()
+  },
+
+  /**
+   * Sets a task as completed
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async completeTask(id) {
+    const res = await request.put(`tasks/${id}/complete`)
+    return await res.json()
   }
 }
 

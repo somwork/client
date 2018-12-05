@@ -20,7 +20,8 @@ export default class View extends Component {
         deadline:'',
         urgency:'',
         description:'',
-        title:''
+        title:'',
+        completed: '',
       },
       estimate:{
         price:'',
@@ -36,8 +37,10 @@ export default class View extends Component {
    * Loads all tasks into state when componet mount
    */
   componentDidMount(){
-    this.loadtasks(this.props.match.params.id);
+    this.loadTasks(this.props.match.params.id);
   }
+
+
 
   /**
    *loads the selected task from the database into the state
@@ -95,7 +98,7 @@ export default class View extends Component {
       <label key ={task.id}>
         <div className="flex-container">
           <div>
-            <b>published</b>
+            <b>Published</b>
             <div>
               {moment(task.start).format('DD. MMM YYYY')}
             </div>
@@ -115,7 +118,7 @@ export default class View extends Component {
         </div>
         <div>
           <hr/>
-          <h6>task Description:</h6>
+          <h6>Task Description:</h6>
           <p>{task.description}</p>
         </div>
       </label>
@@ -131,7 +134,7 @@ export default class View extends Component {
       <Layout>
         <section>
           <h1>{this.state.task.title}</h1>
-          <h3>task Details</h3>
+          <h3>Task Details</h3>
           {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}

@@ -19,7 +19,8 @@ export default withRouter(class Update extends Component {
     error: null,
     budgets: [],
     currency: "USD",
-    currentBudget: 0
+    currentBudget: 0,
+    completed: "",
   }
 
   fields = [
@@ -157,6 +158,13 @@ export default withRouter(class Update extends Component {
   }
 
   /**
+   * Sets Task to completed
+   */
+completeTaskOnClick = () => {
+  task.completeTask(this.props.match.params.id)
+}
+
+  /**
    * Sets the selected  date
    * @param {Date} date
    */
@@ -263,6 +271,7 @@ export default withRouter(class Update extends Component {
                 {this.state.budgets.map(this.renderBudgets.bind(this))}
               </select>
             </label>
+            <button  onClick={this.completeTaskOnClick}>Complete Task</button>
             <input type="submit" value="Update" />
           </form>
         </section>
