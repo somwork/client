@@ -64,5 +64,15 @@ export default {
   async getTasks(id) {
     const res = await request.get(`employers/${id}/tasks`)
     return await res.json()
+  },
+
+  /**
+   * Get accepted tasks for the employer with the id
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async getAcceptedTasks(id) {
+    const res = await request.get(`employers/${id}/tasks/accepted`)
+    return await res.json()
   }
 }
