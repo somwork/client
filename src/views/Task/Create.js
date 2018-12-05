@@ -190,6 +190,7 @@ export default withRouter(class Create extends Component {
             <div>
               <label>
                 Urgency
+              </label>
               <br/>
               <label>
                 <input
@@ -225,7 +226,6 @@ export default withRouter(class Create extends Component {
                   required
                 />
                  ASAP
-                 </label>
               </label>
             </div>
             <label>

@@ -218,7 +218,8 @@ export default withRouter(class Update extends Component {
             </label>
             <div>
               <label>
-              Urgency
+                Urgency
+              </label>
               <br/>
               <label>
                 <input
@@ -229,7 +230,7 @@ export default withRouter(class Update extends Component {
                   checked={this.state.urgencystring === 'norush'}
                   required
                 />
-              No Rush
+                No Rush
               </label>
               <span/>
               <label>
@@ -241,7 +242,7 @@ export default withRouter(class Update extends Component {
                   checked={this.state.urgencystring === 'urgent'}
                   required
                 />
-              Urgent
+                Urgent
               </label>
               <span/>
               <label>
@@ -253,8 +254,7 @@ export default withRouter(class Update extends Component {
                   checked={this.state.urgencystring === 'asap'}
                   required
                 />
-              ASAP
-              </label>
+                ASAP
               </label>
             </div>
             <label>
