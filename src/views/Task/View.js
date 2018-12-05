@@ -113,11 +113,11 @@ export default class View extends Component {
             </div>
           </div>
         </div>
-          <div>
-            <hr/>
-            <h6>task Description:</h6>
-            <p>{task.description}</p>
-          </div>
+        <div>
+          <hr/>
+          <h6>task Description:</h6>
+          <p>{task.description}</p>
+        </div>
       </label>
     )
   }
