@@ -1,55 +1,102 @@
 import React, { Component } from "react";
+import moment from 'moment';
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
-import currencies from '../../api/currencies';
-import { Link } from 'react-router-dom';
+import auth from '../../api/auth';
+import worker from '../../api/worker';
+import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
-import'./TaskView.css'
-import moment from 'moment';
 import Alert from '../../components/Alert';
+import './Task.css'
 
 export default class View extends Component {
+  state = {
+    task: {
+      id:'',
+      start:'',
+      deadline:'',
+      urgency:'',
+      description:'',
+      title:'',
+      averageEstimate: 0,
+    },
+    estimates: [],
+    estimate: {
+      totalHours: 0
+    },
+    newEstimate: {
+      hourlyWage: 0,
+      totalHours: 0,
+      currency: 'DKK',
+      complexity: 1.0,
+    },
+    error:''
+  }
 
-  constructor(props) {
-    super(props);
-
-    this.state={
-      task:{
-        id:'',
-        start:'',
-        deadline:'',
-        urgency:'',
-        description:'',
-        title:''
-      },
-      estimate:{
-        price:'',
-        totalHours:'',
-        currency:'',
-        complexity:'',
-      },
-      error:''
-    }
+  urgency = {
+    1.2: 'No rush',
+    1.4: 'Urgent',
+    1.5: 'ASAP'
   }
 
   /**
    * Loads all tasks into state when componet mount
    */
   componentDidMount(){
-    this.loadtasks(this.props.match.params.id);
+    this.loadTasks(this.props.match.params.id);
+
+    if (auth.type() === "employer") {
+      this.loadEstimates(this.props.match.params.id);
+    } else {
+      this.loadCurrentEstimate(this.props.match.params.id)
+    }
   }
 
   /**
-   *loads the selected task from the database into the state
+   * loads the selected task from the database into the state
    * @param {int} id
    */
-
   loadTasks = async id => {
-    const res = await Task.get(id);
-    if(res=== null){
-      return null;
+    this.setState({
+      task: await Task.get(id)
+    })
+  }
+
+  /**
+   * load all estimates
+   * @param  {Number}  id
+   */
+  loadEstimates = async id => {
+    const estimates = await Task.getEstimates(id)
+    const workers = await worker.get()
+
+    this.setState({
+      estimates: estimates.map(estimate => {
+        estimate.worker = workers.find(worker => worker.id === estimate.workerId)
+        return estimate
+      })
+    })
+  }
+
+  /**
+   * Load a workers estimate if it exists
+   * @param  {Number}  id
+   * @return {Promise}
+   */
+  loadCurrentEstimate = async id => {
+    const estimates = await estimate.get()
+
+    const est = estimates.find(
+      estimate => estimate.workerId === auth.id() && estimate.taskId === Number(id)
+    )
+
+    if (!est) {
+      return
     }
-    this.setState({task:res})
+
+    this.setState({
+      estimate: est
+    })
   }
 
   /**
@@ -58,10 +105,10 @@ export default class View extends Component {
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempestimate = {...this.state.estimate }
+    const tempestimate = {...this.state.newEstimate }
     tempestimate[event.target.name] = event.target.value
     this.setState({
-        estimate:tempestimate
+        newEstimate: tempestimate
     })
   }
 
@@ -73,53 +120,40 @@ export default class View extends Component {
   submitHandler= async event =>{
     event.preventDefault();
     try {
-      await Task.createEstimate(this.state.task.id, {
-        price: Number(this.state.estimate.price),
-        totalHours: Number(this.state.estimate.totalHours),
-        currency: 'DKK',
-        complexity: Number(this.state.estimate.complexity),
-      });
+      const estimate = {
+        hourlyWage: Number(this.state.newEstimate.hourlyWage),
+        totalHours: Number(this.state.newEstimate.totalHours),
+        urgency: Number(this.state.task.urgency),
+        complexity: Number(this.state.newEstimate.complexity),
+        workerId: auth.id()
+      }
+
+      await Task.createEstimate(this.state.task.id, estimate);
+
+      this.setState({ estimate: estimate })
+      await this.loadCurrentEstimate()
+      await this.loadTasks(this.props.match.params.id)
     } catch(err) {
       this.setState({ error: err.message })
     }
-
   }
 
   /**
-   * render a task
-   * @param {Object} task
-   * @return {JSX} a task as a list item
+   * Accept worker
+   * @param  {Number}  id
+   * @return {Promise}
    */
-  fieldRendertaskDescription(task){
-    return(
-      <label key ={task.id}>
-        <div className="flex-container">
-          <div>
-            <b>published</b>
-            <div>
-              {moment(task.start).format('DD. MMM YYYY')}
-            </div>
-          </div>
-          <div>
-            <b>Deadline</b>
-            <div>
-            {moment(task.deadline).format('DD. MMM YYYY')}
-            </div>
-          </div>
-          <div>
-            <b>Urgency</b>
-            <div >
-              {task.urgency}
-            </div>
-          </div>
-        </div>
-        <div>
-          <hr/>
-          <h6>task Description:</h6>
-          <p>{task.description}</p>
-        </div>
-      </label>
-    )
+  acceptWorker = async id => {
+    await estimate.accept(id)
+    const estimates = this.state.estimates.map(estimate => {
+      if (estimate.id === id) {
+        estimate.accepted = true
+      }
+
+      return estimate
+    })
+
+    this.setState({ estimates })
   }
 
   /**
@@ -129,35 +163,131 @@ export default class View extends Component {
   render() {
     return (
       <Layout>
-        <section>
-          <h1>{this.state.task.title}</h1>
-          <h3>task Details</h3>
-          {this.state.error && (
-            <Alert>{this.state.error}</Alert>
-          )}
-          <hr/>
-          {this.fieldRendertaskDescription(this.state.task)}
-          <Popup trigger={<button> Make estimate</button>}>
-            <div className='popUpInner'>
-              <label>
-                <form onSubmit={this.submitHandler}>
-                  <p><b>hourly pay:</b></p>
-                  <input name='price' type='number' onChange={this.changeHandler}  placeholder="Hourly pay..." required/>
-                  <p><b>total hours:</b></p>
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
-                  <p> <b>Task Complexity:</b></p>
-                  <input name='complexity' type='number' onChange={this.changeHandler}  placeholder="Complexity..." required/>
-                  <input type="submit" value="Submit"/>
-                </form>
-              </label>
-            </div>
-          </Popup>
-          <hr/>
-          <Link to='/task/List'>
-            <button>Back</button>
-          </Link>
+        <section className='task'>
+          <section>
+            {this.renderTaskDetails()}
+          </section>
+          <section>
+            {(
+              auth.type() === 'worker'
+                ? this.renderWorkerEstimates()
+                : this.renderEmployerEstimates()
+            )}
+          </section>
         </section>
       </Layout>
+    )
+  }
+
+  /**
+   * Render task details
+   * @return {JSX}
+   */
+  renderTaskDetails () {
+    return (
+      <div>
+        <h3>{this.state.task.title}</h3>
+        {this.state.error && (
+          <Alert>{this.state.error}</Alert>
+        )}
+        {this.renderTaskDescription(this.state.task)}
+      </div>
+    )
+  }
+
+  /**
+   * render a task
+   * @param {Object} task
+   * @return {JSX} a task as a list item
+   */
+  renderTaskDescription(task){
+    return(
+      <div className="details" key={task.id}>
+        <h6>Details:</h6>
+        <div className='pane'>
+          <div>
+            <b>Published</b><br />
+            {moment(task.start).format('DD. MMM YYYY')}
+          </div>
+          <div>
+            <b>Deadline</b><br />
+            {moment(task.deadline).format('DD. MMM YYYY')}
+          </div>
+          <div>
+            <b>Urgency</b><br />
+            {this.urgency[task.urgency]}
+          </div>
+        </div>
+        <h6>Description:</h6>
+        <p>{task.description}</p>
+      </div>
+    )
+  }
+
+  /**
+   * Render employer estimate
+   * @return {[type]} [description]
+   */
+  renderEmployerEstimates() {
+    const accepted = this.state.estimates.find(e => e.accepted === true)
+    return (
+      <div className='estimate'>
+        <h4>Estimate</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        {this.state.estimates.length === 0 && (
+          <h6>No estimates yet!</h6>
+        )}
+        <ul>
+          {accepted && (
+            <li>
+              <h5>{accepted.worker.firstName} {accepted.worker.lastName}</h5>
+            </li>
+          )}
+          {!accepted && this.state.estimates.map(estimate => (
+            <li key={estimate.id}>
+              <h5>{estimate.worker.firstName} {estimate.worker.lastName}</h5>
+              <button onClick={() => this.acceptWorker(estimate.id)}>Hire</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  renderWorkerEstimates() {
+    return (
+      <div className='estimate'>
+        <h4>Estimate</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        {this.state.estimate.totalHours > 0 && (
+          <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
+        )}
+        {this.state.estimate.totalHours === 0 && (
+          <Popup trigger={<button>Make estimate</button>}>
+            <div className='pop-up'>
+              <form onSubmit={this.submitHandler}>
+                <label>
+                  Hourly pay:
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  placeholder="Hourly wage..." required/>
+                </label>
+                <label>
+                  Total hours:
+                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                </label>
+                <label>
+                  Task Complexity:
+                  <select name='complexity'>
+                    <option value='1.0'>Easy</option>
+                    <option value='1.5'>Medium</option>
+                    <option value='2.0'>Hard</option>
+                  </select>
+                </label>
+                <input type="submit" value="Send"/>
+              </form>
+            </div>
+          </Popup>
+        )}
+      </div>
     )
   }
 }
