@@ -160,7 +160,7 @@ export default withRouter(class Update extends Component {
   /**
    * Sets Task to completed
    */
-completeTaskOnClick = () => {
+completeTaskOnClick =  () => {
   task.completeTask(this.props.match.params.id)
 }
 
@@ -214,7 +214,7 @@ completeTaskOnClick = () => {
           {this.state.error && (
             <Alert>{this.state.error} </Alert>
           )}
-          <form onSubmit={this.updateHandler}>
+          <form>
             {this.fields.map(this.fieldRender.bind(this))}
             <label>
               Starting Date
@@ -272,7 +272,7 @@ completeTaskOnClick = () => {
               </select>
             </label>
             <button  onClick={this.completeTaskOnClick}>Complete Task</button>
-            <input type="submit" value="Update" />
+            <input type="submit" value="Update" onClick={this.updateHandler} />
           </form>
         </section>
       </Layout>
