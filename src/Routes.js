@@ -12,6 +12,7 @@ import Account from "./views/Account/Account";
 import auth from "./api/auth";
 import NotFound from "./views/NotFound";
 
+
 function logout() {
   auth.logout()
   return <Redirect to='/login' />

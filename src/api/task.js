@@ -10,7 +10,7 @@ const Task = struct({
   start: 'date',
   deadline: 'date',
   description: 'string',
-  urgency: 'string',
+  urgencystring: 'string',
   budgetId: 'number'
 })
 
@@ -57,3 +57,4 @@ export default {
     return res.ok
   }
 }
+

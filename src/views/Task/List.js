@@ -60,7 +60,7 @@ export default class List extends Component {
               <br />
               <br />
               <b>Urgency:</b><br />
-              {task.urgency}
+              {task.urgencyString}
             </p>
             <button>See task</button>
           </div>

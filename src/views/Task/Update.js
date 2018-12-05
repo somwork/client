@@ -7,7 +7,7 @@ import moment from 'moment'
 import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
 import camelcase from 'camelcase'
-
+import './Task.css'
 
 export default withRouter(class Update extends Component {
   state = {
@@ -15,7 +15,7 @@ export default withRouter(class Update extends Component {
     deadline: null,
     title: "",
     description: "",
-    urgency: "",
+    urgencystring: "",
     error: null,
     budgets: [],
     currency: "USD",
@@ -26,7 +26,6 @@ export default withRouter(class Update extends Component {
     //["label", "Type", Validation method ,isTextArea]
     ["Title", "text", v => v.length > 0, false],
     ["Description", "text", v => v.length > 0, true],
-    ["Urgency", "text", v => v.length > 0, false]
   ]
 
   /**
@@ -46,7 +45,7 @@ export default withRouter(class Update extends Component {
         id: Number(this.props.match.params.id),
         title: this.state.title,
         description: this.state.description,
-        urgency: this.state.urgency,
+        urgencystring: this.state.urgencystring,
         start: this.state.start.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
         deadline: this.state.deadline.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
         budgetId: Number(this.state.currentBudget)
@@ -150,7 +149,7 @@ export default withRouter(class Update extends Component {
     this.setState({
       title: loadedTask.title,
       description: loadedTask.description,
-      urgency: loadedTask.urgency,
+      urgencystring: loadedTask.urgencyString,
       start: moment(loadedTask.start),
       deadline: moment(loadedTask.deadline),
       currentBudget: loadedTask.budgetId
@@ -217,6 +216,47 @@ export default withRouter(class Update extends Component {
               Deadline
             <DatePicker onChange={this.updateDeadline} minDate={this.state.start} selected={this.state.deadline} />
             </label>
+            <div>
+              <label>
+                Urgency
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="norush"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'norush'}
+                  required
+                />
+                No Rush
+              </label>
+              <span/>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="urgent"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'urgent'}
+                  required
+                />
+                Urgent
+              </label>
+              <span/>
+              <label>
+                <input
+                  type="radio"
+                  name="urgencystring"
+                  value="asap"
+                  onChange={this.handleChange}
+                  checked={this.state.urgencystring === 'asap'}
+                  required
+                />
+                ASAP
+              </label>
+            </div>
             <label>
               Select your budget:
               <select value={this.state.currentBudget} onChange={this.handleChange} name="currentBudget">
@@ -225,7 +265,6 @@ export default withRouter(class Update extends Component {
             </label>
             <input type="submit" value="Update" />
           </form>
-
         </section>
       </Layout>
     )
