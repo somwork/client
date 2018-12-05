@@ -8,7 +8,6 @@ import employer from '../../api/employer';
 import auth from "../../api/auth";
 
 export default class List extends Component {
-
   state = {
     tasks: [],
     value: 'all'
@@ -31,7 +30,7 @@ export default class List extends Component {
       })
     } else if (this.state.value === "yours") {
       this.setState({
-        tasks: await employer.getEmployerTasks(auth.id())
+        tasks: await employer.getTasks(auth.id())
       })
     }
   }

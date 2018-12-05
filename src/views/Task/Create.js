@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import task from '../../api/task'
+import budget from '../../api/budget'
 import DatePicker from '../../components/DatePicker'
 import moment from 'moment'
 import Alert from '../../components/Alert'
@@ -15,7 +16,10 @@ export default withRouter(class Create extends Component {
     title: "",
     description: "",
     urgencystring: 'norush', //Basic value in radio togglegroup, setting it ensures something is selected
-    error: null
+    error: null,
+    budgets: [],
+    currency: "USD",
+    currentBudget: 1,
   }
 
   fields = [
@@ -23,6 +27,23 @@ export default withRouter(class Create extends Component {
     ["Title", "text", v => v.length > 0, false],
     ["Description", "text", v => v.length > 0, true],
   ]
+
+  /**
+   * This function is called when the component is mounted to the DOM.
+   * when the component is mounted we get the budgets
+   */
+  componentDidMount() {
+      this.getBudgets();
+  }
+
+  /**
+   * Get existing budgets from database and add them to state
+   */
+  async getBudgets(){
+    this.setState({
+      budgets: await budget.get()
+    })
+  }
 
   /**
    * Creates task based on data in inputfields
@@ -34,7 +55,6 @@ export default withRouter(class Create extends Component {
       this.setState({ error: "Invalid input" })
       return
     }
-
     //input valid
     try {
       const taskData = {
@@ -42,7 +62,8 @@ export default withRouter(class Create extends Component {
         description: this.state.description,
         urgencystring: this.state.urgencystring,
         start: this.state.startDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
-        deadline: this.state.endDate.toDate() //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        deadline: this.state.endDate.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
+        budgetId: Number(this.state.currentBudget)
       }
       await task.create(taskData)
       this.props.history.push('/task/list')
@@ -103,6 +124,19 @@ export default withRouter(class Create extends Component {
           required
         />
       </label>
+    )
+  }
+
+  /**
+   * Renders budgets inputs based on definitions in budgetTypes[]
+   * @param {number} id
+   * @param {number} from
+   * @param {number} to
+   * @return {JSX} an input surrounded with a label
+   */
+  renderBudgets({id, from, to}) {
+    return (
+        <option key={id} value={id}>{from}$ to {to}$</option>
     )
   }
 
@@ -194,6 +228,12 @@ export default withRouter(class Create extends Component {
                  </label>
               </label>
             </div>
+            <label>
+              Select your budget:
+              <select value={this.state.currentBudget} onChange={this.handleChange} name="currentBudget">
+                {this.state.budgets.map(this.renderBudgets.bind(this))}
+              </select>
+            </label>
           </form>
           <input type="submit" value="Create Task" onClick={this.submitHandler} />
         </section>
