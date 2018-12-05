@@ -42,3 +42,73 @@ form span {
   display: inline-block;
   width: var(--spacing);
 }
+
+.task {
+  max-width: 1200px;
+  display: flex;
+}
+
+.task b {
+  color: var(--primary-dark);
+}
+
+.task section {
+  max-width: 70%;
+  width: 100%;
+}
+
+.task section:last-child {
+  max-width: 30%;
+  width: 100%;
+}
+
+.task .details {
+  margin: var(--spacing-top-bottom);
+  border-bottom: solid 2px var(--secondary);
+}
+
+.task .details .pane {
+  padding: calc(var(--spacing) / 3);
+  display: flex;
+  justify-content: space-between;
+  border-top: solid 2px var(--secondary);
+  border-bottom: solid 2px var(--secondary);
+}
+
+.task .estimate h4.secondary {
+  margin-top: 0px;
+  padding-bottom: calc(var(--spacing) / 2);
+  border-bottom: solid 2px var(--secondary)
+}
+
+.task .estimate ul {
+  padding-left: calc(var(--spacing) * 3.4);
+  position: relative;
+}
+
+.task .estimate ul li {
+  list-style: none;
+}
+
+.task .estimate ul li::before {
+  content: '';
+  position: absolute;
+  left: 0px;
+  background: var(--secondary);
+  width: calc(var(--spacing) * 2.8);
+  height: calc(var(--spacing) * 2.8);
+  border-radius: 50%;
+  display: block;
+}
+
+.task .estimate ul li h5 {
+  margin-bottom: 6px;
+}
+
+.task .estimate ul li button {
+  font-size: 14px;
+  padding: calc(var(--spacing) / 4) var(--spacing);
+  margin-top: 0px;
+  display: inline;
+  width: auto;
+}
