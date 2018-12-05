@@ -185,7 +185,7 @@ export default withRouter(class Update extends Component {
             <div>
               <label>
               Urgency
-              <div></div>
+              <br/>
               <label>
                 <input
                   type="radio"
@@ -193,10 +193,11 @@ export default withRouter(class Update extends Component {
                   value="norush"
                   onChange={this.handleChange}
                   checked={this.state.urgencystring === 'norush'}
-                  required />
+                  required
+                />
               No Rush
               </label>
-              <span></span>
+              <span/>
               <label>
                 <input
                   type="radio"
@@ -204,10 +205,11 @@ export default withRouter(class Update extends Component {
                   value="urgent"
                   onChange={this.handleChange}
                   checked={this.state.urgencystring === 'urgent'}
-                  required />
+                  required
+                />
               Urgent
               </label>
-              <span></span>
+              <span/>
               <label>
                 <input
                   type="radio"
@@ -215,7 +217,8 @@ export default withRouter(class Update extends Component {
                   value="asap"
                   onChange={this.handleChange}
                   checked={this.state.urgencystring === 'asap'}
-                  required />
+                  required
+                />
               ASAP
               </label>
               </label>
