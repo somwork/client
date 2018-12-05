@@ -119,7 +119,6 @@ export default class View extends Component {
             <p>{task.description}</p>
           </div>
       </label>
-
     )
   }
 
