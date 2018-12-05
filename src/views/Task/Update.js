@@ -51,7 +51,7 @@ export default withRouter(class Update extends Component {
         budgetId: Number(this.state.currentBudget)
       }
       await task.update(this.props.match.params.id, taskData)
-      this.props.history.push('/task/list') // updates Task/list
+      this.props.history.push('/task/list') // redirect to Task/list
     } catch (e) {
       this.setState({ error: e.message })
     }

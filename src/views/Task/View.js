@@ -7,12 +7,13 @@ import worker from '../../api/worker';
 import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
+import Chat from './Chat';
 import './Task.css'
 
 export default class View extends Component {
   state = {
     task: {
-      id:'',
+      id: 0,
       start:'',
       deadline:'',
       urgency:'',
@@ -117,7 +118,7 @@ export default class View extends Component {
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
    */
-  submitHandler= async event =>{
+  submitHandler = async event => {
     event.preventDefault();
     try {
       const estimate = {
@@ -166,6 +167,7 @@ export default class View extends Component {
         <section className='task'>
           <section>
             {this.renderTaskDetails()}
+            <Chat taskId={this.props.match.params.id} />
           </section>
           <section>
             {(

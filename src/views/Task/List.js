@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Layout from '../../components/Layout';
-import task from '../../api/task';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Task.css'
@@ -60,8 +59,8 @@ export default class List extends Component {
    */
   renderListItem(task) {
     return (
-      <Link to={'detail/' + task.id}>
-        <li key={task.id}>
+      <Link key={task.id} to={'detail/' + task.id}>
+        <li>
           <div>
             <h4>{task.title}</h4>
             <p>{task.description}</p>
