@@ -69,6 +69,13 @@ export default class View extends Component {
   }
 
   /**
+   * Sets Task to completed
+   */
+completeTaskOnClick =  () => {
+  Task.completeTask(this.props.match.params.id)
+}
+
+  /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
@@ -156,6 +163,7 @@ export default class View extends Component {
             </div>
           </Popup>
           <hr/>
+          <button onClick={this.completeTaskOnClick}>Complete Task</button>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>
