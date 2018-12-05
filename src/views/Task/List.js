@@ -71,9 +71,10 @@ export default class List extends Component {
               <b>Deadline:</b><br />
               {moment(task.deadline).format('DD. MMM YYYY')}
               <br />
-              <br />
-              <b>Urgency:</b><br />
-              {task.urgencyString}
+              <b>Urgency:</b><br/>
+              {task.urgencyString}<br/>
+              <b>Estimate:</b><br/>
+              {task.averageEstimate > 0 ? "$" + task.averageEstimate.toFixed(2) : "Awaiting" }
             </p>
             <button>See task</button>
           </div>
