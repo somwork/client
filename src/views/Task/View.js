@@ -13,7 +13,7 @@ import './Task.css'
 export default class View extends Component {
   state = {
     task: {
-      id:'',
+      id: 0,
       start:'',
       deadline:'',
       urgency:'',
@@ -167,7 +167,7 @@ export default class View extends Component {
         <section className='task'>
           <section>
             {this.renderTaskDetails()}
-            <Chat taskId={this.state.task.id} />
+            <Chat taskId={this.props.match.params.id} />
           </section>
           <section>
             {(

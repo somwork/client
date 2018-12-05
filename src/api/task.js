@@ -75,7 +75,7 @@ export default {
    */
   async createMessage(message) {
     const res = await request.post(`tasks/${message.taskId}/messages`, message);
-    return res.ok
+    return res.json()
   },
 
   /**
@@ -84,8 +84,8 @@ export default {
    * @param {Object} message
    * @return {Promise}
    */
-  async getMessage(taskId) {
-    const res = await request.get(taskId ? `tasks/${taskId}/messages` : `messages`);
+  async getMessages(taskId) {
+    const res = await request.get(`tasks/${taskId}/messages`);
     return await res.json();
   },
 

@@ -5,22 +5,17 @@ import moment from 'moment';
 import Task from "../../api/task";
 
 export default class Chat extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      messageInput: [{
-        text: '',
-        sendAt: '',
-        userId: '',
-        firstName: '',
-        lastName: '',
-        taskId: ''
-      }],
-      messages: [],
-      error: ''
-    }
+  state = {
+    messageInput: {
+      text: '',
+      sendAt: '',
+      userId: '',
+      firstName: '',
+      lastName: '',
+      taskId: ''
+    },
+    messages: [],
+    error: ''
   }
 
   componentDidMount() {
@@ -31,12 +26,15 @@ export default class Chat extends Component {
    * loads all messages from the database into the state
    * @param {int} taskId
    */
-  loadMessages = async taksId => {
-    const res = await (Task.getMessage(taksId));
-
-    if (res.length !== 0) {
-      this.setState({ messages: res })
+  loadMessages = async taskId => {
+    console.log(taskId)
+    if (!taskId) {
+      return
     }
+
+    const messages = await Task.getMessages(taskId);
+
+    this.setState({ messages: messages })
   }
 
   /**
@@ -45,7 +43,7 @@ export default class Chat extends Component {
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempMessage = JSON.parse(JSON.stringify(this.state.messageInput))
+    const tempMessage = { ...this.state.messageInput }
     tempMessage[event.target.name] = event.target.value
     this.setState({
       messageInput: tempMessage
@@ -62,7 +60,7 @@ export default class Chat extends Component {
 
     try {
       const user = await Auth.user();
-      const res = await Task.createMessage({
+      const message = await Task.createMessage({
         text: String(this.state.messageInput.text),
         sendAt: moment().toDate(),
         userId: Number(Auth.id()),
@@ -73,11 +71,11 @@ export default class Chat extends Component {
 
       //adds the new message to the chat
       const tempMessage = [ ...this.state.messages ]
-      tempMessage.push(res)
+      tempMessage.push(message)
       this.setState({
-        messages: tempMessage
+        messages: tempMessage,
+        messageInput: { ...this.state.messageInput, text: '' },
       })
-
     } catch (err) {
       this.setState({ error: err.message })
     }
@@ -123,7 +121,7 @@ export default class Chat extends Component {
           {this.renderMessages()}
         </ul>
         <form onSubmit={this.SubmitHandler} className="chat">
-          <input id='messageInaput' name='text' type='text' onChange={this.changeHandler} placeholder="enter your massage..." />
+          <input id='messageInput' name='text' type='text' onChange={this.changeHandler} value={this.state.messageInput.text} placeholder="enter your massage..." />
           <input type="submit" value="send" className="sendbutton" />
         </form>
         {this.state.error && (
