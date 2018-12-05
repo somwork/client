@@ -7,6 +7,7 @@ import Popup from "reactjs-popup";
 import'./TaskView.css'
 import moment from 'moment';
 import Alert from '../../components/Alert';
+import auth from '../../api/auth';
 
 export default class View extends Component {
 
@@ -29,7 +30,8 @@ export default class View extends Component {
         currency:'',
         complexity:'',
       },
-      error:''
+      error:'',
+      user: ''
     }
   }
 
@@ -39,7 +41,6 @@ export default class View extends Component {
   componentDidMount(){
     this.loadTasks(this.props.match.params.id);
   }
-
 
 
   /**
@@ -92,7 +93,21 @@ completeTaskOnClick =  () => {
     } catch(err) {
       this.setState({ error: err.message })
     }
+  }
 
+  /**
+   * Renders Complete Task Button, if user is of type Employer
+   */
+  completeTaskRender = () => {
+    console.log(auth.type())
+   if(auth.type() === 'employer')
+   {
+     return(
+      <button onClick={this.completeTaskOnClick}>Complete Task</button>
+     )
+
+   }
+   return;
   }
 
   /**
@@ -162,8 +177,8 @@ completeTaskOnClick =  () => {
               </label>
             </div>
           </Popup>
+          {this.completeTaskRender()}
           <hr/>
-          <button onClick={this.completeTaskOnClick}>Complete Task</button>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>

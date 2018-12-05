@@ -7,6 +7,7 @@ import moment from 'moment'
 import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
 import camelcase from 'camelcase'
+import auth from '../../api/auth'
 import './Task.css'
 
 export default withRouter(class Update extends Component {
@@ -69,6 +70,21 @@ export default withRouter(class Update extends Component {
       }
     }
     return true
+  }
+
+    /**
+   * Renders Complete Task Button, if user is of type Employer
+   */
+  completeTaskRender = () => {
+    console.log(auth.type())
+   if(auth.type() === 'employer')
+   {
+     return(
+      <button onClick={this.completeTaskOnClick}>Complete Task</button>
+     )
+
+   }
+   return;
   }
 
   /**
@@ -271,7 +287,7 @@ completeTaskOnClick =  () => {
                 {this.state.budgets.map(this.renderBudgets.bind(this))}
               </select>
             </label>
-            <button  onClick={this.completeTaskOnClick}>Complete Task</button>
+            {this.completeTaskRender()}
             <input type="submit" value="Update" onClick={this.updateHandler} />
           </form>
         </section>
