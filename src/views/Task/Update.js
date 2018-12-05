@@ -28,7 +28,10 @@ export default withRouter(class Update extends Component {
     ["Description", "text", v => v.length > 0, true],
     ["Urgency", "text", v => v.length > 0, false]
   ]
-  // Updateds Task
+
+  /**
+   * Updated tasks
+   */
   updateHandler = async event => {
     event.preventDefault()
     //invalid input handling
@@ -119,12 +122,19 @@ export default withRouter(class Update extends Component {
     })
 
   }
-  // Load data from Task and insert
+
+  /**
+   * This function is called when the component is mounted to the DOM.
+   * when the component is mounted we get the budgets and tasks from the database
+   */
   componentDidMount = () => {
     this.getTask()
     this.getBudgets()
   }
 
+  /**
+   * Get existing budgets from database and add them to state
+   */
   async getBudgets(){
     this.setState({
       budgets: await budget.get()

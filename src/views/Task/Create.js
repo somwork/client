@@ -28,10 +28,17 @@ export default withRouter(class Create extends Component {
     ["Urgency", "text", v => v.length > 0, false]
   ]
 
+  /**
+   * This function is called when the component is mounted to the DOM.
+   * when the component is mounted we get the budgets
+   */
   componentDidMount() {
       this.getBudgets();
   }
 
+  /**
+   * Get existing budgets from database and add them to state
+   */
   async getBudgets(){
     this.setState({
       budgets: await budget.get()
@@ -122,8 +129,9 @@ export default withRouter(class Create extends Component {
 
   /**
    * Renders budgets inputs based on definitions in budgetTypes[]
-   * @param {String} value
-   * @param {String} Title
+   * @param {number} id
+   * @param {number} from
+   * @param {number} to
    * @return {JSX} an input surrounded with a label
    */
   renderBudgets({id, from, to}) {
