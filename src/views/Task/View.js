@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Layout from '../../components/Layout';
 import Task from '../../api/task';
-import currencies from '../../api/currencies';
 import { Link } from 'react-router-dom';
 import Popup from "reactjs-popup";
 import './TaskView.css'
 import moment from 'moment';
 import Alert from '../../components/Alert';
+import Chat from '../../views/Task/Chat';
 
 export default class View extends Component {
 
@@ -153,6 +153,7 @@ export default class View extends Component {
             </div>
           </Popup>
           <hr />
+          <Chat taskId={this.state.task.id}></Chat>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>

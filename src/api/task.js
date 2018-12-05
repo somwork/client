@@ -73,8 +73,8 @@ export default {
    * @param {Object} message
    * @return {Promise}
    */
-  async createMessage(taskId, message) {
-    const res = await request.post(`tasks/${taskId}/messages`, message);
+  async createMessage(message) {
+    const res = await request.post(`tasks/${message.taskId}/messages`, message);
     return await res.json()
   },
 
@@ -84,8 +84,8 @@ export default {
    * @param {Object} message
    * @return {Promise}
    */
-  async getMessage(taskId, message) {
-    const res = await request.get(taskId ? `messages/${taskId}` : message);
+  async getMessage(taskId) {
+    const res = await request.get(taskId ? `tasks/${taskId}/messages` : `messages`);
     return await res.json();
   }
 }

@@ -1,30 +1,30 @@
-import React,{Component} from "react";
-import Message from '../../api/messages';
-import'./TaskView.css'
+import React, { Component } from "react";
+import './TaskView.css'
 import Auth from '../../api/auth';
 import Alert from '../../components/Alert';
 import moment from 'moment';
+import Task from "../../api/task";
 
-export default class Chat extends Component{
+export default class Chat extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
-      mesaggeInput:[{
+      messageInput: [{
         text: 'string',
         sendAt: 'date',
         userId: 'number',
-        firstName:'string',
+        firstName: 'string',
         lastName: 'String',
         taskId: 'number'
       }],
-      messages:[],
-      error:''
+      messages: [],
+      error: ''
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.loadMessages(this.props.taskId);
   }
 
@@ -32,11 +32,11 @@ export default class Chat extends Component{
    * loads all messages from the database into the state
    * @param {int} taskId
    */
-  loadMessages = async taksId=>{
-    const res =await (Message.get(taksId));
+  loadMessages = async taksId => {
+    const res = await (Task.getMessage(taksId));
 
-    if(res.length!==0){
-      this.setState({messages:res})
+    if (res.length !== 0) {
+      this.setState({ messages: res })
     }
   }
 
@@ -46,10 +46,10 @@ export default class Chat extends Component{
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempMessage = JSON.parse(JSON.stringify(this.state.mesaggeInput))
+    const tempMessage = JSON.parse(JSON.stringify(this.state.messageInput))
     tempMessage[event.target.name] = event.target.value
     this.setState({
-       mesaggeInput:tempMessage
+      messageInput: tempMessage
     })
   }
 
@@ -58,16 +58,16 @@ export default class Chat extends Component{
    * posts a request to the server
    * @param {Object} event
    */
-  SubmitHandler = async event =>{
+  SubmitHandler = async event => {
     event.preventDefault();
 
     try {
       const user = await Auth.user();
-      const res = await Message.create({
-        text: String(this.state.mesaggeInput.text),
+      const res = await Task.createMessage({
+        text: String(this.state.messageInput.text),
         sendAt: moment().toDate(),
         userId: Number(Auth.id()),
-        firstName:String(user.firstName),
+        firstName: String(user.firstName),
         lastName: String(user.lastName),
         taskId: Number(this.props.taskId),
       });
@@ -75,11 +75,11 @@ export default class Chat extends Component{
       //adds the new message to the chat
       const tempMessage = JSON.parse(JSON.stringify(this.state.messages))
       tempMessage.push(res)
-       this.setState({
-        messages:tempMessage
+      this.setState({
+        messages: tempMessage
       })
 
-    } catch(err) {
+    } catch (err) {
       this.setState({ error: err.message })
     }
   }
@@ -89,20 +89,20 @@ export default class Chat extends Component{
    * otherwise create an comment saying no messages.
    * @return {JSX} View
    */
-  renderMessages(){
-    if(this.state.messages.length===0){
-      return(
-      <li className="chatBox">
+  renderMessages() {
+    if (this.state.messages.length === 0) {
+      return (
+        <li className="chatBox">
           <p>No messages :(</p>
-      </li>
+        </li>
       )
     }
 
-    return(
+    return (
       <div>
-        {this.state.messages.map(message=>(
-          <li key ={message.id} className="chatBox">
-            <label key ={message.id}>
+        {this.state.messages.map(message => (
+          <li key={message.id} className="chatBox">
+            <label key={message.id}>
               <p> <b>{message.firstName} {message.lastName}</b></p>
               <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
               <p>{message.text}</p>
@@ -117,19 +117,19 @@ export default class Chat extends Component{
    * Creates the messages list
    * @return {JSX} View
    */
-  render(){
-    return(
+  render() {
+    return (
       <div>
-          <ul>
-            {this.renderMessages()}
-          </ul>
-          <form onSubmit={this.SubmitHandler} className="chat">
-            <input id='messageInaput' name='text' type='text' onChange={this.changeHandler}  placeholder="enter your massage..."/>
-            <input type="submit" value="send" className="sendbutton"/>
-          </form>
-            {this.state.error && (
-            <Alert>{this.state.error}</Alert>
-          )}
+        <ul>
+          {this.renderMessages()}
+        </ul>
+        <form onSubmit={this.SubmitHandler} className="chat">
+          <input id='messageInaput' name='text' type='text' onChange={this.changeHandler} placeholder="enter your massage..." />
+          <input type="submit" value="send" className="sendbutton" />
+        </form>
+        {this.state.error && (
+          <Alert>{this.state.error}</Alert>
+        )}
       </div>
     )
   }
