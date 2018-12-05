@@ -55,12 +55,12 @@ export default class View extends Component{
    * @param  {Object} event
    */
   changeHandler = event => {
-      const tempOffer = JSON.parse(JSON.stringify(this.state.offer))
-      tempOffer[event.target.name] = event.target.value
-      this.setState({
-         offer:tempOffer
-      })
-    }
+    const tempOffer = JSON.parse(JSON.stringify(this.state.offer))
+    tempOffer[event.target.name] = event.target.value
+    this.setState({
+        offer:tempOffer
+    })
+  }
 
   /**
    * event listener for Submit
@@ -75,7 +75,7 @@ export default class View extends Component{
       totalHours:Number(this.state.offer.totalHours),
       currency: String(await currencies.get()),
       complexity:Number(this.state.offer.complexity),
-  });
+      });
 
     } catch(err) {
       this.setState({ error: err.message })

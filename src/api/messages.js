@@ -16,8 +16,8 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-  async get(taskId) {
-    const res = await request.get(`messages/${taskId}`)
+  async get(id) {
+    const res = await request.get(id ? `messages/${id}` : 'messages')
     return await res.json()
   },
 
