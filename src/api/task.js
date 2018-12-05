@@ -56,7 +56,7 @@ export default {
     return res.ok
   },
 
-    /**
+  /**
    * add estimate through task id
    * @param {Number} id
    * @param {Object} Estimate
