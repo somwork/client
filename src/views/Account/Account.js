@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Layout from '../../components/Layout'
-import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
 import auth from '../../api/auth';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,10 @@ import user from "../../api/user";
 
 export default withRouter(class Account extends Component {
   state = {
-    id: (this.props.match.params.id),
+    firstName: null,
+    lastName: null,
+    username: null,
+    email: null,
     error: null
   }
 
@@ -25,10 +27,15 @@ export default withRouter(class Account extends Component {
    * @return {Promise}
    */
   getUser = async () => {
-    if (this.state.id !== undefined) {
-      await this.setState(await user.get(this.state.id))
-    } else {
-      await this.setState(await user.get(auth.id()))
+    const id = this.props.match.params.id
+    try {
+      if (id !== undefined) {
+        await this.setState(await user.get(id))
+      } else {
+        await this.setState(await user.get(auth.id()))
+      }
+    } catch (e) {
+      this.setState({ error: "Account not found" })
     }
   }
 
@@ -60,18 +67,29 @@ export default withRouter(class Account extends Component {
     return null;
   }
 
+  renderNotFound() {
+    return (
+      <Layout>
+        <section>
+          <h2>{this.state.error}</h2>
+        </section>
+      </Layout>
+    );
+  }
+
   /**
    * Creates the account view
    * @return {JSX} View
    */
   render() {
+    console.log(this.state.error)
+    if (!!this.state.error) {
+      return this.renderNotFound()
+    }
+
     return (
       <Layout>
         <section>
-          {this.state.error && (
-            <Alert>{this.state.error} </Alert>
-          )}
-
           <h2>{this.state.firstName + " " + this.state.lastName} </h2>
           <h4>{this.state.username}</h4>
           <h4>{this.state.email}</h4>
