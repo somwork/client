@@ -73,7 +73,7 @@ export default class View extends Component{
   submitHandler= async event =>{
     event.preventDefault();
     try {
-      const res = await Task.createEstimate( this.state.task.id,{
+      await Task.createEstimate( this.state.task.id,{
       price: Number(this.state.estimate.price),
       totalHours:Number(this.state.estimate.totalHours),
       currency: String(await currencies.get()),
@@ -114,7 +114,7 @@ export default class View extends Component{
           </div>
         </div>
           <div>
-            <hr></hr>
+            <hr/>
             <h6>task Description:</h6>
             <p>{task.description}</p>
           </div>
@@ -135,7 +135,7 @@ export default class View extends Component{
           {this.state.error && (
             <Alert>{this.state.error}</Alert>
           )}
-          <hr />
+          <hr/>
           {this.fieldRendertaskDescription(this.state.task)}
           <Popup trigger={<button> Make estimate</button>}>
             <div className='popUpInner'>
@@ -152,7 +152,7 @@ export default class View extends Component{
               </label>
             </div>
           </Popup>
-          <hr />
+          <hr/>
           <Link to='/task/List'>
             <button>Back</button>
           </Link>
