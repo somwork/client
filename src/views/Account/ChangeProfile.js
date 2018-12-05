@@ -5,9 +5,10 @@ import camelcase from 'camelcase'
 import { withRouter } from 'react-router-dom'
 import worker from '../../api/worker';
 import employer from '../../api/employer';
+import qualityassurance from '../../api/qualityAssurance';
 import auth from '../../api/auth';
 
-const api = { worker, employer }
+const api = { worker, employer, qualityassurance }
 
 export default withRouter(class ChangeProfile extends Component {
   state = {
@@ -15,6 +16,7 @@ export default withRouter(class ChangeProfile extends Component {
     lastName: '',
     email: '',
     username: '',
+    type: '',
     error: null
   };
 

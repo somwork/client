@@ -8,7 +8,6 @@ import { withRouter } from 'react-router-dom'
 import camelcase from 'camelcase'
 import './Task.css'
 
-
 export default withRouter(class Update extends Component {
   state = {
     start: null,
