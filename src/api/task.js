@@ -11,6 +11,7 @@ const Task = struct({
   deadline: 'date',
   description: 'string',
   urgency: 'string',
+  budgetId: 'number'
 })
 
 export default {
