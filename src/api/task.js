@@ -63,7 +63,7 @@ export default {
    * @param {Object} Estimate
    * @return {Promise}
    */
-  async createEstimate(id,estimate) {
+  async createEstimate(id, estimate) {
     const res = await request.post(`tasks/${id}/estimate`,estimate)
     return await res.json()
   },
@@ -76,6 +76,16 @@ export default {
   async completeTask(id) {
     const res = await request.put(`tasks/${id}/complete`)
     return await res.json()
-  }
-}
+  },
 
+  /**
+   * Get all estimates to a task
+   * @param {Number} id
+   * @param {Object} Estimate
+   * @return {Promise}
+   */
+  async getEstimates(id) {
+    const res = await request.get(`tasks/${id}/estimates`)
+    return await res.json()
+  },
+}
