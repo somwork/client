@@ -7,23 +7,24 @@ import withRealtime from '../../hoc/withRealtime'
 
 export default withRealtime(class Chat extends Component {
   state = {
-    messageInput: {
-      text: '',
-      sendAt: '',
-      userId: '',
-      firstName: '',
-      lastName: '',
-      taskId: ''
-    },
+    message: '',
     messages: [],
     error: ''
   }
 
+  submit = null
+
+  /**
+   * Setup listeners
+   */
   componentDidMount() {
     this.loadMessages(this.props.taskId);
     this.props.broker.on(`message/${this.props.taskId}`, this.listenForMessages)
   }
 
+  /**
+   * Clean up and remove event listeners
+   */
   componentWillUnmount() {
     this.props.broker.off(`message/${this.props.taskId}`, this.listenForMessages)
   }
@@ -41,7 +42,6 @@ export default withRealtime(class Chat extends Component {
    * @param {int} taskId
    */
   loadMessages = async taskId => {
-    console.log(taskId)
     if (!taskId) {
       return
     }
@@ -57,10 +57,8 @@ export default withRealtime(class Chat extends Component {
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempMessage = { ...this.state.messageInput }
-    tempMessage[event.target.name] = event.target.value
     this.setState({
-      messageInput: tempMessage
+      message: event.target.value
     })
   }
 
@@ -72,10 +70,14 @@ export default withRealtime(class Chat extends Component {
   SubmitHandler = async event => {
     event.preventDefault();
 
+    if (this.state.message.trim().length === 0) {
+      return
+    }
+
     try {
       const user = await Auth.user();
       const message = await Task.createMessage({
-        text: String(this.state.messageInput.text),
+        text: String(this.state.message),
         sendAt: moment().toDate(),
         userId: Number(Auth.id()),
         firstName: String(user.firstName),
@@ -89,11 +91,29 @@ export default withRealtime(class Chat extends Component {
       tempMessage.push(message)
       this.setState({
         messages: tempMessage,
-        messageInput: { ...this.state.messageInput, text: '' },
+        message: '',
+      }, () => {
+        document.querySelector('.view').scrollTop = document.querySelector('.view').scrollHeight;
       })
     } catch (err) {
       this.setState({ error: err.message })
     }
+  }
+
+  /**
+   * Handle enter key
+   * @param  {Event} event
+   */
+  handleEnter = event => {
+    if (event.keyCode !== 13) {
+      return
+    }
+
+    if (event.shiftKey) {
+      return
+    }
+
+    this.submit.click()
   }
 
   /**
@@ -105,7 +125,11 @@ export default withRealtime(class Chat extends Component {
     if (this.state.messages.length === 0) {
       return (
         <div className="chatBoxScroll">
-          <li className="chatBox"></li>
+          <li className="chatBox">
+            <center>
+              <h3 className='secondary'>Say hello <span role='img' aria-label='jsx-a11y/accessible-emoji'>👋</span></h3>
+            </center>
+          </li>
         </div>
       )
     }
@@ -117,7 +141,7 @@ export default withRealtime(class Chat extends Component {
             <label key={message.id}>
               <b>{message.firstName} {message.lastName}</b>
               <span className="dateTime"> {moment(message.sendtAt).format('HH:MM DD. MMM YYYY')}</span>
-              <p>{message.text}</p>
+              <pre>{message.text}</pre>
             </label>
           </li>
         ))}
@@ -136,12 +160,21 @@ export default withRealtime(class Chat extends Component {
           {this.renderMessages()}
         </ul>
         <form onSubmit={this.SubmitHandler} className="chat">
-          <textarea id='messageInput' name='text' onChange={this.changeHandler} value={this.state.messageInput.text} placeholder="Enter your message..." />
-          <input type="submit" value="send" className="sendbutton" />
+          {this.state.error && (
+            <Alert>{this.state.error}</Alert>
+          )}
+          <div>
+            <textarea
+              id='messageInput'
+              name='text'
+              onChange={this.changeHandler}
+              value={this.state.message}
+              placeholder="Enter your message..."
+              onKeyUp={this.handleEnter}
+            />
+            <input ref={s => this.submit = s} type="submit" value="send" className="sendbutton" />
+          </div>
         </form>
-        {this.state.error && (
-          <Alert>{this.state.error}</Alert>
-        )}
       </div>
     )
   }
