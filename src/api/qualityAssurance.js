@@ -29,8 +29,7 @@ export default {
   async create(qualityassurance) {
     //Validate data for the body
     QualityAssurance(qualityassurance);
-    const path = 'qualityassurances?password=' + qualityassurance.password
-    const res = await request.post(path, qualityassurance);
+    const res = await request.post('qualityassurances', { user: qualityassurance, password: qualityassurance.password });
     return await res.json()
   },
 
