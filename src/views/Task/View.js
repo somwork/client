@@ -7,61 +7,37 @@ import worker from '../../api/worker';
 import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
-import auth from '../../api/auth';
 import './Task.css'
 
 export default class View extends Component {
-  state = {
-    task: {
-      id:'',
-      start:'',
-      deadline:'',
-      urgency:'',
-      description:'',
-      title:'',
-      averageEstimate: 0,
-    },
-    estimates: [],
-    estimate: {
-      totalHours: 0
-    },
-    newEstimate: {
-      hourlyWage: 0,
-      totalHours: 0,
-      currency: 'DKK',
-      complexity: 1.0,
-    },
-    error:''
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state={
-      task:{
+    state = {
+      task: {
         id:'',
         start:'',
         deadline:'',
         urgency:'',
         description:'',
         title:'',
-        completed: '',
+        averageEstimate: 0,
       },
-      estimate:{
-        price:'',
-        totalHours:'',
-        currency:'',
-        complexity:'',
+      estimates: [],
+      estimate: {
+        totalHours: 0
       },
-      error:'',
-      user: ''
+      newEstimate: {
+        hourlyWage: 0,
+        totalHours: 0,
+        currency: 'DKK',
+        complexity: 1.0,
+      },
+      error:''
     }
-  urgency = {
-    1.2: 'No rush',
-    1.4: 'Urgent',
-    1.5: 'ASAP'
-  }
-}
+
+    urgency = {
+      1.2: 'No rush',
+      1.4: 'Urgent',
+      1.5: 'ASAP'
+    }
 
   /**
    * Loads all tasks into state when componet mount
