@@ -2,10 +2,30 @@ import React, { Component } from 'react'
 import Alert from '../../components/Alert'
 import camelcase from 'camelcase'
 import { withRouter } from 'react-router-dom'
+import category from '../../api/category'
 
 export default withRouter(class Create extends Component {
   state = {
-    title: ''
+    title: '',
+    categories: [],
+    currentCategory: 1,
+  }
+
+  /**
+  * This function is called when the component is mounted to the DOM.
+  * when the component is mounted we get the budgets
+  */
+  componentDidMount() {
+    this.getCategories();
+  }
+
+  /**
+   * Get existing budgets from database and add them to state
+   */
+  async getCategories() {
+    this.setState({
+      categories: await category.get()
+    })
   }
 
   fields = [
@@ -76,11 +96,31 @@ export default withRouter(class Create extends Component {
     })
   }
 
+  /**
+   * Handels the add skill submit
+   */
   submitHandler = () => {
-    this.props.onAddSkill(this.state.title)
+    this.props.onAddSkill(this.state.title, Number(this.state.currentCategory))
     this.setState({ title: "" });
   }
 
+  /**
+  * Renders categories inputs
+  * @param {number} id
+  * @param {number} from
+  * @param {number} to
+  * @return {JSX} an input surrounded with a label
+  */
+  renderCategories({ id, title }) {
+    return (
+      <option key={id} value={id}>{title}</option>
+    )
+  }
+
+  /**
+   * Creates the add skill
+   * @return {JSX} View
+   */
   render() {
     return (
       <div>
@@ -90,6 +130,12 @@ export default withRouter(class Create extends Component {
         )}
         <form onSubmit={this.submitHandler}>
           {this.fields.map(this.fieldRender.bind(this))}
+          <label>
+            Select category:
+            <select value={this.state.currentCategory} onChange={this.handleChange} name="currentCategory">
+              {this.state.categories.map(this.renderCategories.bind(this))}
+            </select>
+          </label>
         </form>
         <input type="submit" value="Create Task" onClick={this.submitHandler} />
       </div>

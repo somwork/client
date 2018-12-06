@@ -3,7 +3,8 @@ import { struct } from 'superstruct'
 
 const Skill = struct({
   id: 'number?',
-  title: 'string'
+  title: 'string',
+  categoryId: "number"
 })
 
 export default {
@@ -20,12 +21,12 @@ export default {
   },
 
   /**
-   * Delete worker
+   * Delete skill
    * @param {Number} id
    * @return {Promise}
    */
   async delete(id) {
-    const res = await request.delete(`workers/${id}`);
+    const res = await request.delete(`skills/${id}`);
     return res.ok
   }
 }

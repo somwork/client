@@ -9,16 +9,18 @@ import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
 import Chat from './Chat';
 import './Task.css'
+import CategoriesDetails from '../../components/Categories/Categories'
 
 export default class View extends Component {
   state = {
     task: {
       id: 0,
-      start:'',
-      deadline:'',
-      urgency:'',
-      description:'',
-      title:'',
+      start: '',
+      deadline: '',
+      urgency: '',
+      description: '',
+      title: '',
+      employerId: null,
       averageEstimate: 0,
     },
     estimates: [],
@@ -31,7 +33,7 @@ export default class View extends Component {
       currency: 'DKK',
       complexity: 1.0,
     },
-    error:''
+    error: ''
   }
 
   urgency = {
@@ -43,7 +45,7 @@ export default class View extends Component {
   /**
    * Loads all tasks into state when componet mount
    */
-  componentDidMount(){
+  componentDidMount() {
     this.loadTasks(this.props.match.params.id);
 
     if (auth.type() === "employer") {
@@ -106,10 +108,10 @@ export default class View extends Component {
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempestimate = {...this.state.newEstimate }
+    const tempestimate = { ...this.state.newEstimate }
     tempestimate[event.target.name] = event.target.value
     this.setState({
-        newEstimate: tempestimate
+      newEstimate: tempestimate
     })
   }
 
@@ -134,7 +136,7 @@ export default class View extends Component {
       this.setState({ estimate: estimate })
       await this.loadCurrentEstimate()
       await this.loadTasks(this.props.match.params.id)
-    } catch(err) {
+    } catch (err) {
       this.setState({ error: err.message })
     }
   }
@@ -170,6 +172,10 @@ export default class View extends Component {
             <Chat taskId={this.props.match.params.id} />
           </section>
           <section>
+            <CategoriesDetails
+              taskId={this.props.match.params.id}
+              employerId={this.state.task.employerId}
+            />
             {(
               auth.type() === 'worker'
                 ? this.renderWorkerEstimates()
@@ -185,7 +191,7 @@ export default class View extends Component {
    * Render task details
    * @return {JSX}
    */
-  renderTaskDetails () {
+  renderTaskDetails() {
     return (
       <div>
         <h3>{this.state.task.title}</h3>
@@ -202,8 +208,8 @@ export default class View extends Component {
    * @param {Object} task
    * @return {JSX} a task as a list item
    */
-  renderTaskDescription(task){
-    return(
+  renderTaskDescription(task) {
+    return (
       <div className="details" key={task.id}>
         <h6>Details:</h6>
         <div className='pane'>
@@ -235,7 +241,7 @@ export default class View extends Component {
     return (
       <div className='estimate'>
         <h4>Estimate</h4>
-        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
         {this.state.estimates.length === 0 && (
           <h6>No estimates yet!</h6>
         )}
@@ -260,7 +266,7 @@ export default class View extends Component {
     return (
       <div className='estimate'>
         <h4>Estimate</h4>
-        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
         {this.state.estimate.totalHours > 0 && (
           <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
         )}
@@ -270,11 +276,11 @@ export default class View extends Component {
               <form onSubmit={this.submitHandler}>
                 <label>
                   Hourly pay:
-                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  placeholder="Hourly wage..." required/>
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler} placeholder="Hourly wage..." required />
                 </label>
                 <label>
                   Total hours:
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                  <input name='totalHours' type='number' onChange={this.changeHandler} placeholder="Man Hours..." required />
                 </label>
                 <label>
                   Task Complexity:
@@ -284,7 +290,7 @@ export default class View extends Component {
                     <option value='2.0'>Hard</option>
                   </select>
                 </label>
-                <input type="submit" value="Send"/>
+                <input type="submit" value="Send" />
               </form>
             </div>
           </Popup>
