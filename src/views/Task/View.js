@@ -205,7 +205,6 @@ export default class View extends Component {
   renderTaskDescription(task){
     return(
       <div className="details" key={task.id}>
-        <h6>Details:</h6>
         <div className='pane'>
           <div>
             <b>Published</b><br />
@@ -269,15 +268,15 @@ export default class View extends Component {
             <div className='pop-up'>
               <form onSubmit={this.submitHandler}>
                 <label>
-                  Hourly pay:
-                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  placeholder="Hourly wage..." required/>
+                  <b>Choose hourly wage:</b>
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  min="1" max="999"  placeholder="Hourly wage" required/>
                 </label>
                 <label>
-                  Total hours:
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                  <b>Estimated hours:</b>
+                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Estimated hours" required/>
                 </label>
                 <label>
-                  Task Complexity:
+                  <b>Task Complexity:</b>
                   <select name='complexity'>
                     <option value='1.0'>Easy</option>
                     <option value='1.5'>Medium</option>

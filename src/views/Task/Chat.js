@@ -89,19 +89,19 @@ export default class Chat extends Component {
   renderMessages() {
     if (this.state.messages.length === 0) {
       return (
-        <li className="chatBox">
-          <p>No messages :(</p>
-        </li>
+        <div className="chatBoxScroll">
+          <li className="chatBox"></li>
+        </div>
       )
     }
 
     return (
-      <div>
+      <div className="chatBoxScroll">
         {this.state.messages.map(message => (
           <li key={message.id} className="chatBox">
             <label key={message.id}>
-              <p> <b>{message.firstName} {message.lastName}</b></p>
-              <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
+              <b>{message.firstName} {message.lastName}</b>
+              <span className="dateTime"> {moment(message.sendtAt).format('HH:MM DD. MMM YYYY')}</span>
               <p>{message.text}</p>
             </label>
           </li>
@@ -121,7 +121,7 @@ export default class Chat extends Component {
           {this.renderMessages()}
         </ul>
         <form onSubmit={this.SubmitHandler} className="chat">
-          <input id='messageInput' name='text' type='text' onChange={this.changeHandler} value={this.state.messageInput.text} placeholder="enter your massage..." />
+          <textarea id='messageInput' name='text' onChange={this.changeHandler} value={this.state.messageInput.text} placeholder="Enter your message..." />
           <input type="submit" value="send" className="sendbutton" />
         </form>
         {this.state.error && (
