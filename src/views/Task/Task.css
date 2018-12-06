@@ -63,7 +63,8 @@ form span {
 }
 
 .task .details {
-  margin: var(--spacing-top-bottom);
+  margin-top: var(--spacing-top-bottom);
+  margin-bottom: 0px;
   border-bottom: solid 2px var(--secondary);
 }
 
@@ -90,6 +91,39 @@ form span {
   list-style: none;
 }
 
+.task ul li.chatBox {
+  padding: var(--spacing);
+  list-style: none;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.task ul{
+  margin-top: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+li.chatBox p{
+  margin: 0px;
+}
+
+.chatBoxScroll{
+  overflow-y: auto;
+  height: 700px;
+}
+
+li.chatBox span.dateTime{
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+.task li.employer.chatBox{
+    background: #f9f9f9;
+}
+.task li.worker.chatBox {
+    background: white;
+}
+
 .task .estimate ul li::before {
   content: '';
   position: absolute;
@@ -111,4 +145,17 @@ form span {
   margin-top: 0px;
   display: inline;
   width: auto;
+}
+
+.task .estimate .popup-content {
+  width: 500px!important;
+  border: 0!important;
+  padding: 35px!important;
+  top: 25%!important;
+  left: 20%!important;
+  border-radius: 6px;
+}
+
+.task .estimate .popup-overlay{
+  background: #4d6475ab;
 }
