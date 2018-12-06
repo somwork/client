@@ -53,7 +53,7 @@ export default withRouter(class Update extends Component {
         budgetId: Number(this.state.currentBudget)
       }
       await task.update(this.props.match.params.id, taskData)
-      this.props.history.push('/task/list') // updates Task/list
+      this.props.history.push('/task/list') // redirect to Task/list
     } catch (e) {
       this.setState({ error: e.message })
     }
@@ -75,7 +75,7 @@ export default withRouter(class Update extends Component {
     /**
    * Renders Complete Task Button, if user is of type Employer
    */
-  completeTaskRender = () => {
+  renderTaskCompletion = () => {
     console.log(auth.type())
    if(auth.type() === 'employer')
    {

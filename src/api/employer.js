@@ -29,8 +29,7 @@ export default {
   async create(employer) {
     //Validate data for the body
     Employer(employer);
-    const path = 'employers?password=' + employer.password
-    const res = await request.post(path, employer);
+    const res = await request.post('employers', { user: employer, password: employer.password });
     return await res.json()
   },
 

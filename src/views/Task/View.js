@@ -7,31 +7,33 @@ import worker from '../../api/worker';
 import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
+import Chat from './Chat';
 import './Task.css'
 
 export default class View extends Component {
-    state = {
-      task: {
-        id:'',
-        start:'',
-        deadline:'',
-        urgency:'',
-        description:'',
-        title:'',
-        averageEstimate: 0,
-      },
-      estimates: [],
-      estimate: {
-        totalHours: 0
-      },
-      newEstimate: {
-        hourlyWage: 0,
-        totalHours: 0,
-        currency: 'DKK',
-        complexity: 1.0,
-      },
-      error:''
-    }
+  state = {
+    task: {
+      id: 0,
+      start:'',
+      deadline:'',
+      urgency:'',
+      description:'',
+      title:'',
+      averageEstimate: 0,
+    },
+    estimates: [],
+    estimate: {
+      totalHours: 0
+    },
+    newEstimate: {
+      hourlyWage: 0,
+      totalHours: 0,
+      currency: 'DKK',
+      complexity: 1.0,
+    },
+    error:''
+  }
+
 
     urgency = {
       1.2: 'No rush',
@@ -124,7 +126,7 @@ completeTaskOnClick =  () => {
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
    */
-  submitHandler= async event =>{
+  submitHandler = async event => {
     event.preventDefault();
     try {
       const estimate = {
@@ -148,7 +150,7 @@ completeTaskOnClick =  () => {
   /**
    * Renders Complete Task Button, if user is of type Employer
    */
-  completeTaskRender = () => {
+  renderTaskCompletion = () => {
     console.log(auth.type())
    if(auth.type() === 'employer')
    {
@@ -186,6 +188,7 @@ completeTaskOnClick =  () => {
         <section className='task'>
           <section>
             {this.renderTaskDetails()}
+            <Chat taskId={this.props.match.params.id} />
           </section>
           <section>
             {(
@@ -223,7 +226,6 @@ completeTaskOnClick =  () => {
   renderTaskDescription(task){
     return(
       <div className="details" key={task.id}>
-        <h6>Details:</h6>
         <div className='pane'>
           <div>
             <b>Published</b><br />
@@ -288,15 +290,15 @@ completeTaskOnClick =  () => {
             <div className='pop-up'>
               <form onSubmit={this.submitHandler}>
                 <label>
-                  Hourly pay:
-                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  placeholder="Hourly wage..." required/>
+                  <b>Choose hourly wage:</b>
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  min="1" max="999"  placeholder="Hourly wage" required/>
                 </label>
                 <label>
-                  Total hours:
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                  <b>Estimated hours:</b>
+                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Estimated hours" required/>
                 </label>
                 <label>
-                  Task Complexity:
+                  <b>Task Complexity:</b>
                   <select name='complexity'>
                     <option value='1.0'>Easy</option>
                     <option value='1.5'>Medium</option>

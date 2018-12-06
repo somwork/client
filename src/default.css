@@ -72,6 +72,7 @@ h5,
 h6 {
   color: var(--primary-dark);
   margin: var(--spacing-top-bottom);
+  line-height: 36px;
 }
 
 h1.secondary,
@@ -129,6 +130,10 @@ select {
   width: 100%;
   margin: calc(var(--spacing) / 2) 0px;
   resize: none;
+}
+
+textarea{
+  min-height: 160px;
 }
 
 input[type="submit"],

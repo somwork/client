@@ -11,6 +11,7 @@ export default class NotFound extends Component {
       <Layout>
         <section>
           <h2>Not Found</h2>
+          <img className="center-image" alt="" src={'/img/help.gif'} />
         </section>
       </Layout>
     )
