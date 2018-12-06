@@ -5,6 +5,7 @@ import camelcase from 'camelcase'
 import { withRouter } from 'react-router-dom'
 import worker from '../../api/worker';
 import employer from '../../api/employer';
+import location from '../../api/location';
 import qualityassurance from '../../api/qualityAssurance';
 import auth from '../../api/auth';
 
@@ -17,7 +18,12 @@ export default withRouter(class ChangeProfile extends Component {
     email: '',
     username: '',
     type: '',
-    error: null
+    error: null,
+    country: '',
+    city: '',
+    zipCode: '',
+    primaryLine: '',
+    secondaryLine: ''
   };
 
   fields = [
@@ -26,6 +32,21 @@ export default withRouter(class ChangeProfile extends Component {
     ["Last name", "text", v => v.length > 0],
     ["Email", "email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line
     ["Username", "text", v => v.length > 0]
+  ]
+
+  locationFields = [
+    //["label", "Type", Validation method]
+    ["City", "text", v => v.length > 0],
+    ["Zipcode", "number", v => v >= 0],
+    ["Primary Line", "text", v => v.length > 0],
+    ["Secondary Line", "text", v => v.length > 0]
+  ]
+
+  countries = [
+    ["Denmark" , "Denmark"],
+    ["Germany" ,"Germany"],
+    ["USA" , "USA"],
+    ["England" , "England"]
   ]
 
   /**
@@ -62,6 +83,20 @@ export default withRouter(class ChangeProfile extends Component {
         id: auth.id()
       });
 
+      const locationUpdate = await location.update({
+        country: this.state.country,
+        city: this.state.city,
+        zipCode: this.state.zipcode,
+        primaryLine: this.state.primaryLine,
+        secondaryLine: this.state.secondaryLine,
+        userId: auth.id(),
+        id: auth.id()
+      });
+
+      if(locationUpdate.error) {
+        return this.setState({ error: locationUpdate.error })
+      }
+
       if (res.error) {
         return this.setState({ error: res.error })
       }
@@ -88,6 +123,7 @@ export default withRouter(class ChangeProfile extends Component {
   */
   async componentDidMount() {
     await this.getUser()
+    await this.getLocation()
   }
 
   /**
@@ -96,6 +132,14 @@ export default withRouter(class ChangeProfile extends Component {
    */
   getUser = async () => {
     this.setState(await auth.user())
+  }
+
+  /**
+   * Get current location for the user
+   * @return {Promise}
+   */
+  getLocation = async () => {
+    this.setState(await location.get(auth.id()))
   }
 
 
@@ -124,6 +168,19 @@ export default withRouter(class ChangeProfile extends Component {
     )
   }
 
+  /**
+  * Render options item
+  * @param  {Array}
+  * @return {JSX}
+  */
+  renderOption = ([option, name]) => (
+    <option key={option} defaultValue={this.state[name]} value={option}>{name}</option>
+  )
+
+  handleSelectChange = async event => {
+    await this.setState({ country: event.target.value })
+  }
+
   render() {
     return (
       <Layout>
@@ -134,6 +191,13 @@ export default withRouter(class ChangeProfile extends Component {
           )}
           <form onSubmit={this.submitHandler}>
             {this.fields.map(this.fieldRender.bind(this))}
+            <label>
+            Country
+            <select value={this.state.country} onChange={this.handleSelectChange}>
+              {this.countries.map(this.renderOption.bind(this))}
+            </select>
+            </label>
+            {this.locationFields.map(this.fieldRender.bind(this))}
           </form>
           <input type="submit" value="Change profile" onClick={this.submitHandler} />
         </section>
