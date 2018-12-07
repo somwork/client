@@ -18,7 +18,12 @@ export default withRouter(class SignUp extends Component{
     password:'',
     verifyPassword:'',
     type: 'worker',
-    error: null
+    error: null,
+    country: 'Denmark',
+    city: '',
+    zipCode: '',
+    primaryLine: '',
+    secondaryLine: ''
   };
 
   fields = [
@@ -27,8 +32,19 @@ export default withRouter(class SignUp extends Component{
     ["Last name","text", v => v.length > 0],
     ["Email","email", v => (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(v)], // eslint-disable-line
     ["Username","text", v => v.length > 0],
+    ["City", "text", v => v.length > 0],
+    ["Zipcode", "number", v => v >= 0],
+    ["Primary Line", "text", v => v.length > 0],
+    ["Secondary Line", "text", v => v.length >= 0, true],
     ["Password","password", v => v.length >= 8],
     ["Verify password","password", v => v === this.state.password && v.length >= 8]
+  ]
+
+  countries = [
+    ["Denmark"],
+    ["Germany"],
+    ["USA"],
+    ["England"]
   ]
 
   /**
@@ -62,6 +78,12 @@ export default withRouter(class SignUp extends Component{
         email: this.state.email,
         username: this.state.username,
         password: this.state.password,
+      }, {
+        country: this.state.country,
+        city: this.state.city,
+        zipCode: Number(this.state.zipcode),
+        primaryLine: this.state.primaryLine,
+        secondaryLine: this.state.secondaryLine
       });
 
       if (res.error) {
@@ -94,7 +116,7 @@ export default withRouter(class SignUp extends Component{
    * @param {Method} validator
    * @return {JSX} an input surrounded with a label
    */
-  fieldRender([label,type,validator]){
+  fieldRender([label,type,validator, ignore]){
    const name = camelcase(label);
     return(
       <label key = {name}>
@@ -105,10 +127,23 @@ export default withRouter(class SignUp extends Component{
           value={this.state[name]}
           onChange={this.changeHandler}
           className={validator(this.state[name]) ? "valid": ""}
-          required
+          required = {!ignore}
         />
       </label>
     )
+  }
+
+ /**
+  * Render options item
+  * @param  {Array}
+  * @return {JSX}
+  */
+  renderOption = ([name]) => (
+    <option key={name} defaultValue={this.state[name]} value={name}>{name}</option>
+  )
+
+  handleSelectChange = async event => {
+    await this.setState({ country: event.target.value })
   }
 
   /**
@@ -145,6 +180,12 @@ export default withRouter(class SignUp extends Component{
                 required
               /> Employer
             </label><br />
+            <label>
+            Country
+            <select value={this.state.country} onChange={this.handleSelectChange}>
+              {this.countries.map(this.renderOption.bind(this))}
+            </select>
+            </label>
             {this.fields.map(this.fieldRender.bind(this))}
             <input type="submit" value="Submit"/>
           </form>

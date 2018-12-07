@@ -10,6 +10,15 @@ const Worker = struct({
   lastName: 'string',
 })
 
+const Location = struct({
+  id: 'number?',
+  country: 'string',
+  city: 'string',
+  zipCode: 'number',
+  primaryLine: 'string',
+  secondaryLine: 'string?',
+})
+
 export default {
   /**
    * Get worker and if id is undefined you get all workers
@@ -26,10 +35,11 @@ export default {
    * @param {Object} worker
    * @return {Promise}
    */
-  async create(worker) {
+  async create(worker, location) {
     //Validate data for the body
     Worker(worker);
-    const res = await request.post('workers', { user: worker, password: worker.password });
+    Location(location);
+    const res = await request.post('workers', { user: worker, location, password: worker.password });
     return await res.json()
   },
 

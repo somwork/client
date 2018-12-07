@@ -84,6 +84,20 @@ h6.secondary {
   color: var(--seconday);
   font-weight: 400;
 }
+.account-information span{
+    color: var(--primary-dark);
+    display: grid;
+    padding-top: var(--spacing);
+}
+
+.account-information{
+  margin-bottom: var(--spacing);
+}
+
+.half{
+  width:50%;
+  display: inline-block;
+}
 
 h1 {
   font-size: 3em;

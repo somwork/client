@@ -65,13 +65,13 @@ export default class Skills extends Component {
     return (
       <div>
         <h4>Skills</h4>
-        {addSkill}
         {this.state.skills.map(s => (
           <SmallSkill
             key={s.id}
             skill={s}
           />
         ))}
+        {addSkill}
       </div>
     )
   }

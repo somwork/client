@@ -10,4 +10,14 @@ export default {
     const res = await request.get(`users/${id}`)
     return await res.json()
   },
+
+  /**
+   * Get location by location id
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async getLocation(id) {
+    const res = await request.get(`users/${id}/location`)
+    return await res.json()
+  },
 }

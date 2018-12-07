@@ -12,7 +12,10 @@ export default withRouter(class Account extends Component {
     lastName: null,
     username: null,
     email: null,
-    error: null
+    error: null,
+    country: null,
+    primaryLine: null,
+    zipCode: null
   }
 
   /**
@@ -31,8 +34,10 @@ export default withRouter(class Account extends Component {
     try {
       if (id !== undefined) {
         await this.setState(await user.get(id))
+        await this.setState(await user.getLocation(id))
       } else {
         await this.setState(await user.get(auth.id()))
+        await this.setState(await user.getLocation(auth.id()))
       }
     } catch (e) {
       this.setState({ error: "Account not found" })
@@ -89,9 +94,21 @@ export default withRouter(class Account extends Component {
     return (
       <Layout>
         <section>
-          <h2>{this.state.firstName + " " + this.state.lastName} </h2>
-          <h4>{this.state.username}</h4>
-          <h4>{this.state.email}</h4>
+          <h1>Your account</h1>
+          <div className="account-information">
+            <div className="half">
+              <span><b>Firstname:</b> {this.state.firstName}</span>
+              <span><b>Lastname:</b> {this.state.lastName}</span>
+              <span><b>Username:</b> {this.state.username}</span>
+              <span><b>Email:</b> {this.state.email}</span>
+            </div>
+            <div className="half">
+              <span><b>Country:</b> {this.state.country}</span>
+              <span><b>City:</b> {this.state.city}</span>
+              <span><b>Primary Adress:</b> {this.state.primaryLine}</span>
+              <span><b>Zip Code:</b> {this.state.zipCode}</span>
+            </div>
+          </div>
           {this.editProfileButtonRender()}
           {this.workerSpecificRender()}
 
