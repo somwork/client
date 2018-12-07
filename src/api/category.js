@@ -9,10 +9,10 @@ const Category = struct({
 
 export default {
   /**
-  * Get category and if id is undefined you get all categories
-  * @param {Number} id
-  * @return {Promise}
-  */
+   * Get category and if id is undefined you get all categories
+   * @param {Number} id
+   * @return {Promise}
+   */
   async get(id) {
     const res = await request.get(id ? `categories/${id}` : 'categories')
     return await res.json()

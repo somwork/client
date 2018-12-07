@@ -13,8 +13,8 @@ export default class Categories extends Component {
   }
 
   /**
-  * Component setup
-  */
+   * Component setup
+   */
   async componentDidMount() {
     await this.getCategories()
     this.loadAllCategories();
@@ -60,14 +60,14 @@ export default class Categories extends Component {
   * Add a categories
   */
   submitAddCategori = async () => {
-    const categories = [...this.state.categories]
+    let categories = [...this.state.categories]
     if (this.isIdInCategories(this.state.currentCategory)) {
       return
     }
     await task.addCategory(this.props.taskId, this.state.currentCategory)
     this.setState({ showAddCategory: false });
     const title = this.state.allCategories[this.state.currentCategory - 1].title
-    categories.push({ title, id: categories.length + 1 })
+    categories = categories.concat([{ title, id: categories.length + 1 }])
     this.setState({ categories: categories })
   }
 
@@ -77,13 +77,7 @@ export default class Categories extends Component {
    * @return {boolean}
    */
   isIdInCategories(id) {
-    let result = false
-    this.state.categories.forEach(element => {
-      if (element.id === id) {
-        result = true
-      }
-    });
-    return result
+    return !!this.state.categories.find(cat => cat.id === id)
   }
 
   /**
@@ -99,33 +93,42 @@ export default class Categories extends Component {
   }
 
   /**
-   * Render add section
-   * @return {JSX}
+   * Render categories options
    */
-  renderAddSection() {
-    if (auth.id() === this.props.employerId) {
+  renderCategoriesOptions() {
+    if (this.state.showAddCategory) {
       return (
-        <div>
-          <input type="submit" value="Add Category" onClick={this.handleAddCategoies} />
-          {this.state.showAddCategory ?
-            < div >
-              <h4>Add category</h4>
-              <form onSubmit={this.submitAddCategori}>
-                <label>
-                  Select category:
+        < div >
+          <h4>Add category</h4>
+          <form onSubmit={this.submitAddCategori}>
+            <label>
+              Select category:
             <select value={this.state.currentCategory} onChange={this.handleChange} name="currentCategory">
-                    {this.state.allCategories.map(this.renderCategories.bind(this))}
-                  </select>
-                </label>
-              </form>
-              <input type="submit" value="Add category" onClick={this.submitAddCategori} />
-            </div> :
-            null
-          }
+                {this.state.allCategories.map(this.renderCategories.bind(this))}
+              </select>
+            </label>
+          </form>
+          <input type="submit" value="Add category" onClick={this.submitAddCategori} />
         </div>
       );
     }
     return null
+  }
+
+  /**
+   * Render add section
+   * @return {JSX}
+   */
+  renderAddSection() {
+    if (!auth.id() === this.props.employerId) {
+      return null
+    }
+    return (
+      <div>
+        <input type="submit" value="Add Category" onClick={this.handleAddCategoies} />
+        {this.renderCategoriesOptions()}
+      </div>
+    );
   }
 
   /**
