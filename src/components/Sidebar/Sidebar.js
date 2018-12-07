@@ -83,6 +83,7 @@ class Sidebar extends Component {
     return (
       <nav className="sidebar">
         <div className="sidebarTitle">
+          <img className="logo" src={'/favicon-white.png'} alt="" width="62px"/>
           <h2>Taskhouse.io</h2>
         </div>
         <div className="sidebarAvatar">
