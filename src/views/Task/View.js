@@ -8,9 +8,10 @@ import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
 import Chat from './Chat';
+import withRealtime from '../../hoc/withRealtime'
 import './Task.css'
 
-export default class View extends Component {
+export default withRealtime(class View extends Component {
   state = {
     task: {
       id: 0,
@@ -44,8 +45,19 @@ export default class View extends Component {
    * Loads all tasks into state when componet mount
    */
   componentDidMount(){
-    this.loadTasks(this.props.match.params.id);
+    this.initTasks()
+    this.props.broker.on(`task/${this.props.match.params.id}/updated`, this.initTasks)
+  }
 
+  componentWillUnmount() {
+    this.props.broker.off(`task/${this.props.match.params.id}/updated`, this.initTasks)
+  }
+
+  /**
+   * Get estimates to task
+   */
+  initTasks = () => {
+    this.loadTasks(this.props.match.params.id);
     if (auth.type() === "employer") {
       this.loadEstimates(this.props.match.params.id);
     } else {
@@ -133,6 +145,7 @@ export default class View extends Component {
 
       this.setState({ estimate: estimate })
       await this.loadCurrentEstimate()
+      this.props.broker.send(`task/${this.props.match.params.id}/updated`, '')
       await this.loadTasks(this.props.match.params.id)
     } catch(err) {
       this.setState({ error: err.message })
@@ -155,6 +168,7 @@ export default class View extends Component {
     })
 
     this.setState({ estimates })
+    this.props.broker.send(`task/${this.props.match.params.id}/updated`, '')
   }
 
   /**
@@ -205,7 +219,6 @@ export default class View extends Component {
   renderTaskDescription(task){
     return(
       <div className="details" key={task.id}>
-        <h6>Details:</h6>
         <div className='pane'>
           <div>
             <b>Published</b><br />
@@ -269,15 +282,15 @@ export default class View extends Component {
             <div className='pop-up'>
               <form onSubmit={this.submitHandler}>
                 <label>
-                  Hourly pay:
-                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  placeholder="Hourly wage..." required/>
+                  <b>Choose hourly wage:</b>
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  min="1" max="999"  placeholder="Hourly wage" required/>
                 </label>
                 <label>
-                  Total hours:
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Man Hours..." required/>
+                  <b>Estimated hours:</b>
+                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Estimated hours" required/>
                 </label>
                 <label>
-                  Task Complexity:
+                  <b>Task Complexity:</b>
                   <select name='complexity'>
                     <option value='1.0'>Easy</option>
                     <option value='1.5'>Medium</option>
@@ -292,4 +305,4 @@ export default class View extends Component {
       </div>
     )
   }
-}
+})
