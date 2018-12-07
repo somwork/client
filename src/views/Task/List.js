@@ -64,8 +64,8 @@ export default class List extends Component {
           <div>
             <h4>{task.title} </h4>
             {task.completed === true && (
-            this.renderCompletionIcon()
-          )}
+              this.renderCompletionIcon()
+            )}
             <p>{task.description}</p>
           </div>
           <div>

@@ -232,7 +232,7 @@ export default withRealtime(class View extends Component {
    * Renders Complete Task Button, if user is of type Employer
    */
   renderEmployerSpecificButtons = () => {
-    //If the user in asn employer, and the task has not been completed, render buttons
+    //If the user is an employer, and the task has not been completed, render buttons
    if(this.state.task.completed === false)
    {
      return(
