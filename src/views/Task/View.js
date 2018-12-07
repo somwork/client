@@ -321,25 +321,27 @@ export default withRealtime(class View extends Component {
     )
   }
 
-  renderWorkerEstimates() {
+  renderWorkerEstimatePopup() {
+
+    if(this.state.task.completed === true)
+    {
+      return(
+        <p>This task has been marked as completed</p>
+      )
+    }
+    else if(this.state.estimate.totalHours === 0)
+    {
     return (
-      <div className='estimate'>
-        <h4>Estimate</h4>
-        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
-        {this.state.estimate.totalHours > 0 && (
-          <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
-        )}
-        {this.state.estimate.totalHours === 0 && (
-          <Popup trigger={<button>Make estimate</button>}>
+      <Popup trigger={<button>Make estimate</button>}>
             <div className='pop-up'>
               <form onSubmit={this.submitHandler}>
                 <label>
                   <b>Choose hourly wage:</b>
-                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  min="1" max="999"  placeholder="Hourly wage" required/>
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler} min="1" max="999" placeholder="Hourly wage" required />
                 </label>
                 <label>
                   <b>Estimated hours:</b>
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Estimated hours" required/>
+                  <input name='totalHours' type='number' onChange={this.changeHandler} placeholder="Estimated hours" required />
                 </label>
                 <label>
                   <b>Task Complexity:</b>
@@ -349,11 +351,23 @@ export default withRealtime(class View extends Component {
                     <option value='2.0'>Hard</option>
                   </select>
                 </label>
-                <input type="submit" value="Send"/>
+                <input type="submit" value="Send" />
               </form>
             </div>
           </Popup>
+    )
+    }
+  }
+
+  renderWorkerEstimates() {
+    return (
+      <div className='estimate'>
+        <h4>Estimate</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        {this.state.estimate.totalHours > 0 && (
+          <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
         )}
+        {this.renderWorkerEstimatePopup()}
       </div>
     )
   }
