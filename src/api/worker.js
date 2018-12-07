@@ -26,10 +26,10 @@ export default {
    * @param {Object} worker
    * @return {Promise}
    */
-  async create(worker) {
+  async create(worker, location) {
     //Validate data for the body
     Worker(worker);
-    const res = await request.post('workers', { user: worker, password: worker.password });
+    const res = await request.post('workers', { user: worker, location, password: worker.password });
     return await res.json()
   },
 

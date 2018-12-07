@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import worker from '../../api/worker';
 import employer from '../../api/employer';
 import location from '../../api/location';
+import user from '../../api/user';
 import qualityassurance from '../../api/qualityAssurance';
 import auth from '../../api/auth';
 
@@ -37,9 +38,9 @@ export default withRouter(class ChangeProfile extends Component {
   locationFields = [
     //["label", "Type", Validation method]
     ["City", "text", v => v.length > 0],
-    ["Zipcode", "number", v => v >= 0],
+    ["Zip Code", "number", v => v >= 0],
     ["Primary Line", "text", v => v.length > 0],
-    ["Secondary Line", "text", v => v.length > 0]
+    ["Secondary Line", "text", v => true]
   ]
 
   countries = [
@@ -82,15 +83,15 @@ export default withRouter(class ChangeProfile extends Component {
         username: this.state.username,
         id: auth.id()
       });
+      const id = (await auth.user()).locationId;
 
       const locationUpdate = await location.update({
         country: this.state.country,
         city: this.state.city,
-        zipCode: this.state.zipcode,
+        zipCode: this.state.zipCode,
         primaryLine: this.state.primaryLine,
         secondaryLine: this.state.secondaryLine,
-        userId: auth.id(),
-        id: auth.id()
+        id: id
       });
 
       if(locationUpdate.error) {
@@ -100,6 +101,9 @@ export default withRouter(class ChangeProfile extends Component {
       if (res.error) {
         return this.setState({ error: res.error })
       }
+
+      this.props.history.push('/account/')
+
     } catch (err) {
       this.setState({ error: err.message })
     }
@@ -139,7 +143,7 @@ export default withRouter(class ChangeProfile extends Component {
    * @return {Promise}
    */
   getLocation = async () => {
-    this.setState(await location.get(auth.id()))
+    this.setState(await user.getLocation(auth.id()))
   }
 
 

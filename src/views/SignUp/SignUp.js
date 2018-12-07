@@ -5,8 +5,6 @@ import Alert from '../../components/Alert';
 import camelcase from 'camelcase';
 import worker from '../../api/worker';
 import employer from '../../api/employer';
-import location from '../../api/location';
-import auth from '../../api/auth';
 import './SignUp.css'
 
 const api = { worker, employer }
@@ -37,16 +35,16 @@ export default withRouter(class SignUp extends Component{
     ["City", "text", v => v.length > 0],
     ["Zipcode", "number", v => v >= 0],
     ["Primary Line", "text", v => v.length > 0],
-    ["Secondary Line", "text", v => v.length > 0],
+    ["Secondary Line", "text", v => v.length >= 0, true],
     ["Password","password", v => v.length >= 8],
     ["Verify password","password", v => v === this.state.password && v.length >= 8]
   ]
 
   countries = [
-    ["Denmark" , "Denmark"],
-    ["Germany" ,"Germany"],
-    ["USA" , "USA"],
-    ["England" , "England"]
+    ["Denmark"],
+    ["Germany"],
+    ["USA"],
+    ["England"]
   ]
 
   /**
@@ -80,21 +78,13 @@ export default withRouter(class SignUp extends Component{
         email: this.state.email,
         username: this.state.username,
         password: this.state.password,
-      });
-
-      const locationRes = await location.create({
+      }, {
         country: this.state.country,
         city: this.state.city,
         zipCode: this.state.zipcode,
         primaryLine: this.state.primaryLine,
-        secondaryLine: this.state.secondaryLine,
-        userId: auth.id(),
-        id: auth.id()
+        secondaryLine: this.state.secondaryLine
       });
-
-      if(locationRes.error){
-        return this.setState({ error: locationRes.error })
-      }
 
       if (res.error) {
         return this.setState({ error: res.error })
@@ -126,7 +116,7 @@ export default withRouter(class SignUp extends Component{
    * @param {Method} validator
    * @return {JSX} an input surrounded with a label
    */
-  fieldRender([label,type,validator]){
+  fieldRender([label,type,validator, ignore]){
    const name = camelcase(label);
     return(
       <label key = {name}>
@@ -137,7 +127,7 @@ export default withRouter(class SignUp extends Component{
           value={this.state[name]}
           onChange={this.changeHandler}
           className={validator(this.state[name]) ? "valid": ""}
-          required
+          required = {!ignore}
         />
       </label>
     )
@@ -148,8 +138,8 @@ export default withRouter(class SignUp extends Component{
   * @param  {Array}
   * @return {JSX}
   */
-  renderOption = ([option, name]) => (
-    <option key={option} defaultValue={this.state[name]} value={option}>{name}</option>
+  renderOption = ([name]) => (
+    <option key={name} defaultValue={this.state[name]} value={name}>{name}</option>
   )
 
   handleSelectChange = async event => {
