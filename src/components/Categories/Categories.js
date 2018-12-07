@@ -103,7 +103,7 @@ export default class Categories extends Component {
           <form onSubmit={this.submitAddCategori}>
             <label>
               Select category:
-            <select value={this.state.currentCategory} onChange={this.handleChange} name="currentCategory">
+              <select value={this.state.currentCategory} onChange={this.handleChange} name="currentCategory">
                 {this.state.allCategories.map(this.renderCategories.bind(this))}
               </select>
             </label>
