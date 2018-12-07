@@ -19,11 +19,17 @@ export default withRealtime(class Chat extends Component {
     error: ''
   }
 
+  /**
+   * Setup listeners
+   */
   componentDidMount() {
     this.loadMessages(this.props.taskId);
     this.props.broker.on(`message/${this.props.taskId}`, this.listenForMessages)
   }
 
+  /**
+   * Clean up and remove event listeners
+   */
   componentWillUnmount() {
     this.props.broker.off(`message/${this.props.taskId}`, this.listenForMessages)
   }
