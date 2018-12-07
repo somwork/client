@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@upsub/client": "^0.2.0",
+    "express": "^4.16.4",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
@@ -28,5 +29,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "now": {
+    "name": "taskhouse-client",
+    "type": "docker",
+    "alias": "taskhouse"
+  }
 }

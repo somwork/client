@@ -1,0 +1,14 @@
+FROM node:10
+
+ENV REACT_APP_TASKHOUSE_HOST=https://taskhouse-api.now.sh
+ENV REACT_APP_UPSUB_HOST=wss://taskhouse-realtime.now.sh
+ENV REACT_APP_UPSUB_PUBLIC_KEY=075D3AE1B5C1F66806FEEC7E2E80879003B57AA716F7DB89D7170EEB883406E4
+
+WORKDIR /server
+COPY . /server
+
+RUN npm i
+RUN NODE_ENV=production npm run build
+
+EXPOSE 3000
+CMD ["node", "server.js"]
