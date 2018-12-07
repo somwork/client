@@ -3,8 +3,9 @@ import Auth from '../../api/auth';
 import Alert from '../../components/Alert';
 import moment from 'moment';
 import Task from "../../api/task";
+import withRealtime from '../../hoc/withRealtime'
 
-export default class Chat extends Component {
+export default withRealtime(class Chat extends Component {
   state = {
     messageInput: {
       text: '',
@@ -18,8 +19,27 @@ export default class Chat extends Component {
     error: ''
   }
 
+  /**
+   * Setup listeners
+   */
   componentDidMount() {
     this.loadMessages(this.props.taskId);
+    this.props.broker.on(`message/${this.props.taskId}`, this.listenForMessages)
+  }
+
+  /**
+   * Clean up and remove event listeners
+   */
+  componentWillUnmount() {
+    this.props.broker.off(`message/${this.props.taskId}`, this.listenForMessages)
+  }
+
+  /**
+   * Listen for messages realtime
+   * @param  {Object} msg
+   */
+  listenForMessages = msg => {
+    this.setState({ messages: this.state.messages.concat([msg]) })
   }
 
   /**
@@ -71,6 +91,7 @@ export default class Chat extends Component {
 
       //adds the new message to the chat
       const tempMessage = [ ...this.state.messages ]
+      this.props.broker.send(`message/${this.props.taskId}`, message)
       tempMessage.push(message)
       this.setState({
         messages: tempMessage,
@@ -130,4 +151,4 @@ export default class Chat extends Component {
       </div>
     )
   }
-}
+})
