@@ -29,8 +29,7 @@ export default {
   async create(worker) {
     //Validate data for the body
     Worker(worker);
-    const path = 'workers?password=' + worker.password;
-    const res = await request.post(path, worker);
+    const res = await request.post('workers', { user: worker, password: worker.password });
     return await res.json()
   },
 
@@ -61,7 +60,7 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-  async getAcceptedTasks(id){
+  async getAcceptedTasks(id) {
     const res = await request.get(`workers/${id}/tasks/accepted`)
     return await res.json()
   },
@@ -71,7 +70,7 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-  async getEstimatedTasks(id){
+  async getEstimatedTasks(id) {
     const res = await request.get(`workers/${id}/tasks/estimated`)
     return await res.json()
   },
@@ -81,7 +80,7 @@ export default {
    * @param {Number} id
    * @return {Promise}
    */
-  async getAvailableTasks(){
+  async getAvailableTasks() {
     const res = await request.get(`workers/tasks`)
     return await res.json()
   },

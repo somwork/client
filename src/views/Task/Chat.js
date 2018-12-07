@@ -3,23 +3,48 @@ import Auth from '../../api/auth';
 import Alert from '../../components/Alert';
 import moment from 'moment';
 import Task from "../../api/task";
+import withRealtime from '../../hoc/withRealtime'
 
-export default class Chat extends Component {
+export default withRealtime(class Chat extends Component {
   state = {
-    messageInput: {
-      text: '',
-      sendAt: '',
-      userId: '',
-      firstName: '',
-      lastName: '',
-      taskId: ''
-    },
+    message: '',
     messages: [],
+    follow: false,
     error: ''
   }
 
+  submit = null
+
+  /**
+   * Setup listeners
+   */
   componentDidMount() {
     this.loadMessages(this.props.taskId);
+    this.props.broker.on(`message/${this.props.taskId}`, this.listenForMessages)
+  }
+
+  /**
+   * Clean up and remove event listeners
+   */
+  componentWillUnmount() {
+    this.props.broker.off(`message/${this.props.taskId}`, this.listenForMessages)
+  }
+
+  /**
+   * Listen for messages realtime
+   * @param  {Object} msg
+   */
+  listenForMessages = msg => {
+
+    this.setState({ messages: this.state.messages.concat([msg]) }, () => {
+      if (!this.state.follow) {
+        return
+      }
+
+      document.querySelector('.view').scrollTop = document.querySelector('.view').scrollHeight;
+    })
+
+    this.setState({ messages: this.state.messages.concat([msg]) })
   }
 
   /**
@@ -27,7 +52,6 @@ export default class Chat extends Component {
    * @param {int} taskId
    */
   loadMessages = async taskId => {
-    console.log(taskId)
     if (!taskId) {
       return
     }
@@ -43,10 +67,8 @@ export default class Chat extends Component {
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempMessage = { ...this.state.messageInput }
-    tempMessage[event.target.name] = event.target.value
     this.setState({
-      messageInput: tempMessage
+      message: event.target.value
     })
   }
 
@@ -58,10 +80,14 @@ export default class Chat extends Component {
   SubmitHandler = async event => {
     event.preventDefault();
 
+    if (this.state.message.trim().length === 0) {
+      return
+    }
+
     try {
       const user = await Auth.user();
       const message = await Task.createMessage({
-        text: String(this.state.messageInput.text),
+        text: String(this.state.message),
         sendAt: moment().toDate(),
         userId: Number(Auth.id()),
         firstName: String(user.firstName),
@@ -71,14 +97,33 @@ export default class Chat extends Component {
 
       //adds the new message to the chat
       const tempMessage = [ ...this.state.messages ]
+      this.props.broker.send(`message/${this.props.taskId}`, message)
       tempMessage.push(message)
       this.setState({
         messages: tempMessage,
-        messageInput: { ...this.state.messageInput, text: '' },
+        message: '',
+      }, () => {
+        document.querySelector('.view').scrollTop = document.querySelector('.view').scrollHeight;
       })
     } catch (err) {
       this.setState({ error: err.message })
     }
+  }
+
+  /**
+   * Handle enter key
+   * @param  {Event} event
+   */
+  handleEnter = event => {
+    if (event.keyCode !== 13) {
+      return
+    }
+
+    if (event.shiftKey) {
+      return
+    }
+
+    this.submit.click()
   }
 
   /**
@@ -89,20 +134,24 @@ export default class Chat extends Component {
   renderMessages() {
     if (this.state.messages.length === 0) {
       return (
-        <li className="chatBox">
-          <p>No messages :(</p>
-        </li>
+        <div className="chatBoxScroll">
+          <li className="chatBox">
+            <center>
+              <h3 className='secondary'>Say hello <span role='img' aria-label='jsx-a11y/accessible-emoji'>👋</span></h3>
+            </center>
+          </li>
+        </div>
       )
     }
 
     return (
-      <div>
+      <div className="chatBoxScroll">
         {this.state.messages.map(message => (
           <li key={message.id} className="chatBox">
             <label key={message.id}>
-              <p> <b>{message.firstName} {message.lastName}</b></p>
-              <p>sendt at: {moment(message.sendtAt).format('DD. MMM YYYY')}</p>
-              <p>{message.text}</p>
+              <b>{message.firstName} {message.lastName}</b>
+              <span className="dateTime"> {moment(message.sendtAt).format('HH:MM DD. MMM YYYY')}</span>
+              <pre>{message.text}</pre>
             </label>
           </li>
         ))}
@@ -121,13 +170,24 @@ export default class Chat extends Component {
           {this.renderMessages()}
         </ul>
         <form onSubmit={this.SubmitHandler} className="chat">
-          <input id='messageInput' name='text' type='text' onChange={this.changeHandler} value={this.state.messageInput.text} placeholder="enter your massage..." />
-          <input type="submit" value="send" className="sendbutton" />
+          {this.state.error && (
+            <Alert>{this.state.error}</Alert>
+          )}
+          <div>
+            <textarea
+              id='messageInput'
+              name='text'
+              onChange={this.changeHandler}
+              value={this.state.message}
+              placeholder="Enter your message..."
+              onFocus={() => this.setState({ follow: true })}
+              onBlur={() => this.setState({ follow: false })}
+              onKeyUp={this.handleEnter}
+            />
+            <input ref={s => this.submit = s} type="submit" value="send" className="sendbutton" />
+          </div>
         </form>
-        {this.state.error && (
-          <Alert>{this.state.error}</Alert>
-        )}
       </div>
     )
   }
-}
+})
