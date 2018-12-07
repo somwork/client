@@ -23,6 +23,7 @@ export default withRealtime(class View extends Component {
       title: '',
       employerId: null,
       averageEstimate: 0,
+      completed: false
     },
     estimates: [],
     estimate: {
@@ -37,11 +38,12 @@ export default withRealtime(class View extends Component {
     error: ''
   }
 
-  urgency = {
-    1.2: 'No rush',
-    1.4: 'Urgent',
-    1.5: 'ASAP'
-  }
+
+    urgency = {
+      1.2: 'No rush',
+      1.4: 'Urgent',
+      1.5: 'ASAP'
+    }
 
   /**
    * Loads all tasks into state when componet mount
@@ -55,6 +57,7 @@ export default withRealtime(class View extends Component {
     this.props.broker.off(`task/${this.props.match.params.id}/updated`, this.initTasks)
   }
 
+
   /**
    * Get estimates to task
    */
@@ -63,7 +66,7 @@ export default withRealtime(class View extends Component {
     if (auth.type() === "employer") {
       this.loadEstimates(this.props.match.params.id);
     } else {
-      this.loadCurrentEstimate(this.props.match.params.id)
+      this.loadCurrentEstimate(this.props.match.params.id);
     }
   }
 
@@ -128,6 +131,14 @@ export default withRealtime(class View extends Component {
   }
 
   /**
+   * Sets Task to completed
+   */
+  completeTaskOnClick =  () => {
+    Task.completeTask(this.props.match.params.id)
+    this.setState({task: {...this.state.task, completed: true}})
+  }
+
+  /**
    * event listener for Submit
    * validates all inputfields before sending a post request to the server
    * @param {Object} event
@@ -154,8 +165,8 @@ export default withRealtime(class View extends Component {
     }
   }
 
-  /**
-   * Accept worker
+
+   /* Accept worker
    * @param  {Number}  id
    * @return {Promise}
    */
@@ -171,6 +182,13 @@ export default withRealtime(class View extends Component {
 
     this.setState({ estimates })
     this.props.broker.send(`task/${this.props.match.params.id}/updated`, '')
+  }
+
+  /**
+   * Redirects to Update Screen of Task
+   */
+  updateTaskOnClick = () => {
+    this.props.history.push(`/task/update/${this.props.match.params.id}`)
   }
 
   /**
@@ -202,6 +220,35 @@ export default withRealtime(class View extends Component {
   }
 
   /**
+   * Renders completion icon
+   */
+  renderCompletionIcon = () => {
+    return (
+    <p className="completion">Task Completed<i className="fas fa-check"></i> </p>
+    )
+  }
+
+  /**
+   * Renders Complete Task Button, if user is of type Employer
+   */
+  renderEmployerSpecificButtons = () => {
+    //If the user is an employer, and the task has not been completed, render buttons
+   if(this.state.task.completed === false)
+   {
+     return(
+      <div>
+      <button onClick={this.updateTaskOnClick}>Update Task</button>
+      <button onClick={this.completeTaskOnClick}>Complete Task</button>
+      </div>
+     )
+   }
+   //Render message declaring task completed
+   return(
+     <p>This task has been marked as completed</p>
+   )
+  }
+
+  /**
    * Render task details
    * @return {JSX}
    */
@@ -209,6 +256,9 @@ export default withRealtime(class View extends Component {
     return (
       <div>
         <h3>{this.state.task.title}</h3>
+        {this.state.task.completed === true && (
+            this.renderCompletionIcon()
+          )}
         {this.state.error && (
           <Alert>{this.state.error}</Alert>
         )}
@@ -239,6 +289,7 @@ export default withRealtime(class View extends Component {
             {this.urgency[task.urgency]}
           </div>
         </div>
+
         <h6>Description:</h6>
         <p>{task.description}</p>
       </div>
@@ -271,20 +322,23 @@ export default withRealtime(class View extends Component {
             </li>
           ))}
         </ul>
+        {auth.type() === 'employer' && ( this.renderEmployerSpecificButtons())}
       </div>
     )
   }
 
-  renderWorkerEstimates() {
+  renderWorkerEstimatePopup() {
+
+    if(this.state.task.completed === true)
+    {
+      return(
+        <p>This task has been marked as completed</p>
+      )
+    }
+    else if(this.state.estimate.totalHours === 0)
+    {
     return (
-      <div className='estimate'>
-        <h4>Estimate</h4>
-        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
-        {this.state.estimate.totalHours > 0 && (
-          <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
-        )}
-        {this.state.estimate.totalHours === 0 && (
-          <Popup trigger={<button>Make estimate</button>}>
+      <Popup trigger={<button>Make estimate</button>}>
             <div className='pop-up'>
               <form onSubmit={this.submitHandler}>
                 <label>
@@ -307,7 +361,19 @@ export default withRealtime(class View extends Component {
               </form>
             </div>
           </Popup>
+    )
+    }
+  }
+
+  renderWorkerEstimates() {
+    return (
+      <div className='estimate'>
+        <h4>Estimate</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        {this.state.estimate.totalHours > 0 && (
+          <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
         )}
+        {this.renderWorkerEstimatePopup()}
       </div>
     )
   }

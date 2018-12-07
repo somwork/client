@@ -7,6 +7,7 @@ import moment from 'moment'
 import Alert from '../../components/Alert'
 import { withRouter } from 'react-router-dom'
 import camelcase from 'camelcase'
+import auth from '../../api/auth'
 import './Task.css'
 
 export default withRouter(class Update extends Component {
@@ -19,7 +20,8 @@ export default withRouter(class Update extends Component {
     error: null,
     budgets: [],
     currency: "USD",
-    currentBudget: 0
+    currentBudget: 0,
+    completed: false,
   }
 
   fields = [
@@ -50,6 +52,7 @@ export default withRouter(class Update extends Component {
         deadline: this.state.deadline.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
         budgetId: Number(this.state.currentBudget)
       }
+      console.log(this.state.urgencystring)
       await task.update(this.props.match.params.id, taskData)
       this.props.history.push('/task/list') // redirect to Task/list
     } catch (e) {
@@ -68,6 +71,19 @@ export default withRouter(class Update extends Component {
       }
     }
     return true
+  }
+
+    /**
+   * Renders Complete Task Button, if user is of type Employer
+   */
+  renderTaskCompletion = () => {
+   if(auth.type() === 'employer')
+   {
+     return(
+      <button onClick={this.completeTaskOnClick}>Complete Task</button>
+     )
+   }
+   return;
   }
 
   /**
@@ -157,6 +173,14 @@ export default withRouter(class Update extends Component {
   }
 
   /**
+   * Sets Task to completed
+   */
+  completeTaskOnClick =  () => {
+  task.completeTask(this.props.match.params.id)
+  this.props.history.push('/task/list')
+}
+
+  /**
    * Sets the selected  date
    * @param {Date} date
    */
@@ -206,7 +230,7 @@ export default withRouter(class Update extends Component {
           {this.state.error && (
             <Alert>{this.state.error} </Alert>
           )}
-          <form onSubmit={this.updateHandler}>
+          <form>
             {this.fields.map(this.fieldRender.bind(this))}
             <label>
               Starting Date
@@ -263,7 +287,8 @@ export default withRouter(class Update extends Component {
                 {this.state.budgets.map(this.renderBudgets.bind(this))}
               </select>
             </label>
-            <input type="submit" value="Update" />
+            {this.renderTaskCompletion()}
+            <input type="submit" value="Update" onClick={this.updateHandler} />
           </form>
         </section>
       </Layout>

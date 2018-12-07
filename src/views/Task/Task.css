@@ -23,6 +23,16 @@
 .task-list ul li h4 {
   margin-top: 0px;
   font-weight: 400;
+  display: inline-block;
+}
+
+.task h3 {
+  display: inline-block;
+}
+
+p.completion {
+  display: inline-block;
+  padding: var(--spacing)
 }
 
 .task-list ul li p {

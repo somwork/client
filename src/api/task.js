@@ -91,6 +91,16 @@ export default {
   },
 
   /**
+   * Sets a task as completed
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async completeTask(id) {
+    const res = await request.put(`tasks/${id}/complete`)
+    return await res.json()
+  },
+
+  /**
    * Get all estimates to a task
    * @param {Number} id
    * @param {Object} Estimate

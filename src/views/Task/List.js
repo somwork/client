@@ -62,7 +62,10 @@ export default class List extends Component {
       <Link key={task.id} to={'detail/' + task.id}>
         <li>
           <div>
-            <h4>{task.title}</h4>
+            <h4>{task.title} </h4>
+            {task.completed === true && (
+              this.renderCompletionIcon()
+            )}
             <p>{task.description}</p>
           </div>
           <div>
@@ -79,6 +82,15 @@ export default class List extends Component {
           </div>
         </li>
       </Link>
+    )
+  }
+
+  /**
+   * Renders completion icon
+   */
+  renderCompletionIcon = () => {
+    return (
+    <p className="completion">Task Completed<i className="fas fa-check"></i> </p>
     )
   }
 
