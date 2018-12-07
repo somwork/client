@@ -46,6 +46,7 @@ form span {
 .task {
   max-width: 1200px;
   display: flex;
+  margin-bottom: 0px !important;
 }
 
 .task b {
@@ -69,11 +70,26 @@ form span {
 }
 
 .task .details .pane {
-  padding: calc(var(--spacing) / 3);
+  padding: calc(var(--spacing) / 3) calc(var(--spacing) / 2);
   display: flex;
   justify-content: space-between;
   border-top: solid 2px var(--secondary);
   border-bottom: solid 2px var(--secondary);
+}
+
+.task .details h6 {
+  padding: 0px calc(var(--spacing) / 2);
+  margin-top: calc(var(--spacing) / 2);
+  margin-bottom: 0px;
+}
+
+.task .details p {
+  margin-top: 0px;
+  padding: 0px calc(var(--spacing) / 2);
+}
+
+.task .estimate h4 {
+  margin-bottom: 4px;
 }
 
 .task .estimate h4.secondary {
@@ -92,7 +108,7 @@ form span {
 }
 
 .task ul li.chatBox {
-  padding: var(--spacing);
+  padding: var(--spacing) calc(var(--spacing) / 2);
   list-style: none;
   border-bottom: 1px solid #e7e7e7;
 }
@@ -103,13 +119,14 @@ form span {
   list-style: none;
 }
 
-li.chatBox p{
+.task pre {
   margin: 0px;
+  font-family: var(--font-family);
+  white-space: pre-wrap;
 }
 
-.chatBoxScroll{
-  overflow-y: auto;
-  height: 700px;
+li.chatBox p{
+  margin: 0px;
 }
 
 li.chatBox span.dateTime{
@@ -122,6 +139,15 @@ li.chatBox span.dateTime{
 }
 .task li.worker.chatBox {
     background: white;
+}
+
+.task .chatBoxScroll li:last-child {
+  border-bottom: none;
+}
+
+.task .estimate {
+  position: sticky;
+  top: var(--spacing);
 }
 
 .task .estimate ul li::before {
@@ -148,14 +174,31 @@ li.chatBox span.dateTime{
 }
 
 .task .estimate .popup-content {
-  width: 500px!important;
+  width: 300px!important;
   border: 0!important;
-  padding: 35px!important;
-  top: 25%!important;
-  left: 20%!important;
+  padding: var(--spacing)!important;
   border-radius: 6px;
 }
 
 .task .estimate .popup-overlay{
   background: #4d6475ab;
+}
+
+.task .chat {
+  position: sticky;
+  bottom: 0px;
+  background: white;
+}
+
+.task .chat div textarea {
+  height: 120px;
+  line-height: var(--spacing);
+}
+
+.task .chat div input[type='submit'] {
+  position: absolute;
+  visibility: hidden;
+  width: 100px;
+  right: calc(var(--spacing) / 4);
+  bottom: calc(var(--spacing) / 2);
 }

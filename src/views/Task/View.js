@@ -8,9 +8,10 @@ import estimate from '../../api/estimate';
 import Popup from "reactjs-popup";
 import Alert from '../../components/Alert';
 import Chat from './Chat';
+import withRealtime from '../../hoc/withRealtime'
 import './Task.css'
 
-export default class View extends Component {
+export default withRealtime(class View extends Component {
   state = {
     task: {
       id: 0,
@@ -44,9 +45,21 @@ export default class View extends Component {
   /**
    * Loads all tasks into state when componet mount
    */
-  componentDidMount() {
-    this.loadTasks(this.props.match.params.id);
+  componentDidMount(){
+    this.initTasks()
+    this.props.broker.on(`task/${this.props.match.params.id}/updated`, this.initTasks)
+  }
 
+  componentWillUnmount() {
+    this.props.broker.off(`task/${this.props.match.params.id}/updated`, this.initTasks)
+  }
+
+
+  /**
+   * Get estimates to task
+   */
+  initTasks = () => {
+    this.loadTasks(this.props.match.params.id);
     if (auth.type() === "employer") {
       this.loadEstimates(this.props.match.params.id);
     } else {
@@ -141,6 +154,7 @@ completeTaskOnClick =  () => {
 
       this.setState({ estimate: estimate })
       await this.loadCurrentEstimate()
+      this.props.broker.send(`task/${this.props.match.params.id}/updated`, '')
       await this.loadTasks(this.props.match.params.id)
     } catch(err) {
       this.setState({ error: err.message })
@@ -176,6 +190,7 @@ completeTaskOnClick =  () => {
     })
 
     this.setState({ estimates })
+    this.props.broker.send(`task/${this.props.match.params.id}/updated`, '')
   }
 
   /**
@@ -313,4 +328,4 @@ completeTaskOnClick =  () => {
       </div>
     )
   }
-}
+})
