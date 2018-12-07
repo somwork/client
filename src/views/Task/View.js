@@ -10,16 +10,18 @@ import Alert from '../../components/Alert';
 import Chat from './Chat';
 import withRealtime from '../../hoc/withRealtime'
 import './Task.css'
+import CategoriesDetails from '../../components/Categories/Categories'
 
 export default withRealtime(class View extends Component {
   state = {
     task: {
       id: 0,
-      start:'',
-      deadline:'',
-      urgency:'',
-      description:'',
-      title:'',
+      start: '',
+      deadline: '',
+      urgency: '',
+      description: '',
+      title: '',
+      employerId: null,
       averageEstimate: 0,
     },
     estimates: [],
@@ -32,7 +34,7 @@ export default withRealtime(class View extends Component {
       currency: 'DKK',
       complexity: 1.0,
     },
-    error:''
+    error: ''
   }
 
   urgency = {
@@ -44,7 +46,7 @@ export default withRealtime(class View extends Component {
   /**
    * Loads all tasks into state when componet mount
    */
-  componentDidMount(){
+  componentDidMount() {
     this.initTasks()
     this.props.broker.on(`task/${this.props.match.params.id}/updated`, this.initTasks)
   }
@@ -118,10 +120,10 @@ export default withRealtime(class View extends Component {
    * @param  {Object} event
    */
   changeHandler = event => {
-    const tempestimate = {...this.state.newEstimate }
+    const tempestimate = { ...this.state.newEstimate }
     tempestimate[event.target.name] = event.target.value
     this.setState({
-        newEstimate: tempestimate
+      newEstimate: tempestimate
     })
   }
 
@@ -147,7 +149,7 @@ export default withRealtime(class View extends Component {
       await this.loadCurrentEstimate()
       this.props.broker.send(`task/${this.props.match.params.id}/updated`, '')
       await this.loadTasks(this.props.match.params.id)
-    } catch(err) {
+    } catch (err) {
       this.setState({ error: err.message })
     }
   }
@@ -184,6 +186,10 @@ export default withRealtime(class View extends Component {
             <Chat taskId={this.props.match.params.id} />
           </section>
           <section>
+            <CategoriesDetails
+              taskId={this.props.match.params.id}
+              employerId={this.state.task.employerId}
+            />
             {(
               auth.type() === 'worker'
                 ? this.renderWorkerEstimates()
@@ -199,7 +205,7 @@ export default withRealtime(class View extends Component {
    * Render task details
    * @return {JSX}
    */
-  renderTaskDetails () {
+  renderTaskDetails() {
     return (
       <div>
         <h3>{this.state.task.title}</h3>
@@ -216,8 +222,8 @@ export default withRealtime(class View extends Component {
    * @param {Object} task
    * @return {JSX} a task as a list item
    */
-  renderTaskDescription(task){
-    return(
+  renderTaskDescription(task) {
+    return (
       <div className="details" key={task.id}>
         <div className='pane'>
           <div>
@@ -248,7 +254,7 @@ export default withRealtime(class View extends Component {
     return (
       <div className='estimate'>
         <h4>Estimate</h4>
-        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
         {this.state.estimates.length === 0 && (
           <h6>No estimates yet!</h6>
         )}
@@ -273,7 +279,7 @@ export default withRealtime(class View extends Component {
     return (
       <div className='estimate'>
         <h4>Estimate</h4>
-        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$'+this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
+        <h4 className='secondary'>{this.state.task.averageEstimate > 0 ? '$' + this.state.task.averageEstimate.toFixed(2) : 'Awaiting'}</h4>
         {this.state.estimate.totalHours > 0 && (
           <h6 className='secondary'>{this.state.estimate.accepted ? 'Your estimate is accepted' : 'Your estimate was sendt'}</h6>
         )}
@@ -283,11 +289,11 @@ export default withRealtime(class View extends Component {
               <form onSubmit={this.submitHandler}>
                 <label>
                   <b>Choose hourly wage:</b>
-                  <input name='hourlyWage' type='number' onChange={this.changeHandler}  min="1" max="999"  placeholder="Hourly wage" required/>
+                  <input name='hourlyWage' type='number' onChange={this.changeHandler} min="1" max="999" placeholder="Hourly wage" required />
                 </label>
                 <label>
                   <b>Estimated hours:</b>
-                  <input name='totalHours' type='number' onChange={this.changeHandler}  placeholder="Estimated hours" required/>
+                  <input name='totalHours' type='number' onChange={this.changeHandler} placeholder="Estimated hours" required />
                 </label>
                 <label>
                   <b>Task Complexity:</b>
@@ -297,7 +303,7 @@ export default withRealtime(class View extends Component {
                     <option value='2.0'>Hard</option>
                   </select>
                 </label>
-                <input type="submit" value="Send"/>
+                <input type="submit" value="Send" />
               </form>
             </div>
           </Popup>
