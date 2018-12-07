@@ -21,7 +21,7 @@ export default withRouter(class Update extends Component {
     budgets: [],
     currency: "USD",
     currentBudget: 0,
-    completed: "",
+    completed: false,
   }
 
   fields = [
@@ -52,6 +52,7 @@ export default withRouter(class Update extends Component {
         deadline: this.state.deadline.toDate(), //toDate() to convert moment()-date to standard JS-date, due to Superstruckt and server limitations
         budgetId: Number(this.state.currentBudget)
       }
+      console.log(this.state.urgencystring)
       await task.update(this.props.match.params.id, taskData)
       this.props.history.push('/task/list') // redirect to Task/list
     } catch (e) {
@@ -76,13 +77,11 @@ export default withRouter(class Update extends Component {
    * Renders Complete Task Button, if user is of type Employer
    */
   renderTaskCompletion = () => {
-    console.log(auth.type())
    if(auth.type() === 'employer')
    {
      return(
       <button onClick={this.completeTaskOnClick}>Complete Task</button>
      )
-
    }
    return;
   }
@@ -176,8 +175,9 @@ export default withRouter(class Update extends Component {
   /**
    * Sets Task to completed
    */
-completeTaskOnClick =  () => {
+  completeTaskOnClick =  () => {
   task.completeTask(this.props.match.params.id)
+  this.props.history.push('/task/list')
 }
 
   /**
@@ -287,7 +287,7 @@ completeTaskOnClick =  () => {
                 {this.state.budgets.map(this.renderBudgets.bind(this))}
               </select>
             </label>
-            {this.completeTaskRender()}
+            {this.renderTaskCompletion()}
             <input type="submit" value="Update" onClick={this.updateHandler} />
           </form>
         </section>
