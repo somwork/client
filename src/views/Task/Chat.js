@@ -9,6 +9,7 @@ export default withRealtime(class Chat extends Component {
   state = {
     message: '',
     messages: [],
+    follow: false,
     error: ''
   }
 
@@ -34,7 +35,13 @@ export default withRealtime(class Chat extends Component {
    * @param  {Object} msg
    */
   listenForMessages = msg => {
-    this.setState({ messages: this.state.messages.concat([msg]) })
+    this.setState({ messages: this.state.messages.concat([msg]) }, () => {
+      if (!this.state.follow) {
+        return
+      }
+
+      document.querySelector('.view').scrollTop = document.querySelector('.view').scrollHeight;
+    })
   }
 
   /**
@@ -170,6 +177,8 @@ export default withRealtime(class Chat extends Component {
               onChange={this.changeHandler}
               value={this.state.message}
               placeholder="Enter your message..."
+              onFocus={() => this.setState({ follow: true })}
+              onBlur={() => this.setState({ follow: false })}
               onKeyUp={this.handleEnter}
             />
             <input ref={s => this.submit = s} type="submit" value="send" className="sendbutton" />
