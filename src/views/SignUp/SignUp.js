@@ -81,7 +81,7 @@ export default withRouter(class SignUp extends Component{
       }, {
         country: this.state.country,
         city: this.state.city,
-        zipCode: this.state.zipcode,
+        zipCode: Number(this.state.zipcode),
         primaryLine: this.state.primaryLine,
         secondaryLine: this.state.secondaryLine
       });
@@ -133,7 +133,7 @@ export default withRouter(class SignUp extends Component{
     )
   }
 
-  /**
+ /**
   * Render options item
   * @param  {Array}
   * @return {JSX}
