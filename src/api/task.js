@@ -1,5 +1,6 @@
 import request from './request'
 import { struct } from 'superstruct'
+import auth from './auth';
 
 /**
  * Defines input-types required for validation
@@ -108,5 +109,27 @@ export default {
   async getEstimates(id) {
     const res = await request.get(`tasks/${id}/estimates`)
     return await res.json()
+  },
+
+  /**
+   * Add category to task
+   * @param {Number} id
+   * @param {Number} categoryId
+   * @return {Promise}
+   */
+  async addCategory(id, categoryId) {
+    const res = await request.put(`tasks/${id}/categories?categoryId=${categoryId}`, id)
+    return await res.ok
+  },
+
+  /**
+   * Add category to task
+   * @param {Number} id
+   * @return {Promise}
+   */
+  async getCategories(id) {
+    const res = await request.get(`tasks/${id}/categories`)
+    return await res.json()
   }
+
 }

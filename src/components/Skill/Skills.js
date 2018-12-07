@@ -37,9 +37,9 @@ export default class Skills extends Component {
   /**
   * Add a skill
   */
-  addSkill = async title => {
+  addSkill = async (title, categoryId) => {
     const skills = [...this.state.skills]
-    await skill.create({ title })
+    await skill.create({ title, categoryId })
 
     skills.push({ title, id: skills.length + 1 })
 

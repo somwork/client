@@ -33,13 +33,13 @@ export default withRouter(class Create extends Component {
    * when the component is mounted we get the budgets
    */
   componentDidMount() {
-      this.getBudgets();
+    this.getBudgets();
   }
 
   /**
    * Get existing budgets from database and add them to state
    */
-  async getBudgets(){
+  async getBudgets() {
     this.setState({
       budgets: await budget.get()
     })
@@ -134,9 +134,9 @@ export default withRouter(class Create extends Component {
    * @param {number} to
    * @return {JSX} an input surrounded with a label
    */
-  renderBudgets({id, from, to}) {
+  renderBudgets({ id, from, to }) {
     return (
-        <option key={id} value={id}>{from}$ to {to}$</option>
+      <option key={id} value={id}>{from}$ to {to}$</option>
     )
   }
 
@@ -191,7 +191,7 @@ export default withRouter(class Create extends Component {
               <label>
                 Urgency
               </label>
-              <br/>
+              <br />
               <label>
                 <input
                   type="radio"
@@ -203,7 +203,7 @@ export default withRouter(class Create extends Component {
                 />
                 No Rush
               </label>
-              <span/>
+              <span />
               <label>
                 <input
                   type="radio"
@@ -215,7 +215,7 @@ export default withRouter(class Create extends Component {
                 />
                 Urgent
               </label>
-              <span/>
+              <span />
               <label>
                 <input
                   type="radio"
@@ -225,7 +225,7 @@ export default withRouter(class Create extends Component {
                   checked={this.state.urgencystring === 'asap'}
                   required
                 />
-                 ASAP
+                ASAP
               </label>
             </div>
             <label>
