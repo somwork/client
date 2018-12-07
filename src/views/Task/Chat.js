@@ -35,6 +35,7 @@ export default withRealtime(class Chat extends Component {
    * @param  {Object} msg
    */
   listenForMessages = msg => {
+
     this.setState({ messages: this.state.messages.concat([msg]) }, () => {
       if (!this.state.follow) {
         return
@@ -42,6 +43,8 @@ export default withRealtime(class Chat extends Component {
 
       document.querySelector('.view').scrollTop = document.querySelector('.view').scrollHeight;
     })
+
+    this.setState({ messages: this.state.messages.concat([msg]) })
   }
 
   /**
